@@ -3,15 +3,53 @@
 		<meta http-equiv=Content-Type content="text/html; charset=utf-8">
 		<script src="http://cdn.bootcss.com/socket.io/1.3.5/socket.io.js"></script>
 		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
-		<title>title</title>
+		<title id="page-title"></title>
+                <style>
+                        
+                </style>
+                <script>
+                        function getUsername(){
+                                return window.location.hash.replace(/^#/,"") || "<Unknown>";
+                        }
+                        function addTextMessage(message){
+                                var para=document.createElement("p");
+                                para.textContent=message.author+": "+message.text;
+                                $("#text-messages").append(para);
+                        }
+                        function sendTextMessage(){
+                                message={
+                                        author: getUsername(),
+                                        text: $("#text-message-input").val()
+                                };
+                                console.log(message);
+                                socket.emit("text-message",message);
+                                $("#text-message-input").val("");
+                                addTextMessage(message);
+                        }
+                </script>
 	</head>
 	<body>
+                <h1 id="username"></h1>
+                <div id="text-messages">
+                </div>
+                <input id="text-message-input"></input>
+                <button id="send-message">发送</button>
                 <script>
                         var socket=io.connect("localhost:8080");
                         socket.on("news",function(data){
                                 console.log(data);
                                 socket.emit("my other event",{my:data});
                         });
+                        $("#send-message").on("click",sendTextMessage);
+                        $("#text-message-input").keydown(function(event){
+                                if(event.keyCode==13)//按下回车事件
+                                        sendTextMessage();
+                        });
+                        socket.on("text-message",function(message){
+                                addTextMessage(message);
+                        });
+                        $("#username").text(getUsername());
+                        $("#page-title").text=getUsername()+" @DrawCraft";
                 </script>
         </body>
 </html>

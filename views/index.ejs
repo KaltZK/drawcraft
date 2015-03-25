@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+		<script src="http://cdn.bootcss.com/socket.io/1.3.5/socket.io.js"></script>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+		<style type="text/css">
+		</style>
+		<title>DrawCraft</title>
+	</head>
+	<body>
+                <h1>DrawCraft</h1>
+                <input id="username-input"></input>
+                <button id="enter-button">进入</button>
+                <script>
+                        $("#enter-button").on("click",function(){
+                                var username=$("#username-input").val();
+                                window.location.href="/app#"+username;
+                        })
+                </script>
+	</body>
+</html>

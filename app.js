@@ -14,9 +14,11 @@ var app = express();
 }).call();
 
 app.get('/',function(req,res){
+        res.render("index");
+});
+app.get('/app',function(req,res){
         data = url.parse(req.url,true).query;
-        console.log(data);
-        res.render("app");
+        res.render("app",{username:data["username"]});
 });
 
 app.listen(8000);
@@ -24,7 +26,7 @@ app.listen(8000);
 
 io.on("connection",function(socket){
         socket.emit("news",{hello: "world"});
-        socket.on("my other event",function(data){
-                console.log(data);
+        socket.on("text-message",function(message){
+                socket.broadcast.emit('text-message',message);
         });
 });
