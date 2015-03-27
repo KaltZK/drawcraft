@@ -1,55 +1,70 @@
 <html>
 	<head>
-		<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+		<meta http_equiv=Content-Type content="text/html; charset=utf_8">
 		<script src="http://cdn.bootcss.com/socket.io/1.3.5/socket.io.js"></script>
 		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
-		<title id="page-title"></title>
-                <style>
-                        
+		<title id="page_title"></title>
+                <style type="text/css">
                 </style>
                 <script>
                         function getUsername(){
-                                return window.location.hash.replace(/^#/,"") || "<Unknown>";
+                                return "<%=username%>";
+                                //~ return window.location.hash.replace(/^#/,"") || "<Unknown>";
+                        }
+                        function getRoomname(){
+                                return "<%=roomname%>";
                         }
                         function addTextMessage(message){
+                                var divs=$("#text_messages");
                                 var para=document.createElement("p");
                                 para.textContent=message.author+": "+message.text;
-                                $("#text-messages").append(para);
+                                divs.append(para);
+                                
                         }
                         function sendTextMessage(){
+                                var text=$("#text_message_input").val();
+                                if(!text) return;
                                 message={
                                         author: getUsername(),
-                                        text: $("#text-message-input").val()
+                                        room:   getRoomname(),
+                                        text: text,
                                 };
-                                console.log(message);
-                                socket.emit("text-message",message);
-                                $("#text-message-input").val("");
+                                socket.emit("text_message",message);
+                                $("#text_message_input").val("");
                                 addTextMessage(message);
                         }
                 </script>
 	</head>
 	<body>
                 <h1 id="username"></h1>
-                <div id="text-messages">
+                <div id="text_messages">
                 </div>
-                <input id="text-message-input"></input>
-                <button id="send-message">发送</button>
+                <div id="text_message_send">
+                        <input id="text_message_input"></input>
+                        <button id="text_message_button">发送</button>
+                </div>
                 <script>
                         var socket=io.connect("localhost:8080");
-                        socket.on("news",function(data){
-                                console.log(data);
-                                socket.emit("my other event",{my:data});
+                        socket.emit('enter_room',{
+                                room: getRoomname(),
+                                user: getUsername(),
                         });
-                        $("#send-message").on("click",sendTextMessage);
-                        $("#text-message-input").keydown(function(event){
+                        window.onunload=function(){
+                                socket.emit('leave_room',{
+                                        room: getRoomname(),
+                                        user: getUsername(),
+                                });
+                        }
+                        $("#text_message_button").on("click",sendTextMessage);
+                        $("#text_message_input").keydown(function(event){
                                 if(event.keyCode==13)//按下回车事件
                                         sendTextMessage();
                         });
-                        socket.on("text-message",function(message){
+                        socket.on("text_message",function(message){
                                 addTextMessage(message);
                         });
-                        $("#username").text(getUsername());
-                        $("#page-title").text=getUsername()+" @DrawCraft";
+                        $("#username").text(getUsername()+"@"+getRoomname());
+                        $("#page_title").text(getUsername()+"@"+getRoomname());
                 </script>
         </body>
 </html>

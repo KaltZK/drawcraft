@@ -6,16 +6,28 @@
 		<style type="text/css">
 		</style>
 		<title>DrawCraft</title>
+                <script>
+                        function enterRoom(){
+                                var username=$("#username_input").val();
+                                var roomname=$("#roomname_input").val();
+                                window.location.href="/app?user="+username+"&room="+roomname;
+                        }
+                </script>
 	</head>
 	<body>
                 <h1>DrawCraft</h1>
-                <input id="username-input"></input>
-                <button id="enter-button">进入</button>
+                <label>房间</label>
+                <input id="roomname_input"></input><br/>
+                <label>用户名</label>
+                <input id="username_input"></input>
+                <button id="enter_button">进入</button>
                 <script>
-                        $("#enter-button").on("click",function(){
-                                var username=$("#username-input").val();
-                                window.location.href="/app#"+username;
-                        })
+                        $("#roomname_input").val("Lobby");
+                        $("#username_input").keydown(function(event){
+                                if(event.keyCode==13)//按下回车事件
+                                        enterRoom();
+                        });
+                        $("#enter_button").on("click",enterRoom);
                 </script>
 	</body>
 </html>
