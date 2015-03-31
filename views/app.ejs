@@ -5,7 +5,71 @@
 		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
 		<title id="page_title"></title>
                 <style type="text/css">
+                        div#moveable{
+                                position:relative;
+                        }
                 </style>
+                <script>
+                $(document).ready(function(){
+                var divRelativeMove=function(dx,dy){
+                        var div_list=$("div#moveable");
+                        for(var i=0;i<div_list.length;i++){
+                                var div=div_list[i];
+                                div.style.left=parseInt(div.style.left||0)+dx;
+                                div.style.top=parseInt(div.style.top||0)+dy;
+                        }
+                }
+                $(document).bind("contextmenu",function(e){
+                        return false;
+                });//阻止右键菜单
+                //支持拖拽
+                (function(){
+                        var mouse_over=false;
+                        var mx=undefined,my=undefined;
+                        var start=function(evt){
+                                if(evt.which!=3||mouse_over) return;
+                                console.log("in!");
+                                mouse_over=true;
+                                mx=evt.clientX;
+                                my=evt.clientY;
+                        }
+                        var stop=function(evt){
+                                if(evt.which!=3||!mouse_over) return;
+                                console.log("out!");
+                                mouse_over=false;
+                                mx=undefined;
+                                my=undefined;
+                        }
+                        $("div#moveable").on("mousedown",start);
+                        $("div#moveable").on("mouseup",stop);
+                        $("div#moveable").on("mouseout",stop);
+                        $("div#moveable").on("mouseenter",stop);
+                        $("div#moveable").on("mousemove",function(evt){
+                                if(!mouse_over) return;
+                                var dx=evt.clientX-mx,dy=evt.clientY-my;
+                                divRelativeMove(dx,dy);
+                                mx=evt.clientX;
+                                my=evt.clientY;
+                        });
+                }).call();
+                //键盘移动
+                (function(){
+                        var speed=10;
+                        $(document).keydown(function(evt){
+                                var dx=0,dy=0;
+                                switch(evt.keyCode||evt.which){
+                                        case 87:dy=speed;break;//W
+                                        case 83:dy=-speed;break;//S
+                                }
+                                switch(evt.keyCode||evt.which){
+                                        case 65:dx=speed;break;//A
+                                        case 68:dx=-speed;break;//D
+                                }
+                                divRelativeMove(dx,dy);
+                        });
+                }).call();
+                });
+                </script>
                 <script>
                         function getUsername(){
                                 return "<%=username%>";
@@ -66,5 +130,9 @@
                         $("#username").text(getUsername()+"@"+getRoomname());
                         $("#page_title").text(getUsername()+"@"+getRoomname());
                 </script>
+                <!-- 下面这部分是用来测试拖拽和键盘控制移动的 -->
+                <div id="moveable" style="width: 100px;height: 100px; background: green;left:500"></div>
+                <div id="moveable" style="width: 100px;height: 100px; background: green;left:500;top:100px; "></div>
+
         </body>
 </html>
