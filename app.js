@@ -8,7 +8,8 @@ var app = express();
 (function(){
         app.set('port',process.env.VMC_APP_PORT||3000);
         app.set('views',__dirname+'/views');
-        app.set('view engine','ejs');
+        app.engine('.html', require('ejs').__express);
+        app.set('view engine', 'html');//使ejs可以渲染HTML扩展名的文件，否则高亮很蛋疼
         app.use(express.static(__dirname + '/static'));//设置静态文件
 }).call();
 
