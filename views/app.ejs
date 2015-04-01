@@ -11,63 +11,72 @@
                 </style>
                 <script>
                 $(document).ready(function(){
-                var divRelativeMove=function(dx,dy){
-                        var div_list=$("div#moveable");
-                        for(var i=0;i<div_list.length;i++){
-                                var div=div_list[i];
-                                div.style.left=parseInt(div.style.left||0)+dx;
-                                div.style.top=parseInt(div.style.top||0)+dy;
-                        }
-                }
-                $(document).bind("contextmenu",function(e){
-                        return false;
-                });//阻止右键菜单
-                //支持拖拽
-                (function(){
-                        var mouse_over=false;
-                        var mx=undefined,my=undefined;
-                        var start=function(evt){
-                                if(evt.which!=3||mouse_over) return;
-                                console.log("in!");
-                                mouse_over=true;
-                                mx=evt.clientX;
-                                my=evt.clientY;
-                        }
-                        var stop=function(evt){
-                                if(evt.which!=3||!mouse_over) return;
-                                console.log("out!");
-                                mouse_over=false;
-                                mx=undefined;
-                                my=undefined;
-                        }
-                        $("div#moveable").on("mousedown",start);
-                        $("div#moveable").on("mouseup",stop);
-                        $("div#moveable").on("mouseout",stop);
-                        $("div#moveable").on("mouseenter",stop);
-                        $("div#moveable").on("mousemove",function(evt){
-                                if(!mouse_over) return;
-                                var dx=evt.clientX-mx,dy=evt.clientY-my;
-                                divRelativeMove(dx,dy);
-                                mx=evt.clientX;
-                                my=evt.clientY;
-                        });
-                }).call();
-                //键盘移动
-                (function(){
-                        var speed=10;
-                        $(document).keydown(function(evt){
-                                var dx=0,dy=0;
-                                switch(evt.keyCode||evt.which){
-                                        case 87:dy=speed;break;//W
-                                        case 83:dy=-speed;break;//S
+                        var atAllElement=function(css,callback){
+                                var ele_list=$(css);
+                                for(var i=0;i<ele_list.length;i++){
+                                        var ele=ele_list[i];
+                                        callback.call(undefined,ele);//"call"的第一个参数是"this"
                                 }
-                                switch(evt.keyCode||evt.which){
-                                        case 65:dx=speed;break;//A
-                                        case 68:dx=-speed;break;//D
+                        } 
+                        var moveRelativeDiv=function(dx,dy){
+                                atAllElement("div#moveable",function(div){
+                                        div.style.left=parseInt(div.style.left||0)+dx;
+                                        div.style.top=parseInt(div.style.top||0)+dy;
+                                });
+                        };//要加分号否则后面的括号会被当作调用运算符
+                        (function(){
+                                atAllElement("div#moveable",function(div){
+                                        $(div).bind("contextmenu",function(evt){
+                                                return false;
+                                        });
+                                });
+                        }).call();//只阻止可拖拽方块的右键
+                        //支持拖拽
+                        (function(){
+                                var mouse_over=false;
+                                var mx=undefined,my=undefined;
+                                var start=function(evt){
+                                        if(evt.which!=3||mouse_over) return;
+                                        console.log("in!");
+                                        mouse_over=true;
+                                        mx=evt.clientX;
+                                        my=evt.clientY;
                                 }
-                                divRelativeMove(dx,dy);
-                        });
-                }).call();
+                                var stop=function(evt){
+                                        if(evt.which!=3||!mouse_over) return;
+                                        console.log("out!");
+                                        mouse_over=false;
+                                        mx=undefined;
+                                        my=undefined;
+                                }
+                                $("div#moveable").on("mousedown",start);
+                                $("div#moveable").on("mouseup",stop);
+                                $("div#moveable").on("mouseout",stop);
+                                $("div#moveable").on("mouseenter",stop);
+                                $("div#moveable").on("mousemove",function(evt){
+                                        if(!mouse_over) return;
+                                        var dx=evt.clientX-mx,dy=evt.clientY-my;
+                                        moveRelativeDiv(dx,dy);
+                                        mx=evt.clientX;
+                                        my=evt.clientY;
+                                });
+                        }).call();
+                        //键盘移动
+                        (function(){
+                                var speed=10;
+                                $(document).keydown(function(evt){
+                                        var dx=0,dy=0;
+                                        switch(evt.keyCode||evt.which){
+                                                case 87:dy=speed;break;//W
+                                                case 83:dy=-speed;break;//S
+                                        }
+                                        switch(evt.keyCode||evt.which){
+                                                case 65:dx=speed;break;//A
+                                                case 68:dx=-speed;break;//D
+                                        }
+                                        divRelativeMove(dx,dy);
+                                });
+                        }).call();
                 });
                 </script>
                 <script>
