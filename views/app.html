@@ -1,16 +1,17 @@
 <html>
 	<head>
 		<meta http_equiv=Content-Type content="text/html; charset=utf_8">
-		<script src="http://cdn.bootcss.com/socket.io/1.3.5/socket.io.js"></script>
-		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+		<script src="/socket.io.js"></script>
+		<script src="/jquery.min.js"></script>
 		<title id="page_title"></title>
                 <style type="text/css">
-                        div#moveable{
+                        div.chunk{
                                 position:relative;
                         }
                 </style>
                 <script>
                 $(document).ready(function(){
+                        var chunk
                         var atAllElement=function(css,callback){
                                 var ele_list=$(css);
                                 for(var i=0;i<ele_list.length;i++){
@@ -18,49 +19,49 @@
                                         callback.call(undefined,ele);//"call"的第一个参数是"this"
                                 }
                         } 
-                        var moveRelativeDiv=function(dx,dy){
-                                atAllElement("div#moveable",function(div){
+                        var moveChunkDiv=function(dx,dy){
+                                atAllElement("div.chunk",function(div){
                                         div.style.left=parseInt(div.style.left||0)+dx;
                                         div.style.top=parseInt(div.style.top||0)+dy;
                                 });
                         };//要加分号否则后面的括号会被当作调用运算符
                         (function(){
-                                atAllElement("div#moveable",function(div){
+                                var chunkWidth=100,chunkHeight=100;
+                                atAllElement("div.chunk",function(div){
+                                        div.style.width=chunkWidth;
+                                        div.style.height=chunkHeight;
                                         $(div).bind("contextmenu",function(evt){
                                                 return false;
-                                        });
+                                        });//只阻止可拖拽方块的右键菜单
                                 });
-                        }).call();//只阻止可拖拽方块的右键
-                        //支持拖拽
+                        }).call();
                         (function(){
                                 var mouse_over=false;
                                 var mx=undefined,my=undefined;
                                 var start=function(evt){
                                         if(evt.which!=3||mouse_over) return;
-                                        console.log("in!");
                                         mouse_over=true;
                                         mx=evt.clientX;
                                         my=evt.clientY;
                                 }
                                 var stop=function(evt){
-                                        if(evt.which!=3||!mouse_over) return;
-                                        console.log("out!");
+                                        //if(evt.which!=3||!mouse_over) return;
                                         mouse_over=false;
                                         mx=undefined;
                                         my=undefined;
                                 }
-                                $("div#moveable").on("mousedown",start);
-                                $("div#moveable").on("mouseup",stop);
-                                $("div#moveable").on("mouseout",stop);
-                                $("div#moveable").on("mouseenter",stop);
-                                $("div#moveable").on("mousemove",function(evt){
+                                $("div.chunk").on("mousedown",start);
+                                $("div.chunk").on("mouseup",stop);
+                                $("div.chunk").on("mouseout",stop);
+                                $("div.chunk").on("mouseenter",stop);
+                                $("div.chunk").on("mousemove",function(evt){
                                         if(!mouse_over) return;
                                         var dx=evt.clientX-mx,dy=evt.clientY-my;
-                                        moveRelativeDiv(dx,dy);
+                                        moveChunkDiv(dx,dy);
                                         mx=evt.clientX;
                                         my=evt.clientY;
                                 });
-                        }).call();
+                        }).call();//支持拖拽
                         //键盘移动
                         (function(){
                                 var speed=10;
@@ -74,7 +75,7 @@
                                                 case 65:dx=speed;break;//A
                                                 case 68:dx=-speed;break;//D
                                         }
-                                        divRelativeMove(dx,dy);
+                                        moveChunkDiv(dx,dy);
                                 });
                         }).call();
                 });
@@ -109,12 +110,14 @@
                 </script>
 	</head>
 	<body>
-                <h1 id="username"></h1>
-                <div id="text_messages">
-                </div>
-                <div id="text_message_send">
-                        <input id="text_message_input"></input>
-                        <button id="text_message_button">发送</button>
+                <div id="chat">
+                        <h1 id="username"></h1>
+                        <div id="text_messages">
+                        </div>
+                        <div id="text_message_send">
+                                <input id="text_message_input"></input>
+                                <button id="text_message_button">发送</button>
+                        </div>
                 </div>
                 <script>
                         var socket=io.connect("localhost:8080");
@@ -140,8 +143,10 @@
                         $("#page_title").text(getUsername()+"@"+getRoomname());
                 </script>
                 <!-- 下面这部分是用来测试拖拽和键盘控制移动的 -->
-                <div id="moveable" style="width: 100px;height: 100px; background: green;left:500"></div>
-                <div id="moveable" style="width: 100px;height: 100px; background: green;left:500;top:100px; "></div>
+                <div id="board">
+                        <div class="chunk" style="background: green;left:200;top:0"></div>
+                        <div class="chunk" style="background: green;left:200;top:100; "></div>
+                </div>
 
         </body>
 </html>
