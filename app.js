@@ -1,18 +1,18 @@
-var EXPRESS_PORT=8000;
-var IO_PORT=8080;
+var PORT=8000;
 
-
-var io = require('socket.io').listen(IO_PORT);
+var sio = require('socket.io');
 var express = require('express');
 var url=require('url');
-
+var http=require('http');
 var app = express();
+var server=http.createServer(app);
+var io=sio.listen(server);
 
-
+server.listen(PORT);
 
 // express config
 (function(){
-        app.set('port',process.env.VMC_APP_PORT||EXPRESS_PORT);
+        app.set('port',process.env.VMC_APP_PORT||PORT);
         app.set('views',__dirname+'/views');
         app.engine('.html', require('ejs').__express);
         app.set('view engine', 'html');//使ejs可以渲染HTML扩展名的文件，否则高亮很蛋疼
@@ -26,8 +26,6 @@ app.get('/app',function(req,res){
         var data = url.parse(req.url,true).query;
         res.render("app",{username:data["user"],roomname:data["room"]});
 });
-
-app.listen(EXPRESS_PORT);
 
 
 io.on("connection",function(socket){
@@ -52,6 +50,6 @@ io.on("connection",function(socket){
         });
 });
 
+
 console.log("Running...");
-console.log("EXPRESS_PORT:",EXPRESS_PORT);
-console.log("IO_PORT:",IO_PORT);
+console.log("PORT:",PORT);
