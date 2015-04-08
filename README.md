@@ -14,6 +14,14 @@ DrawCraft是一个在线协作画板项目
 ##msysgit
 
 ##安装软件包
+
+* nodejs
+* python2.7
+* mongodb
+* Sublime Text 2
+* msysgit
+* nodejs组件见下面
+###npm
 安装完NodeJS之后应该可以在cmd里使用npm(Node Package Manager)安装需要的软件包
 
 在cmd里输入
