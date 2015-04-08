@@ -3,6 +3,7 @@
 		<meta http_equiv=Content-Type content="text/html; charset=utf_8">
 		<script src="/socket.io.js"></script>
 		<script src="/jquery.min.js"></script>
+                <script src="/svg.js"></script>
 		<title id="page_title"></title>
                 <style type="text/css">
                         div.chunk{
@@ -11,14 +12,32 @@
                 </style>
                 <script>
                 $(document).ready(function(){
-                        var chunk
+                        (function(){
+                                if(SVG.supported){
+                                        //测试用代码
+                                        $("#chunk-0-0").on("mousemove",function(evt){
+                                                console.log(evt.offsetX,evt.offsetY);
+                                        });
+                                        var draw=SVG("chunk-0-0").size("100%","100%");
+                                        var text = draw.text('SVG.JS').move(50,0);
+                                        text.font({
+                                                family: 'Source Sans Pro',
+                                                size: 30,
+                                                anchor: 'middle',
+                                                leading: 1,
+                                        });
+                                }
+                                else{
+                                        alert("svg.js is not supported.");
+                                }
+                        }).call();//检测svg.js是否可用
                         var atAllElement=function(css,callback){
                                 var ele_list=$(css);
                                 for(var i=0;i<ele_list.length;i++){
                                         var ele=ele_list[i];
                                         callback.call(undefined,ele);//"call"的第一个参数是"this"
                                 }
-                        } 
+                        };
                         var moveChunkDiv=function(dx,dy){
                                 atAllElement("div.chunk",function(div){
                                         div.style.left=parseInt(div.style.left||0)+dx;
@@ -83,7 +102,6 @@
                 <script>
                         function getUsername(){
                                 return "<%=username%>";
-                                //~ return window.location.hash.replace(/^#/,"") || "<Unknown>";
                         }
                         function getRoomname(){
                                 return "<%=roomname%>";
@@ -144,7 +162,7 @@
                 </script>
                 <!-- 下面这部分是用来测试拖拽和键盘控制移动的 -->
                 <div id="board">
-                        <div class="chunk" style="background: green;left:200;top:0"></div>
+                        <div class="chunk" style="background: green;left:200;top:0" id="chunk-0-0"></div>
                         <div class="chunk" style="background: green;left:200;top:100; "></div>
                 </div>
 
