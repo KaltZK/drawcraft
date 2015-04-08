@@ -29,3 +29,8 @@ DrawCraft是一个在线协作画板项目
 npm install express socket.io url ejs
 ```
 就可以了
+
+使用npm安装mongodb客户端
+```
+npm install bson mongo
+```
