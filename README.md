@@ -8,7 +8,7 @@ DrawCraft是一个在线协作画板项目
 
 
 #项目成员
-
+* Chelle
 
 #一些说明
 ##msysgit
