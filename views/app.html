@@ -1,131 +1,47 @@
 <html>
 	<head>
 		<meta http_equiv=Content-Type content="text/html; charset=utf_8">
+
+                <!-- 接下来引用的js文件是从网上找来的库 -->
 		<script src="/socket.io.js"></script>
 		<script src="/jquery.min.js"></script>
                 <script src="/svg.js"></script>
-		<title id="page_title"></title>
-                <style type="text/css">
-                        div.chunk{
-                                position:relative;
-                        }
-                </style>
+
+                <!-- 接下来引用的js文件是自己写的 在 static/javascript 里 -->
+                <script src="/javascript/appready.js"></script>
+
                 <script>
-                $(document).ready(function(){
-                        (function(){
-                                if(SVG.supported){
-                                        //测试用代码
-                                        $("#chunk-0-0").on("mousemove",function(evt){
-                                                console.log(evt.offsetX,evt.offsetY);
-                                        });
-                                        var draw=SVG("chunk-0-0").size("100%","100%");
-                                        var text = draw.text('SVG.JS').move(50,0);
-                                        text.font({
-                                                family: 'Source Sans Pro',
-                                                size: 30,
-                                                anchor: 'middle',
-                                                leading: 1,
-                                        });
-                                }
-                                else{
-                                        alert("svg.js is not supported.");
-                                }
-                        }).call();//检测svg.js是否可用
-                        var atAllElement=function(css,callback){
-                                var ele_list=$(css);
-                                for(var i=0;i<ele_list.length;i++){
-                                        var ele=ele_list[i];
-                                        callback.call(undefined,ele);//"call"的第一个参数是"this"
-                                }
-                        };
-                        var moveChunkDiv=function(dx,dy){
-                                atAllElement("div.chunk",function(div){
-                                        div.style.left=parseInt(div.style.left||0)+dx;
-                                        div.style.top=parseInt(div.style.top||0)+dy;
-                                });
-                        };//要加分号否则后面的括号会被当作调用运算符
-                        (function(){
-                                var chunkWidth=100,chunkHeight=100;
-                                atAllElement("div.chunk",function(div){
-                                        div.style.width=chunkWidth;
-                                        div.style.height=chunkHeight;
-                                        $(div).bind("contextmenu",function(evt){
-                                                return false;
-                                        });//只阻止可拖拽方块的右键菜单
-                                });
-                        }).call();
-                        (function(){
-                                var mouse_over=false;
-                                var mx=undefined,my=undefined;
-                                var start=function(evt){
-                                        if(evt.which!=3||mouse_over) return;
-                                        mouse_over=true;
-                                        mx=evt.clientX;
-                                        my=evt.clientY;
-                                }
-                                var stop=function(evt){
-                                        //if(evt.which!=3||!mouse_over) return;
-                                        mouse_over=false;
-                                        mx=undefined;
-                                        my=undefined;
-                                }
-                                $("div.chunk").on("mousedown",start);
-                                $("div.chunk").on("mouseup",stop);
-                                $("div.chunk").on("mouseout",stop);
-                                $("div.chunk").on("mouseenter",stop);
-                                $("div.chunk").on("mousemove",function(evt){
-                                        if(!mouse_over) return;
-                                        var dx=evt.clientX-mx,dy=evt.clientY-my;
-                                        moveChunkDiv(dx,dy);
-                                        mx=evt.clientX;
-                                        my=evt.clientY;
-                                });
-                        }).call();//支持拖拽
-                        //键盘移动
-                        (function(){
-                                var speed=10;
-                                $(document).keydown(function(evt){
-                                        var dx=0,dy=0;
-                                        switch(evt.keyCode||evt.which){
-                                                case 87:dy=speed;break;//W
-                                                case 83:dy=-speed;break;//S
-                                        }
-                                        switch(evt.keyCode||evt.which){
-                                                case 65:dx=speed;break;//A
-                                                case 68:dx=-speed;break;//D
-                                        }
-                                        moveChunkDiv(dx,dy);
-                                });
-                        }).call();
-                });
-                </script>
-                <script>
+                        //这部分用到了ejs模板所以必须写在这里
                         function getUsername(){
                                 return "<%=username%>";
                         }
                         function getRoomname(){
                                 return "<%=roomname%>";
                         }
-                        function addTextMessage(message){
-                                var divs=$("#text_messages");
-                                var para=document.createElement("p");
-                                para.textContent=message.author+": "+message.text;
-                                divs.append(para);
-                                
-                        }
-                        function sendTextMessage(){
-                                var text=$("#text_message_input").val();
-                                if(!text) return;
-                                message={
-                                        author: getUsername(),
-                                        room:   getRoomname(),
-                                        text: text,
-                                };
-                                socket.emit("text_message",message);
-                                $("#text_message_input").val("");
-                                addTextMessage(message);
-                        }
                 </script>
+		<title id="page_title"></title>
+                <style type="text/css">
+                        div#board{
+                                top: 0px;
+                                bottom: 0px;
+                                left: 0px;
+                                right: 0px;
+                                width: 100%;
+                                height: 100%;
+                                position: absolute;
+                                z-index: 5;
+                        }
+                        div.chunk{
+                                position:absolute;
+                                border-style: solid; border-width: 1px;//先加上边框方便看
+                        }
+                        div#chat{
+                                position: absolute;
+                                bottom: 0px;
+                                left: 0px;
+                                z-index: 10;
+                        }
+                </style>
 	</head>
 	<body>
                 <div id="chat">
@@ -162,8 +78,6 @@
                 </script>
                 <!-- 下面这部分是用来测试拖拽和键盘控制移动的 -->
                 <div id="board">
-                        <div class="chunk" style="background: green;left:200;top:0" id="chunk-0-0"></div>
-                        <div class="chunk" style="background: green;left:200;top:100; "></div>
                 </div>
 
         </body>
