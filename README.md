@@ -36,3 +36,4 @@ npm install express socket.io url ejs
 ```
 npm install bson mongo
 ```
+[MongoDB官网](http://www.mongodb.org/)
