@@ -11,6 +11,9 @@ CHUNK_HEIGHT=300;
 
 
 
+CHUNK={}//存有所有的chunk，以chunk_id为键，以chunk为值
+
+
 //接下来的部分是类
 /*
 JavaScript是基于原型的面向对象，所以下面这些其实并不能算是“类”
@@ -30,8 +33,8 @@ Chunk.call(obj,x,y);
 function Chunk(x,y,ax,ay){
         //x,y是chunk在绝对坐标系内的位置，以chunk大小为单位
         //ax,ay是绝对坐标系相对于屏幕的位置，以px为单位
+        var div_ele;
         var chunk_id="chunk-"+x+"-"+y;
-        var div_ele=document.getElementById(chunk_id);
         ax=ax||0;//如果ax未提供则默认为0，下同
         ay=ay||0;
         /*
@@ -39,8 +42,6 @@ function Chunk(x,y,ax,ay){
         与C不同，在JavaScript，a||b，当a的值为非(false,0,"",null,undefined等)则返回b
         */
 
-
-        
         /*
         本来想写成getChunk这种函数但还是觉得类比较方便
         这么一想这个判断不是一点意义都没有吗?!
@@ -48,18 +49,29 @@ function Chunk(x,y,ax,ay){
         这样的话就麻烦了，希望svg.js有应对措施
         实在不行的话就用一个列表存下所有产生过的chunk然后clone之类的好了
         */
-        if(!div_ele){//如果chunk不存在，就新建一个
-                div_ele=document.createElement("div");
-                document.getElementById("board").appendChild(div_ele);
-                div_ele.id=chunk_id;
-                div_ele.classList.add("chunk");
-                div_ele.style.width=CHUNK_WIDTH;
-                div_ele.style.height=CHUNK_HEIGHT;
-                div_ele.style.left=ax+x*CHUNK_WIDTH;
-                div_ele.style.top=ay+y*CHUNK_HEIGHT;
+        if(CHUNK[chunk_id]){//如果已经存在，就复制一份
+                for(var p in CHUNK[chunk_id]){
+                        this[p]=CHUNK[chunk_id][p];
+                }
+                return;
         }
+        //如果chunk不存在，就新建一个
+        CHUNK[chunk_id]=this;
+        div_ele=document.createElement("div");
+        document.getElementById("board").appendChild(div_ele);
+        div_ele.id=chunk_id;
+        div_ele.classList.add("chunk");
+        div_ele.style.width=CHUNK_WIDTH;
+        div_ele.style.height=CHUNK_HEIGHT;
+        div_ele.style.left=ax+x*CHUNK_WIDTH;
+        div_ele.style.top=ay+y*CHUNK_HEIGHT;
         this.div=div_ele;
+        this.id=chunk_id;
         this.draw=SVG(chunk_id).size("100%","100%");
+        this.moveRelatively=function(dx,dy){//相对之前的位置移动，dx和dy是偏移量，单位是px
+                this.div.style.left+=dx;
+                this.div.style.top+=dy;
+        }
 }
 
 
@@ -105,9 +117,6 @@ $(document).ready(function(){
                 chunk1=new Chunk(0,0);
                 chunk2=new Chunk(0,1);
                 chunk3=new Chunk(1,0);
-                chunk3.div.style.background=
-                chunk1.div.style.background=
-                chunk2.div.style.background="green";
                 var draw=chunk1.draw;
                 var text = draw.text('SVG.JS').move(50,0);
                 text.font({
@@ -116,6 +125,12 @@ $(document).ready(function(){
                         anchor: 'middle',
                         leading: 1,
                 });
+
+                chunk1.draw.mousemove(function(evt){
+                        console.log(evt.offsetX,evt.offsetY);
+                });
+                cpath=chunk1.draw.path("M0,0L100,100");
+                
         }).call();
 
 
@@ -172,11 +187,9 @@ $(document).ready(function(){
                 var speed=10;
                 $(document).keydown(function(evt){
                         var dx=0,dy=0;
-                        switch(evt.keyCode||evt.which){
+                        switch(evt.keyCode||evt.which){//这里是“视野移动”所以按键方向和方块移动方向相反
                                 case 87:dy=speed;break;//W
                                 case 83:dy=-speed;break;//S
-                        }
-                        switch(evt.keyCode||evt.which){
                                 case 65:dx=speed;break;//A
                                 case 68:dx=-speed;break;//D
                         }
