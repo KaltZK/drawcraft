@@ -5,6 +5,7 @@
                 <!-- 接下来引用的js文件是从网上找来的库 -->
 		<script src="/socket.io.js"></script>
 		<script src="/jquery.min.js"></script>
+		<script src="/jquery-cookie/jquery.cookie.js"></script>
                 <script src="/svg.js"></script>
 
                 <!-- 接下来引用的js文件是自己写的 在 static/javascript 里 -->
@@ -13,10 +14,10 @@
                 <script>
                         //这部分用到了ejs模板所以必须写在这里
                         function getUsername(){
-                                return "<%=username%>";
+                                return $.cookie("user");
                         }
                         function getRoomname(){
-                                return "<%=roomname%>";
+                                return $.cookie("room");
                         }
                 </script>
 		<title id="page_title"></title>
@@ -43,6 +44,7 @@
                                 bottom: 0px;
                                 left: 0px;
                                 z-index: 10;
+                                background: white;
                         }
                 </style>
 	</head>

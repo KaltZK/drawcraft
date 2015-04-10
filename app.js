@@ -23,8 +23,8 @@ app.get('/',function(req,res){
         res.render("index");
 });
 app.get('/app',function(req,res){
-        var data = url.parse(req.url,true).query;
-        res.render("app",{username:data["user"],roomname:data["room"]});
+        var urldata = url.parse(req.url,true).query;
+        res.render("app");
 });
 
 

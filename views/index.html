@@ -3,28 +3,40 @@
 		<meta http-equiv=Content-Type content="text/html; charset=utf-8">
                 <script src="/socket.io.js"></script>
                 <script src="/jquery.min.js"></script>
+		<script src="/jquery-cookie/jquery.cookie.js"></script>
 		<style type="text/css">
 		</style>
 		<title>DrawCraft</title>
                 <script>
+                        $(document).ready(function(){
+                                (function(){
+                                        var user=$.cookie("user");
+                                        var room=$.cookie("room");
+                                        if(user) $("#user_input").val(user);
+                                        if(room) $("#room_input").val(room);
+                                }).call();
+                        });
                         function enterRoom(){
-                                var username=$("#username_input").val();
-                                var roomname=$("#roomname_input").val();
-                                window.location.href="/app?user="+username+"&room="+roomname;
+                                var user=$("#user_input").val();
+                                var room=$("#room_input").val();
+                                if(!user||!room) return;
+                                $.cookie("user",user);
+                                $.cookie("room",room);
+                                window.location.href="/app?room="+room;
                         }
                 </script>
 	</head>
 	<body>
                 <h1>DrawCraft</h1>
                 <label>房间</label>
-                <input id="roomname_input"></input><br/>
+                <input id="room_input"></input><br/>
                 <label>用户名</label>
-                <input id="username_input"></input>
+                <input id="user_input"></input>
                 <button id="enter_button">进入</button>
                 
                 <script>
-                        $("#roomname_input").val("Lobby");
-                        $("#username_input").keydown(function(event){
+                        $("#room_input").val("Lobby");
+                        $("#user_input").keydown(function(event){
                                 if(event.keyCode==13)//按下回车事件
                                         enterRoom();
                         });

@@ -9,8 +9,13 @@ CHUNK_WIDTH=300;
 CHUNK_HEIGHT=300;
 
 
-
-
+CHUNK_DRAWING_STATUS={
+        drawing:false,//跨chunk绘制时用于判断的标记
+        last_chunk:{
+                id:undefined,
+                last_stop:undefined,
+        },
+}
 CHUNK={}//存有所有的chunk，以chunk_id为键，以chunk为值
 
 
@@ -77,14 +82,20 @@ function Chunk(x,y,ax,ay){
         };
         
         (function(){//用于左键绘制SVG线条
-                var draw=this.draw;
                 var lx,ly,chunk_path,points_list;
-                var drawing=false;//跨chunk绘制时用于判断的标记
                 var start_drawing=function(evt){
+
+                        //因为按下鼠标时不产生mouseleave事件所以只能这样
+                        if(CHUNK_DRAWING_STATUS.last_chunk.id&&
+                                CHUNK_DRAWING_STATUS.last_chunk.id!=chunk_id)
+                                CHUNK_DRAWING_STATUS.last_chunk.stop(evt);
+                        CHUNK_DRAWING_STATUS.last_chunk.id=chunk_id;
+                        CHUNK_DRAWING_STATUS.last_chunk.stop=stop_drawing;
+                        /*这里的stop_drawing……应该算是闭包吧？*/
+
                         lx=evt.offsetX;
                         ly=evt.offsetY;
                         points_list=[[lx,ly]];
-                        console.log(lx,ly);
                         chunk_path=draw.polyline(lx+","+ly);
                 };
                 var stop_drawing=function(evt){
@@ -95,27 +106,23 @@ function Chunk(x,y,ax,ay){
                 此处有成吨BUG需要修复
                 在处理跨chunk绘制
                 */
-                draw.mousedown(function(evt){
-                        drawing=true;
+                draw.on("mousedown",function(evt){
+                        if(evt.which!=1) return;
+                        CHUNK_DRAWING_STATUS.drawing=true;
                         start_drawing(evt);
                 });
-                draw.mouseup(function(evt){
-                        drawing=false;
+                draw.on("mouseup",function(evt){
+                        CHUNK_DRAWING_STATUS.drawing=false;
                         stop_drawing(evt);
                 });
-                draw.on("mouseenter",start_drawing);
-                draw.mouseout(start_drawing);
                 draw.mousemove(function(evt){
-                        if(!drawing) return;
-                        //~ if(lx!=undefined){
-                                //~ draw.line(lx,ly,evt.offsetX,evt.offsetY)
-                                //~ .stroke({ color:"red",width: 1 });
-                        //~ }
+                        if(!CHUNK_DRAWING_STATUS.drawing) return;
+                        if(!points_list) start_drawing(evt);//因为mouseenter事件在鼠标按下的时候不触发所以只能这样处理
                         points_list.push([evt.offsetX,evt.offsetY]);
                         chunk_path.plot(points_list).fill('none').stroke({ color:"red",width: 1 });
                         lx=evt.offsetX;
                         ly=evt.offsetY;
-                        console.log(lx,ly)
+                        //~ console.log(lx,ly)
                 });
         }).call(this);
 }
@@ -133,7 +140,7 @@ function addTextMessage(message){
 function sendTextMessage(){
         var text=$("#text_message_input").val();
         if(!text) return;
-        message={
+        var message={
                 author: getUsername(),
                 room:   getRoomname(),
                 text: text,
@@ -163,15 +170,6 @@ $(document).ready(function(){
                 chunk1=new Chunk(0,0);
                 chunk2=new Chunk(0,1);
                 chunk3=new Chunk(1,0);
-                var draw=chunk1.draw;
-                var text = draw.text('SVG.JS').move(50,0);
-                text.font({
-                        family: 'Source Sans Pro',
-                        size: 30,
-                        anchor: 'middle',
-                        leading: 1,
-                });
-                
         }).call();
 
 
