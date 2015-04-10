@@ -12,14 +12,14 @@ DrawCraft是一个在线协作画板项目
 * KaltZK <715480954@qq.com>
 
 #一些说明
-##msysgit
+**这部分是给项目成员看的**
 
 ##安装软件包
 
 * nodejs
 * python2.7
 * Sublime Text 2
-* msysgit
+* [msysgit](http://pan.baidu.com/s/1sj2rUod)
 * mongodb
 * nodejs组件见下面
 
