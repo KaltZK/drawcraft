@@ -33,7 +33,7 @@ Chunk.call(obj,x,y);
 function Chunk(x,y,ax,ay){
         //x,y是chunk在绝对坐标系内的位置，以chunk大小为单位
         //ax,ay是绝对坐标系相对于屏幕的位置，以px为单位
-        var div_ele;
+        var div_ele,draw;
         var chunk_id="chunk-"+x+"-"+y;
         ax=ax||0;//如果ax未提供则默认为0，下同
         ay=ay||0;
@@ -57,6 +57,7 @@ function Chunk(x,y,ax,ay){
         }
         //如果chunk不存在，就新建一个
         CHUNK[chunk_id]=this;
+        
         div_ele=document.createElement("div");
         document.getElementById("board").appendChild(div_ele);
         div_ele.id=chunk_id;
@@ -65,13 +66,58 @@ function Chunk(x,y,ax,ay){
         div_ele.style.height=CHUNK_HEIGHT;
         div_ele.style.left=ax+x*CHUNK_WIDTH;
         div_ele.style.top=ay+y*CHUNK_HEIGHT;
+        
+        draw=SVG(chunk_id).size("100%","100%");
         this.div=div_ele;
         this.id=chunk_id;
-        this.draw=SVG(chunk_id).size("100%","100%");
+        this.draw=draw;
         this.moveRelatively=function(dx,dy){//相对之前的位置移动，dx和dy是偏移量，单位是px
                 this.div.style.left+=dx;
                 this.div.style.top+=dy;
-        }
+        };
+        
+        (function(){//用于左键绘制SVG线条
+                var draw=this.draw;
+                var lx,ly,chunk_path,points_list;
+                var drawing=false;//跨chunk绘制时用于判断的标记
+                var start_drawing=function(evt){
+                        lx=evt.offsetX;
+                        ly=evt.offsetY;
+                        points_list=[[lx,ly]];
+                        console.log(lx,ly);
+                        chunk_path=draw.polyline(lx+","+ly);
+                };
+                var stop_drawing=function(evt){
+                        chunk_path=lx=ly=
+                        points_list=undefined;
+                };
+                /*
+                此处有成吨BUG需要修复
+                在处理跨chunk绘制
+                */
+                draw.mousedown(function(evt){
+                        drawing=true;
+                        start_drawing(evt);
+                });
+                draw.mouseup(function(evt){
+                        drawing=false;
+                        stop_drawing(evt);
+                });
+                draw.on("mouseenter",start_drawing);
+                draw.mouseout(start_drawing);
+                draw.mousemove(function(evt){
+                        if(!drawing) return;
+                        //~ if(lx!=undefined){
+                                //~ draw.line(lx,ly,evt.offsetX,evt.offsetY)
+                                //~ .stroke({ color:"red",width: 1 });
+                        //~ }
+                        points_list.push([evt.offsetX,evt.offsetY]);
+                        chunk_path.plot(points_list).fill('none').stroke({ color:"red",width: 1 });
+                        lx=evt.offsetX;
+                        ly=evt.offsetY;
+                        console.log(lx,ly)
+                });
+        }).call(this);
 }
 
 
@@ -125,11 +171,6 @@ $(document).ready(function(){
                         anchor: 'middle',
                         leading: 1,
                 });
-
-                chunk1.draw.mousemove(function(evt){
-                        console.log(evt.offsetX,evt.offsetY);
-                });
-                cpath=chunk1.draw.path("M0,0L100,100");
                 
         }).call();
 
@@ -164,12 +205,12 @@ $(document).ready(function(){
                         mouse_over=true;
                         mx=evt.clientX;
                         my=evt.clientY;
-                }
+                };
                 var stop=function(evt){
                         mouse_over=false;
                         mx=undefined;
                         my=undefined;
-                }
+                };
                 $("div.chunk").on("mousedown",start);
                 $("div.chunk").on("mouseup",stop);
                 $("div.chunk").on("mouseout",stop);
