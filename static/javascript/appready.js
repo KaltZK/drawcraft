@@ -4,11 +4,15 @@
 */
 
 
-//接下来是全局变量 用来设置的 请使用全大写命名
+//接下来是全局变量 请使用全大写命名
+//以下是用来设置的全局变量
 CHUNK_WIDTH=300;
 CHUNK_HEIGHT=300;
+CHUNK_X_MOVING_SPEED=30;
+CHUNK_Y_MOVING_SPEED=30;
 
 
+//以下是用来保存状态的全局变量
 CHUNK_DRAWING_STATUS={
         drawing:false,//跨chunk绘制时用于判断的标记
         last_chunk:{
@@ -223,14 +227,13 @@ $(document).ready(function(){
         }).call();//支持拖拽
         //键盘移动
         (function(){
-                var speed=10;
                 $(document).keydown(function(evt){
                         var dx=0,dy=0;
                         switch(evt.keyCode||evt.which){//这里是“视野移动”所以按键方向和方块移动方向相反
-                                case 87:dy=speed;break;//W
-                                case 83:dy=-speed;break;//S
-                                case 65:dx=speed;break;//A
-                                case 68:dx=-speed;break;//D
+                                case 87:dy=CHUNK_Y_MOVING_SPEED;break;//W
+                                case 83:dy=-CHUNK_Y_MOVING_SPEED;break;//S
+                                case 65:dx=CHUNK_X_MOVING_SPEED;break;//A
+                                case 68:dx=-CHUNK_X_MOVING_SPEED;break;//D
                         }
                         moveChunkDiv(dx,dy);
                 });
