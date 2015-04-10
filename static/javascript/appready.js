@@ -15,10 +15,13 @@ CHUNK_Y_MOVING_SPEED=30;
 //以下是用来保存状态的全局变量
 CHUNK_DRAWING_STATUS={
         drawing:false,//跨chunk绘制时用于判断的标记
+        points:[],
+        polylines_data:[],
         last_chunk:{
                 id:undefined,
                 last_stop:undefined,
         },
+        items:[],//一次绘制的所有图形
 }
 CHUNK={}//存有所有的chunk，以chunk_id为键，以chunk为值
 
@@ -103,30 +106,33 @@ function Chunk(x,y,ax,ay){
                         chunk_path=draw.polyline(lx+","+ly);
                 };
                 var stop_drawing=function(evt){
+                        if(chunk_path)//以防出现奇怪的脑残情况 其实这里本来应该有个判断的
+                                CHUNK_DRAWING_STATUS.polylines_data.push(chunk_path.array.value);
                         chunk_path=lx=ly=
                         points_list=undefined;
                 };
-                /*
-                此处有成吨BUG需要修复
-                在处理跨chunk绘制
-                */
                 draw.on("mousedown",function(evt){
                         if(evt.which!=1) return;
                         CHUNK_DRAWING_STATUS.drawing=true;
                         start_drawing(evt);
                 });
                 draw.on("mouseup",function(evt){
-                        CHUNK_DRAWING_STATUS.drawing=false;
                         stop_drawing(evt);
+                        CHUNK_DRAWING_STATUS.drawing=false;
+                        CHUNK_DRAWING_STATUS.items.push(CHUNK_DRAWING_STATUS.polylines_data);
+                        /*在这里可以把图形打包成对象，方便上传和加载*/
+                        CHUNK_DRAWING_STATUS.points=[];
+                        CHUNK_DRAWING_STATUS.polylines_data=[];
                 });
                 draw.mousemove(function(evt){
                         if(!CHUNK_DRAWING_STATUS.drawing) return;
                         if(!points_list) start_drawing(evt);//因为mouseenter事件在鼠标按下的时候不触发所以只能这样处理
-                        points_list.push([evt.offsetX,evt.offsetY]);
+                        var x=evt.offsetX,y=evt.offsetY;
+                        CHUNK_DRAWING_STATUS.points.push([x,y]);
+                        points_list.push([x,y]);
+                        /*在这里可以实时上传点*/
                         chunk_path.plot(points_list).fill('none').stroke({ color:"red",width: 1 });
-                        lx=evt.offsetX;
-                        ly=evt.offsetY;
-                        //~ console.log(lx,ly)
+                        
                 });
         }).call(this);
 }
