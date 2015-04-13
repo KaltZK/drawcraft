@@ -11,6 +11,8 @@ CHUNK_HEIGHT=300;
 CHUNK_X_MOVING_SPEED=30;
 CHUNK_Y_MOVING_SPEED=30;
 
+HIDDEN_AREA_WIDTH=100;//屏幕外区域，预先加载Chunks
+HIDDEN_AREA_HEIGHT=100;
 
 //以下是用来保存状态的全局变量
 CHUNK_DRAWING_STATUS={
@@ -22,9 +24,70 @@ CHUNK_DRAWING_STATUS={
                 last_stop:undefined,
         },
         items:[],//一次绘制的所有图形
-}
-CHUNK={}//存有所有的chunk，以chunk_id为键，以chunk为值
+        /*之后做成类可能会比较好*/
+        style:{
+                fill:{
+                        color:'none',
+                },
+                stroke:{
+                        color:"red",
+                        width: 1,
+                },
+        },
+};
 
+
+CHUNK={};//存有所有的chunk，以chunk_id为键，以chunk为值
+/*for(var i in CHUNK)可以取得所有chunk_id*/
+
+ABSOLUTE_POSITION={
+        //绝对坐标系相对视角坐标系的位置
+        /*
+        这里用了Setter和Getter
+        把函数封装成赋值和取值
+        看起来比较美观
+        */
+        _x:0,
+        _y:0,//默认在原点
+        get x(){return this._x;},
+        get y(){return this._y;},
+        set x(val){
+                moveChunkDiv(val-this._x,0);
+                //不知道这样会不会严重降低效率= =
+                this._x=val;
+        },
+        set y(val){
+                moveChunkDiv(0,val-this._y);
+                this._y=val;
+        },
+        get screenX(){return this.x+VIEW_POSITION.screenX;},
+        get screenY(){return this.y+VIEW_POSITION.screenY;},
+        /*不提供相对屏幕坐标的移动函数不然太麻烦了*/
+
+        //显示出来的Chunk编号范围 单位是"chunk"
+        get displayedChunksLeft(){return parseInt((VIEW_POSITION.x-(VIEW_POSITION.screenX+HIDDEN_AREA_WIDTH))/CHUNK_WIDTH-1);},
+        get displayedChunksRight(){return parseInt((VIEW_POSITION.x+(VIEW_POSITION.screenX+HIDDEN_AREA_WIDTH))/CHUNK_WIDTH);},
+        get displayedChunksTop(){return parseInt((VIEW_POSITION.y-(VIEW_POSITION.screenY+HIDDEN_AREA_HEIGHT))/CHUNK_HEIGHT-1);},
+        get displayedChunksBottom(){return parseInt((VIEW_POSITION.y+(VIEW_POSITION.screenY+HIDDEN_AREA_HEIGHT))/CHUNK_HEIGHT);},
+        displayedChunkStatus:{},//用于储存显示的CHUNK范围
+        updateChunks:function(){//判断是否应该更新 并添加和删除CHUNK
+                /*这里！未完成！*/
+        },
+        moveRelatively:function(dx,dy){//相对视角坐标系的移动
+                this._x+=dx;
+                this._y+=dy;
+                moveChunkDiv(dx,dy);
+        },
+};
+
+
+
+VIEW_POSITION={//视野(屏幕中心)相对屏幕(屏幕左上角)的坐标
+        get screenX(){return window.screen.availWidth/2;},
+        get screenY(){return window.screen.availHeight/2;},
+        get x(){return -ABSOLUTE_POSITION.x},//相对于绝对坐标系的位置
+        get y(){return -ABSOLUTE_POSITION.y},
+};
 
 //接下来的部分是类
 /*
@@ -42,17 +105,11 @@ Chunk.call(obj,x,y);
 这样的话应该能实现继承？
 */
 
-function Chunk(x,y,ax,ay){
+function Chunk(x,y){
         //x,y是chunk在绝对坐标系内的位置，以chunk大小为单位
         //ax,ay是绝对坐标系相对于屏幕的位置，以px为单位
         var div_ele,draw;
         var chunk_id="chunk-"+x+"-"+y;
-        ax=ax||0;//如果ax未提供则默认为0，下同
-        ay=ay||0;
-        /*
-        这里用到了逻辑或运算短路
-        与C不同，在JavaScript，a||b，当a的值为非(false,0,"",null,undefined等)则返回b
-        */
 
         /*
         本来想写成getChunk这种函数但还是觉得类比较方便
@@ -76,17 +133,14 @@ function Chunk(x,y,ax,ay){
         div_ele.classList.add("chunk");
         div_ele.style.width=CHUNK_WIDTH;
         div_ele.style.height=CHUNK_HEIGHT;
-        div_ele.style.left=ax+x*CHUNK_WIDTH;
-        div_ele.style.top=ay+y*CHUNK_HEIGHT;
+        div_ele.style.left=ABSOLUTE_POSITION.screenX+x*CHUNK_WIDTH;
+        div_ele.style.top=ABSOLUTE_POSITION.screenY+y*CHUNK_HEIGHT;
         
         draw=SVG(chunk_id).size("100%","100%");
+
         this.div=div_ele;
         this.id=chunk_id;
         this.draw=draw;
-        this.moveRelatively=function(dx,dy){//相对之前的位置移动，dx和dy是偏移量，单位是px
-                this.div.style.left+=dx;
-                this.div.style.top+=dy;
-        };
         
         (function(){//用于左键绘制SVG线条
                 var lx,ly,chunk_path,points_list;
@@ -131,9 +185,23 @@ function Chunk(x,y,ax,ay){
                         CHUNK_DRAWING_STATUS.points.push([x,y]);
                         points_list.push([x,y]);
                         /*在这里可以实时上传点*/
-                        chunk_path.plot(points_list).fill('none').stroke({ color:"red",width: 1 });
+                        chunk_path.plot(points_list)
+                        .fill(CHUNK_DRAWING_STATUS.style.fill)
+                        .stroke(CHUNK_DRAWING_STATUS.style.stroke);
                         
                 });
+        }).call(this);
+
+
+        (function(){//测试用
+                var text=draw.text(chunk_id);
+                text.font({
+                        family:   'Helvetica',
+                        size:     50,
+                        anchor:   'middle',
+                        leading:  1.5,
+                });
+                text.move(3,3);
         }).call(this);
 }
 
@@ -159,8 +227,23 @@ function sendTextMessage(){
         $("#text_message_input").val("");
         addTextMessage(message);
 }
-
-
+function atAllElement(css,callback){
+        var ele_list=$(css);
+        for(var i=0;i<ele_list.length;i++){
+                var ele=ele_list[i];
+                callback.call(undefined,ele);//"call"的第一个参数是"this"
+        }
+}
+function moveChunkDiv(dx,dy){
+        console.log(ABSOLUTE_POSITION.displayedChunksLeft,
+        ABSOLUTE_POSITION.displayedChunksRight,
+        ABSOLUTE_POSITION.displayedChunksTop,
+        ABSOLUTE_POSITION.displayedChunksBottom);
+        atAllElement("div.chunk",function(div){
+                div.style.left=parseInt(div.style.left||0)+dx;
+                div.style.top=parseInt(div.style.top||0)+dy;
+        });
+}
 
 
 
@@ -182,20 +265,6 @@ $(document).ready(function(){
                 chunk3=new Chunk(1,0);
         }).call();
 
-
-        var atAllElement=function(css,callback){
-                var ele_list=$(css);
-                for(var i=0;i<ele_list.length;i++){
-                        var ele=ele_list[i];
-                        callback.call(undefined,ele);//"call"的第一个参数是"this"
-                }
-        };
-        var moveChunkDiv=function(dx,dy){
-                atAllElement("div.chunk",function(div){
-                        div.style.left=parseInt(div.style.left||0)+dx;
-                        div.style.top=parseInt(div.style.top||0)+dy;
-                });
-        };//要加分号否则后面的括号会被当作调用运算符
         (function(){
                 atAllElement("div.chunk",function(div){
                         div.style.width=CHUNK_WIDTH;
@@ -226,7 +295,7 @@ $(document).ready(function(){
                 $("div.chunk").on("mousemove",function(evt){
                         if(!mouse_over) return;
                         var dx=evt.clientX-mx,dy=evt.clientY-my;
-                        moveChunkDiv(dx,dy);
+                        ABSOLUTE_POSITION.moveRelatively(dx,dy);
                         mx=evt.clientX;
                         my=evt.clientY;
                 });
@@ -240,8 +309,8 @@ $(document).ready(function(){
                                 case 83:dy=-CHUNK_Y_MOVING_SPEED;break;//S
                                 case 65:dx=CHUNK_X_MOVING_SPEED;break;//A
                                 case 68:dx=-CHUNK_X_MOVING_SPEED;break;//D
-                        }
-                        moveChunkDiv(dx,dy);
+                        };
+                        ABSOLUTE_POSITION.moveRelatively(dx,dy);
                 });
         }).call();
 

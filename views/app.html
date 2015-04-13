@@ -13,6 +13,7 @@
 
                 <script>
                         //这部分用到了ejs模板所以必须写在这里
+                        //Update:改用Cookies保存之后就不再需要了
                         function getUsername(){
                                 return $.cookie("user");
                         }
@@ -31,6 +32,7 @@
                                 height: 100%;
                                 position: absolute;
                                 z-index: 5;
+                                overflow: hidden;/*内部chunk超出时隐藏*/
                         }
                         div.chunk{
                                 position:absolute;

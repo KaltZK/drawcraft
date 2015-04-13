@@ -8,6 +8,9 @@ var app = express();
 var server=http.createServer(app);
 var io=sio.listen(server);
 
+//对数据库访问接口
+var model=require('./model');
+
 server.listen(PORT);
 
 // express config
