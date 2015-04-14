@@ -40,7 +40,7 @@ io.on("connection",function(socket){
                         text: data.user + " joined "+data.room,
                 });
         });
-        socket.on('leave_room',function(data){
+        io.on('disconneection',function(data){//这样不行
                 socket.leave(data.room);
                 socket.broadcast.to(data.room).emit("text_message",{
                         author: "System",
