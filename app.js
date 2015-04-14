@@ -46,10 +46,14 @@ io.on("connection",function(socket){
                         author: "System",
                         text: data.user + " left "+data.room,
                 });
-        }); 
+        });
         socket.emit("news",{hello: "world"});
         socket.on("text_message",function(message){
                 socket.broadcast.to(message.room).emit('text_message',message);
+        });
+
+        socket.on("metro_draw_point",function(point){
+                socket.broadcast.to(point.room).emit("draw_point");
         });
 });
 
