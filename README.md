@@ -12,6 +12,7 @@ DrawCraft是一个在线协作画板项目
 * KaltZK <715480954@qq.com>
 * xuxinang <13889402737@163.com>
 * Li Yifei <923475486@qq.com>
+* XX <380162951@qq.com>
 
 #一些说明
 **这部分是给项目成员看的**
