@@ -1,4 +1,4 @@
-#DrawCraft
+﻿#DrawCraft
 
 DrawCraft是一个在线协作画板项目
 
@@ -10,6 +10,7 @@ DrawCraft是一个在线协作画板项目
 #项目成员
 * Chelle
 * KaltZK <715480954@qq.com>
+* xuxinang <13889402737@163.com>
 
 #一些说明
 **这部分是给项目成员看的**
