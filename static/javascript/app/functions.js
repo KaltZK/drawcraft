@@ -57,3 +57,16 @@ function showPosition(x,y,chunk_id){
 function api(name,body){
         return $.post("/api?action="+name,body).responseText;
 }
+
+
+
+
+
+//这部分用到了ejs模板所以必须写在这里
+//Update:改用Cookies保存之后就不再需要了
+function getUsername(){
+        return $.cookie("user");
+}
+function getRoomname(){
+        return $.cookie("room");
+}

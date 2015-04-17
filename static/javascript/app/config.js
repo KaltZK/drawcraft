@@ -14,6 +14,9 @@ HIDDEN_AREA_WIDTH=1000;//屏幕外区域，预先加载Chunks
 HIDDEN_AREA_HEIGHT=1000;
 
 
+//不实时更新每个点以减轻服务器负担
+LIGHT_MODE=false;
+
 
 COMMANDS={//聊天框命令
         tp:function(s){

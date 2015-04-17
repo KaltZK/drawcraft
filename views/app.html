@@ -15,16 +15,6 @@
                 <script src="/javascript/app/functions.js"></script>
                 <script src="/javascript/app/ready.js"></script>
 
-                <script>
-                        //这部分用到了ejs模板所以必须写在这里
-                        //Update:改用Cookies保存之后就不再需要了
-                        function getUsername(){
-                                return $.cookie("user");
-                        }
-                        function getRoomname(){
-                                return $.cookie("room");
-                        }
-                </script>
 		<title id="page_title"></title>
                 <style type="text/css">
                         div#board{
@@ -73,30 +63,6 @@
                                 <button id="text_message_button">发送</button>
                         </div>
                 </div>
-                <script>
-                        var socket=io.connect();
-                        socket.emit('enter_room',{
-                                room: getRoomname(),
-                                user: getUsername(),
-                        });
-                        window.onunload=function(){
-                                socket.emit('leave_room',{
-                                        room: getRoomname(),
-                                        user: getUsername(),
-                                });
-                        }
-                        $("#text_message_button").on("click",sendTextMessage);
-                        $("#text_message_input").keydown(function(event){
-                                if(event.keyCode==13)//按下回车事件
-                                        sendTextMessage();
-                        });
-                        socket.on("text_message",function(message){
-                                addTextMessage(message);
-                        });
-                        $("#username").text(getUsername()+"@"+getRoomname());
-                        $("#page_title").text(getUsername()+"@"+getRoomname());
-                </script>
-                <!-- 下面这部分是用来测试拖拽和键盘控制移动的 -->
                 <div id="board">
                 </div>
 
