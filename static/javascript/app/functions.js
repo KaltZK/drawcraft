@@ -54,4 +54,6 @@ function moveChunkDiv(dx,dy){
 function showPosition(x,y,chunk_id){
         $("#position_label").text("("+x+","+y+")@"+chunk_id);
 }
-
+function api(name,body){
+        return $.post("/api?action="+name,body).responseText;
+}

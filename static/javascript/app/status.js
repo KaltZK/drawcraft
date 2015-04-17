@@ -1,23 +1,6 @@
 //以下是用来保存状态的全局变量
 CHUNK_DRAWING_STATUS={
-        drawing:false,//跨chunk绘制时用于判断的标记
-        points:[],
-        polylines_data:[],
-        last_chunk:{
-                id:undefined,
-                last_stop:undefined,
-        },
-        items:[],//一次绘制的所有图形
-        /*之后做成类可能会比较好*/
-        style:{
-                fill:{
-                        color:'none',
-                },
-                stroke:{
-                        color:"red",
-                        width: 1,
-                },
-        },
+        $self:new ChunkDrawingStatus,
 };
 
 

@@ -15,6 +15,7 @@ Chunk.call(obj,x,y);
 */
 
 function Chunk(x,y,chunkbase){
+        var self=this;
         //x,y是chunk在绝对坐标系内的位置，以chunk大小为单位
         //ax,ay是绝对坐标系相对于屏幕的位置，以px为单位
         var div_ele,draw;
@@ -89,51 +90,50 @@ function Chunk(x,y,chunkbase){
                 });
         }).call();//支持拖拽
         (function(){//用于左键绘制SVG线条
-                var lx,ly,chunk_path,points_list;
                 var start_drawing=function(evt){
                         //因为按下鼠标时不产生mouseleave事件所以只能这样
-                        if(CHUNK_DRAWING_STATUS.last_chunk.id&&
-                                CHUNK_DRAWING_STATUS.last_chunk.id!=chunk_id)
-                                CHUNK_DRAWING_STATUS.last_chunk.stop(evt);
-                        CHUNK_DRAWING_STATUS.last_chunk.id=chunk_id;
-                        CHUNK_DRAWING_STATUS.last_chunk.stop=stop_drawing;
+                        if(CHUNK_DRAWING_STATUS.$self.last_chunk.id&&
+                                CHUNK_DRAWING_STATUS.$self.last_chunk.id!=chunk_id)
+                                CHUNK_DRAWING_STATUS.$self.last_chunk.stop(evt);
+                        CHUNK_DRAWING_STATUS.$self.last_chunk={
+                                id:chunk_id,
+                                stop:stop_drawing,
+                                chunk:self,
+                        };
                         /*这里的stop_drawing……应该算是闭包吧？*/
-                        lx=evt.layerX;
-                        ly=evt.layerY;
-                        points_list=[[lx,ly]];
-                        chunk_path=draw.polyline(lx+","+ly);
+                        var lx=evt.layerX;
+                        var ly=evt.layerY;
+                        CHUNK_DRAWING_STATUS.$self.points_list=[[lx,ly]];
+                        CHUNK_DRAWING_STATUS.$self.chunk_path=draw.polyline(lx+","+ly);
                 };
                 var stop_drawing=function(evt){
-                        if(chunk_path)//以防出现奇怪的脑残情况 其实这里本来应该有个判断的
-                                CHUNK_DRAWING_STATUS.polylines_data.push(chunk_path.array.value);
-                        chunk_path=lx=ly=
-                        points_list=undefined;
+                        if(CHUNK_DRAWING_STATUS.$self.chunk_path)//以防出现奇怪的脑残情况 其实这里本来应该有个判断的
+                                CHUNK_DRAWING_STATUS.$self.polylines_data.push(CHUNK_DRAWING_STATUS.$self.chunk_path.array.value);
+                        CHUNK_DRAWING_STATUS.$self.chunk_path=
+                        CHUNK_DRAWING_STATUS.$self.points_list=undefined;
                 };
                 var add_point=function(x,y){
-                        CHUNK_DRAWING_STATUS.points.push([x,y]);
-                        points_list.push([x,y]);
-                        /*在这里可以实时上传点*/
-                        chunk_path.plot(points_list)
-                        .fill(CHUNK_DRAWING_STATUS.style.fill)
-                        .stroke(CHUNK_DRAWING_STATUS.style.stroke);
+                        CHUNK_DRAWING_STATUS.$self.add_point(x,y);
                 };
                 draw.on("mousedown",function(evt){
                         if(evt.which!=1) return;
-                        CHUNK_DRAWING_STATUS.drawing=true;
+                        CHUNK_DRAWING_STATUS.$self.drawing=true;
                         start_drawing(evt);
                 });
                 draw.on("mouseup",function(evt){
                         stop_drawing(evt);
-                        CHUNK_DRAWING_STATUS.drawing=false;
-                        CHUNK_DRAWING_STATUS.items.push(CHUNK_DRAWING_STATUS.polylines_data);
+                        CHUNK_DRAWING_STATUS.$self.drawing=false;
+                        CHUNK_DRAWING_STATUS.$self.items.push(CHUNK_DRAWING_STATUS.$self.polylines_data);
                         /*在这里可以把图形打包成对象，方便上传和加载*/
-                        CHUNK_DRAWING_STATUS.points=[];
-                        CHUNK_DRAWING_STATUS.polylines_data=[];
+                        CHUNK_DRAWING_STATUS.$self.points=[];
+                        CHUNK_DRAWING_STATUS.$self.polylines_data=[];
                 });
                 draw.mousemove(function(evt){
                         showPosition(evt.layerX,evt.layerY,chunk_id);
-                        if(!CHUNK_DRAWING_STATUS.drawing) return;
-                        if(!points_list) start_drawing(evt);//因为mouseenter事件在鼠标按下的时候不触发所以只能这样处理
+                        if(!CHUNK_DRAWING_STATUS.$self.drawing) return;
+                        if(!CHUNK_DRAWING_STATUS.$self.last_chunk.id||
+                                CHUNK_DRAWING_STATUS.$self.last_chunk.id!=chunk_id)
+                                start_drawing(evt);//因为mouseenter事件在鼠标按下的时候不触发所以只能这样处理
                         var x=evt.layerX,y=evt.layerY;
                         add_point(x,y);
                 });
@@ -165,5 +165,31 @@ function Chunk(x,y,chunkbase){
 }
 
 function ChunkDrawingStatus(){
-        
+        var self=this;
+        this.drawing=false;//跨chunk绘制时用于判断的标记
+        this.points=[];
+        this.polylines_data=[];
+        this.last_chunk={
+                id:undefined,
+                last_stop:undefined,
+        };
+        this.items=[];//一次绘制的所有图形
+        /*之后做成类可能会比较好*/
+        this.style={
+                fill:{
+                        color:'none',
+                },
+                stroke:{
+                        color:"red",
+                        width: 1,
+                },
+        };
+        this.add_point=function(x,y){
+                this.points.push([x,y]);
+                this.points_list.push([x,y]);
+                /*在这里可以实时上传点*/
+                this.chunk_path.plot(this.points_list)
+                .fill(this.style.fill)
+                .stroke(this.style.stroke);
+        };
 }
