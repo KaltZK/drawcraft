@@ -220,6 +220,7 @@ function ChunkDrawingStatus(style){
                         author:getUsername(),
                         style:CHUNK_DRAWING_STATUS.$self.style,
                         room:getRoomname(),
+                        id:getUsername()+"_"+new Date().getTime(),
                         data:this.polylines_data,
                 });
                 /*在这里可以把图形打包成对象，方便上传和加载*/
