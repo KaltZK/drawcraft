@@ -66,7 +66,8 @@ io.on("connection",function(socket){
                 socket.broadcast.to(message.room).emit('text_message',message);
         });
         
-
+        socket.on("graphic_done",function(msg){socket.broadcast.to(msg.room).emit("graphic_done",msg);});
+        
         socket.on("start_drawing",function(msg){socket.broadcast.to(msg.room).emit("start_drawing",msg);});
         socket.on("draw_point",function(msg){socket.broadcast.to(msg.room).emit("draw_point",msg);});
         socket.on("stop_drawing",function(msg){socket.broadcast.to(msg.room).emit("stop_drawing",msg);});

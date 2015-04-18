@@ -196,9 +196,13 @@ function ChunkDrawingStatus(style){
         }
         this.stop_in_chunk=function(x,y,chunk){
                 if(this.chunk_path)//以防出现奇怪的脑残情况 其实这里本来应该有个判断的
-                        this.polylines_data.push(this.chunk_path.array.value);
+                        this.polylines_data.push({
+                                chunk:{x:chunk.x,y:chunk.y},
+                                points:this.chunk_path.array.value.join(" "),
+                        });
                 this.chunk_path=
                 this.points_list=undefined;
+
                 return;
                 socket.emit("stop_drawing",{
                         x:x,y:y,
@@ -211,6 +215,13 @@ function ChunkDrawingStatus(style){
                 this.stop_in_chunk(x,y,chunk);
                 this.drawing=false;
                 this.items.push(this.polylines_data);
+                
+                socket.emit("graphic_done",{
+                        author:getUsername(),
+                        style:CHUNK_DRAWING_STATUS.$self.style,
+                        room:getRoomname(),
+                        data:this.polylines_data,
+                });
                 /*在这里可以把图形打包成对象，方便上传和加载*/
                 this.points=[];
                 this.polylines_data=[];

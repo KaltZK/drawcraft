@@ -21,31 +21,16 @@ $(document).ready(function(){
                 });
         }).call();
         (function(){
-                socket.on("start_drawing",function(msg){
-                        var chunk=CHUNK[getChunkId(msg.chunk.x,msg.chunk.y)];
-                        if(!chunk) return;
-                        var cds=CHUNK_DRAWING_STATUS[msg.username] ||
-                                (CHUNK_DRAWING_STATUS[msg.username]=new ChunkDrawingStatus());
-                        cds.start(msg.x,msg.y,chunk);
+                socket.on("graphic_done",function(msg){
+                        var cds=CHUNK_DRAWING_STATUS[msg.author] ||
+                                (CHUNK_DRAWING_STATUS[msg.author]=new ChunkDrawingStatus());
+                        msg.data.forEach(function(gra){
+                                var chunk=CHUNK[getChunkId(gra.chunk.x,gra.chunk.y)];
+                                if(!chunk) return;
+                                var path=chunk.draw.polyline();
+                                path.plot(gra.points).fill(msg.style.fill).stroke(msg.style.stroke);
+                        });
                         
-                });
-                socket.on("draw_point",function(msg){
-                        var chunk=CHUNK[getChunkId(msg.chunk.x,msg.chunk.y)];
-                        if(!chunk) return;
-                        var cds=CHUNK_DRAWING_STATUS[msg.username] ||
-                                (CHUNK_DRAWING_STATUS[msg.username]=new ChunkDrawingStatus());
-                        if(!cds.drawing) return;
-                        if(!cds.last_chunk.id||
-                                cds.last_chunk.id!=getChunkId(msg.chunk.x,msg.chunk.y))
-                                cds.start_in_chunk(msg.x,msg.y,chunk);//因为mouseenter事件在鼠标按下的时候不触发所以只能这样处理
-                        cds.add_point(msg.x,msg.y,chunk);
-                });
-                socket.on("stop_drawing",function(msg){
-                        var chunk=CHUNK[getChunkId(msg.chunk.x,msg.chunk.y)];
-                        if(!chunk) return;
-                        var cds=CHUNK_DRAWING_STATUS[msg.username] ||
-                                (CHUNK_DRAWING_STATUS[msg.username]=new ChunkDrawingStatus());
-                        cds.stop(msg.x,msg.y,chunk);
                 });
         }).call();
         
