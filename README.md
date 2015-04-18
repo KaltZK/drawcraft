@@ -32,7 +32,7 @@ DrawCraft是一个在线协作画板项目
 
 在cmd里输入
 ```
-npm install express socket.io url ejs
+npm install express socket.io url ejs body-parser
 ```
 就可以了
 
