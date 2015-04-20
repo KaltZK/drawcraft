@@ -24,14 +24,8 @@ $(document).ready(function(){
                 socket.on("graphic_done",function(msg){
                         var cds=CHUNK_DRAWING_STATUS[msg.head.author] ||
                                 (CHUNK_DRAWING_STATUS[msg.head.author]=new ChunkDrawingStatus());
-                        GRAPHICS[msg.head.id]=msg.head;
-                        msg.body.forEach(function(gra){
-                                var chunk=CHUNK[getChunkId(gra.chunk.x,gra.chunk.y)];
-                                if(!chunk) return;
-                                var path=chunk.draw.polyline();
-                                path.plot(gra.points).fill(msg.head.style.fill).stroke(msg.head.style.stroke);
-                        });
-                        
+                        var gra=new Graphic(msg.head);
+                        gra.extendBodies(msg.body);
                 });
         }).call();
         

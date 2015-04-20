@@ -53,6 +53,7 @@ function Chunk(x,y,chunkbase){
         this.div=div_ele;
         this.id=chunk_id;
         this.draw=draw;
+        this.graphic_body_list=[];
         /*下面这个不能用*/
         this.resizeByProportion=function(pro){//按照比例缩放
                 if(pro==0) throw Error('"pro" can not be 0.');
@@ -116,10 +117,25 @@ function Chunk(x,y,chunkbase){
         }).call(this);
         this.remove=function(){
                 //$("div#"+chunk_id).remove();
+                this.graphic_body_list.forEach(function(body){
+                        var gra=GRAPHICS[body.id];
+                        if(gra)
+                                gra.remove(body);
+                });
                 $(div_ele).remove();
                 delete CHUNK[this.id];
         };
 
+        this.addGraphicBody=function(gb){
+                var body=new GraphicBody(gb,this);
+                var gra=GRAPHICS[body.id];
+                this.graphic_body_list.push(body);
+                gra.add(body);
+                body.path.plot(body.points).fill(gra.style.fill).stroke(gra.style.stroke);
+                this.graphic_body_list.push(body);
+                return body;
+        };
+        
         return;
         (function(){//测试用
                 var text=draw.text(chunk_id);
@@ -194,6 +210,7 @@ function ChunkDrawingStatus(style){
                 };
         }
         this.start=function(x,y,chunk){
+                this.gb_index=0;
                 this.id="graphic_"+[getUsername(),new Date().getTime(),getRoomname()].join("_");
                 this.start_in_chunk(x,y,chunk);
                 this.drawing=true;
@@ -202,6 +219,7 @@ function ChunkDrawingStatus(style){
                 if(this.chunk_path)//以防出现奇怪的脑残情况 其实这里本来应该有个判断的
                         this.polylines_data.push({
                                 id:this.id,
+                                index:this.gb_index,
                                 chunk:{x:chunk.x,y:chunk.y},
                                 points:this.chunk_path.array.value.join(" "),
                         });
@@ -218,7 +236,7 @@ function ChunkDrawingStatus(style){
                         style:CHUNK_DRAWING_STATUS.$self.style,
                         room:getRoomname(),
                 };
-                GRAPHICS[head.id]=head;
+                new Graphic(head);
                 socket.emit("graphic_done",{
                         head:head,
                         body:this.polylines_data,
@@ -227,4 +245,49 @@ function ChunkDrawingStatus(style){
                 this.points=[];
                 this.polylines_data=[];
         }
+}
+
+function Graphic(head){
+        GRAPHICS[head.id]=this;
+        var self=this;
+        this.head=head;
+        ["id","author","style","room"].forEach(function(symbol){
+                self.__defineGetter__(symbol,function(){
+                        return self.head[symbol];
+                })
+                self.__defineSetter__(symbol,function(val){
+                        self.head[symbol]=val;
+                })
+        });
+        this.counter=0;
+        this.bodies={};
+        this.add=function(body,chunk){
+                this.bodies[body.index]=body;
+                this.counter++;
+        };
+        this.remove=function(body,chunk){
+                delete this.bodies[body.index];
+                if(!(--this.counter))
+                        delete GRAPHICS[this.id];
+        };
+        this.extendBodies=function(body_list){
+                body_list.forEach(function(body){
+                        var chunk=CHUNK[getChunkId(body.chunk.x,body.chunk.y)];
+                        if(!chunk) return;
+                        self.bodies[body.index]=chunk.addGraphicBody(body);
+                });
+        };
+}
+function GraphicBody(body,chunk){
+        var self=this;
+        this.body=body;
+        ["id","chunk","index","points"].forEach(function(symbol){
+                self.__defineGetter__(symbol,function(){
+                        return body[symbol];
+                })
+                self.__defineSetter__(symbol,function(val){
+                        body[symbol]=val;
+                })
+        });
+        this.path=chunk.draw.polyline();
 }
