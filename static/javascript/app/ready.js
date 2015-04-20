@@ -22,13 +22,14 @@ $(document).ready(function(){
         }).call();
         (function(){
                 socket.on("graphic_done",function(msg){
-                        var cds=CHUNK_DRAWING_STATUS[msg.author] ||
-                                (CHUNK_DRAWING_STATUS[msg.author]=new ChunkDrawingStatus());
-                        msg.data.forEach(function(gra){
+                        var cds=CHUNK_DRAWING_STATUS[msg.head.author] ||
+                                (CHUNK_DRAWING_STATUS[msg.head.author]=new ChunkDrawingStatus());
+                        GRAPHICS[msg.head.id]=msg.head;
+                        msg.body.forEach(function(gra){
                                 var chunk=CHUNK[getChunkId(gra.chunk.x,gra.chunk.y)];
                                 if(!chunk) return;
                                 var path=chunk.draw.polyline();
-                                path.plot(gra.points).fill(msg.style.fill).stroke(msg.style.stroke);
+                                path.plot(gra.points).fill(msg.head.style.fill).stroke(msg.head.style.stroke);
                         });
                         
                 });

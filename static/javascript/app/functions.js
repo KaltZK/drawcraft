@@ -67,6 +67,12 @@ function api(name,body){
 function getUsername(){
         return PAGE_INFO.username;
 }
+function getXShiftedBetweenChunks(x,from_chunk,to_chunk){
+        return x-(to_chunk.x-from_chunk.x)*CHUNK_WIDTH;
+}
+function getYShiftedBetweenChunks(y,from_chunk,to_chunk){
+        return y-(to_chunk.y-from_chunk.y)*CHUNK_HEIGHT;
+}
 function getRoomname(){
         return PAGE_INFO.room;
 }

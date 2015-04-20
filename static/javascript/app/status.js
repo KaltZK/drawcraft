@@ -2,6 +2,7 @@
 CHUNK_DRAWING_STATUS={
         $self:new ChunkDrawingStatus,
 };
+GRAPHICS={};
 
 PAGE_INFO={
         username: $.cookie("user"),

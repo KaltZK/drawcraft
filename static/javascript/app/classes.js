@@ -120,7 +120,7 @@ function Chunk(x,y,chunkbase){
                 delete CHUNK[this.id];
         };
 
-
+        return;
         (function(){//测试用
                 var text=draw.text(chunk_id);
                 text.font({
@@ -162,66 +162,66 @@ function ChunkDrawingStatus(style){
                 this.chunk_path.plot(this.points_list)
                 .fill(this.style.fill)
                 .stroke(this.style.stroke);
-                return;
-                socket.emit("draw_point",{
-                        x:x,y:y,
-                        chunk:{x:chunk.x,y:chunk.y,},
-                        room:getRoomname(),
-                        username:getUsername(),
-                });
+                this.last_chunk.x=x;
+                this.last_chunk.y=y;
         };
         this.start_in_chunk=function(x,y,chunk){
                 //因为按下鼠标时不产生mouseleave事件所以只能这样
-                if(this.last_chunk&&this.last_chunk.id&&
-                        this.last_chunk.id!=chunk.id)
+                if(this.drawing&&this.last_chunk&&this.last_chunk.id&&
+                        this.last_chunk.id!=chunk.id){
+                        var points_list=[[
+                                getXShiftedBetweenChunks(this.last_chunk.x,this.last_chunk.chunk,chunk),
+                                getYShiftedBetweenChunks(this.last_chunk.y,this.last_chunk.chunk,chunk)
+                                ],[x,y]];
+                        var chunk_path=chunk.draw.polyline(points_list.join(" "));
+                        this.add_point(
+                                getXShiftedBetweenChunks(x,chunk,this.last_chunk.chunk),
+                                getYShiftedBetweenChunks(y,chunk,this.last_chunk.chunk),
+                                this.last_chunk.chunk
+                        );
                         this.stop_in_chunk(x,y,this.last_chunk.chunk);
+                        this.chunk_path=chunk_path;
+                        this.points_list=points_list;
+                }
+                else{
+                        this.points_list=[[x,y]];
+                        this.chunk_path=chunk.draw.polyline(x+","+y);
+                }
                 this.last_chunk={
+                        x:x,y:y,
                         id:chunk.id,
                         chunk:chunk,
                 };
-                /*这里的stop_drawing……应该算是闭包吧？*/
-                this.points_list=[[x,y]];
-                this.chunk_path=chunk.draw.polyline(x+","+y);
-                return;
-                socket.emit("start_drawing",{
-                        x:x,y:y,
-                        chunk:{x:chunk.x,y:chunk.y,},
-                        room:getRoomname(),
-                        username:getUsername(),
-                });
         }
         this.start=function(x,y,chunk){
-                CHUNK_DRAWING_STATUS.$self.drawing=true;
+                this.id="graphic_"+[getUsername(),new Date().getTime(),getRoomname()].join("_");
                 this.start_in_chunk(x,y,chunk);
+                this.drawing=true;
         }
         this.stop_in_chunk=function(x,y,chunk){
                 if(this.chunk_path)//以防出现奇怪的脑残情况 其实这里本来应该有个判断的
                         this.polylines_data.push({
+                                id:this.id,
                                 chunk:{x:chunk.x,y:chunk.y},
                                 points:this.chunk_path.array.value.join(" "),
                         });
                 this.chunk_path=
                 this.points_list=undefined;
-
-                return;
-                socket.emit("stop_drawing",{
-                        x:x,y:y,
-                        chunk:{x:chunk.x,y:chunk.y,},
-                        room:getRoomname(),
-                        username:getUsername(),
-                });
         }
         this.stop=function(x,y,chunk){
                 this.stop_in_chunk(x,y,chunk);
                 this.drawing=false;
                 this.items.push(this.polylines_data);
-                
-                socket.emit("graphic_done",{
+                var head={
+                        id:this.id,
                         author:getUsername(),
                         style:CHUNK_DRAWING_STATUS.$self.style,
                         room:getRoomname(),
-                        id:getUsername()+"_"+new Date().getTime(),
-                        data:this.polylines_data,
+                };
+                GRAPHICS[head.id]=head;
+                socket.emit("graphic_done",{
+                        head:head,
+                        body:this.polylines_data,
                 });
                 /*在这里可以把图形打包成对象，方便上传和加载*/
                 this.points=[];
