@@ -76,10 +76,10 @@ function Chunk(x,y,chunkbase){
 
         //键盘移动
         $(div_ele).on("mouseover",function(evt){
-                CHUNK_DRAWING_STATUS.$self.chunk_on_focus=true;
+                SELF_DRAWING_STATUS.chunk_on_focus=true;
         });
         $(div_ele).on("mouseleave",function(evt){
-                CHUNK_DRAWING_STATUS.$self.chunk_on_focus=false;
+                SELF_DRAWING_STATUS.chunk_on_focus=false;
         });
 
         
@@ -112,19 +112,19 @@ function Chunk(x,y,chunkbase){
         (function(){//用于左键绘制SVG线条
                 draw.on("mousedown",function(evt){
                         if(evt.which!=1) return;
-                        CHUNK_DRAWING_STATUS.$self.start(self.getEvtX(evt),self.getEvtY(evt),self);
+                        SELF_DRAWING_STATUS.start(self.getEvtX(evt),self.getEvtY(evt),self);
                 });
                 draw.on("mouseup",function(evt){
-                        CHUNK_DRAWING_STATUS.$self.stop(self.getEvtX(evt),self.getEvtY(evt),self);
+                        SELF_DRAWING_STATUS.stop(self.getEvtX(evt),self.getEvtY(evt),self);
                 });
                 draw.mousemove(function(evt){
                         showPosition(self.getEvtX(evt),self.getEvtY(evt),chunk_id);
-                        if(!CHUNK_DRAWING_STATUS.$self.drawing) return;
+                        if(!SELF_DRAWING_STATUS.drawing) return;
                         var x=self.getEvtX(evt),y=self.getEvtY(evt);
-                        if(!CHUNK_DRAWING_STATUS.$self.last_chunk.id||
-                                CHUNK_DRAWING_STATUS.$self.last_chunk.id!=chunk_id)
-                                CHUNK_DRAWING_STATUS.$self.start_in_chunk(x,y,self);//因为mouseenter事件在鼠标按下的时候不触发所以只能这样处理
-                        CHUNK_DRAWING_STATUS.$self.add_point(x,y,self);
+                        if(!SELF_DRAWING_STATUS.last_chunk.id||
+                                SELF_DRAWING_STATUS.last_chunk.id!=chunk_id)
+                                SELF_DRAWING_STATUS.start_in_chunk(x,y,self);//因为mouseenter事件在鼠标按下的时候不触发所以只能这样处理
+                        SELF_DRAWING_STATUS.add_point(x,y,self);
                 });
                 atAllElement(div_ele,function(div){
                         div.style.width=CHUNK_WIDTH;
@@ -252,7 +252,7 @@ function ChunkDrawingStatus(style){
                 var head={
                         id:this.id,
                         author:getUsername(),
-                        style:CHUNK_DRAWING_STATUS.$self.style,
+                        style:SELF_DRAWING_STATUS.style,
                         room:getRoomname(),
                 };
                 new Graphic(head);

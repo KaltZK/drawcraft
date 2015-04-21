@@ -60,7 +60,7 @@ $(document).ready(function(){
         //键盘移动
         (function(){
                 $(document).keydown(function(evt){
-                        if(!CHUNK_DRAWING_STATUS.$self.chunk_on_focus) return;
+                        if(!SELF_DRAWING_STATUS.chunk_on_focus) return;
                         var dx=0,dy=0;
                         switch(evt.keyCode||evt.which){//这里是“视野移动”所以按键方向和方块移动方向相反
                                 case 87:dy=CHUNK_Y_MOVING_SPEED;break;//W

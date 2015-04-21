@@ -1,7 +1,7 @@
 //以下是用来保存状态的全局变量
-CHUNK_DRAWING_STATUS={
-        $self:new ChunkDrawingStatus,
-};
+
+SELF_DRAWING_STATUS=new ChunkDrawingStatus;
+
 GRAPHICS={};
 
 PAGE_INFO={
