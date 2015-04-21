@@ -76,3 +76,9 @@ function getYShiftedBetweenChunks(y,from_chunk,to_chunk){
 function getRoomname(){
         return PAGE_INFO.room;
 }
+function getX(evt,chunk){
+        return evt.clientX-(parseInt(chunk.div.style.left)||0);
+}
+function getY(evt,chunk){
+        return evt.clientY-(parseInt(chunk.div.style.top)||0);
+}

@@ -93,15 +93,15 @@ function Chunk(x,y,chunkbase){
         (function(){//用于左键绘制SVG线条
                 draw.on("mousedown",function(evt){
                         if(evt.which!=1) return;
-                        CHUNK_DRAWING_STATUS.$self.start(evt.layerX,evt.layerY,self);
+                        CHUNK_DRAWING_STATUS.$self.start(getX(evt,self),getY(evt,self),self);
                 });
                 draw.on("mouseup",function(evt){
-                        CHUNK_DRAWING_STATUS.$self.stop(evt.layerX,evt.layerY,self);
+                        CHUNK_DRAWING_STATUS.$self.stop(getX(evt,self),getY(evt,self),self);
                 });
                 draw.mousemove(function(evt){
-                        showPosition(evt.layerX,evt.layerY,chunk_id);
+                        showPosition(getX(evt,self),getY(evt,self),chunk_id);
                         if(!CHUNK_DRAWING_STATUS.$self.drawing) return;
-                        var x=evt.layerX,y=evt.layerY;
+                        var x=getX(evt,self),y=getY(evt,self);
                         if(!CHUNK_DRAWING_STATUS.$self.last_chunk.id||
                                 CHUNK_DRAWING_STATUS.$self.last_chunk.id!=chunk_id)
                                 CHUNK_DRAWING_STATUS.$self.start_in_chunk(x,y,self);//因为mouseenter事件在鼠标按下的时候不触发所以只能这样处理
