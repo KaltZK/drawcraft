@@ -1,4 +1,4 @@
-var PORT=8000;
+var PORT=process.env.DC_PORT||8000;
 
 var sio = require('socket.io');
 var express = require('express');
@@ -16,7 +16,7 @@ server.listen(PORT);
 
 // express config
 (function(){
-        app.set('port',process.env.DC_PORT||PORT);
+        app.set('port',PORT);
         app.set('views',__dirname+'/views');
         app.engine('.html', require('ejs').__express);
         app.set('view engine', 'html');//使ejs可以渲染HTML扩展名的文件，否则高亮很蛋疼
