@@ -64,6 +64,15 @@ function Chunk(x,y,chunkbase){
                         if(i.move) i.move(i.x()*pro,i.y()*pro);
                 });
         };
+
+        this.getEvtX=function(evt){
+                return evt.clientX-(parseInt(div_ele.style.left)||0);
+        };
+        this.getEvtY=function(evt){
+                return evt.clientY-(parseInt(div_ele.style.top)||0);
+        };
+
+        
         (function(){
                 var mouse_over=false;
                 var mx=undefined,my=undefined;
@@ -93,15 +102,15 @@ function Chunk(x,y,chunkbase){
         (function(){//用于左键绘制SVG线条
                 draw.on("mousedown",function(evt){
                         if(evt.which!=1) return;
-                        CHUNK_DRAWING_STATUS.$self.start(getX(evt,self),getY(evt,self),self);
+                        CHUNK_DRAWING_STATUS.$self.start(self.getEvtX(evt),self.getEvtY(evt),self);
                 });
                 draw.on("mouseup",function(evt){
-                        CHUNK_DRAWING_STATUS.$self.stop(getX(evt,self),getY(evt,self),self);
+                        CHUNK_DRAWING_STATUS.$self.stop(self.getEvtX(evt),self.getEvtY(evt),self);
                 });
                 draw.mousemove(function(evt){
-                        showPosition(getX(evt,self),getY(evt,self),chunk_id);
+                        showPosition(self.getEvtX(evt),self.getEvtY(evt),chunk_id);
                         if(!CHUNK_DRAWING_STATUS.$self.drawing) return;
-                        var x=getX(evt,self),y=getY(evt,self);
+                        var x=self.getEvtX(evt),y=self.getEvtY(evt);
                         if(!CHUNK_DRAWING_STATUS.$self.last_chunk.id||
                                 CHUNK_DRAWING_STATUS.$self.last_chunk.id!=chunk_id)
                                 CHUNK_DRAWING_STATUS.$self.start_in_chunk(x,y,self);//因为mouseenter事件在鼠标按下的时候不触发所以只能这样处理
