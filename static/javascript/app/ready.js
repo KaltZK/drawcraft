@@ -22,8 +22,11 @@ $(document).ready(function(){
         }).call();
         (function(){
                 socket.on("graphic_done",function(msg){
+                        /*
+                        //这部分是为了实时绘制做出来的，后来不用了，但姑且留着
                         var cds=CHUNK_DRAWING_STATUS[msg.head.author] ||
                                 (CHUNK_DRAWING_STATUS[msg.head.author]=new ChunkDrawingStatus());
+                        */
                         var gra=new Graphic(msg.head);
                         gra.extendBodies(msg.body);
                 });
@@ -57,6 +60,7 @@ $(document).ready(function(){
         //键盘移动
         (function(){
                 $(document).keydown(function(evt){
+                        if(!CHUNK_DRAWING_STATUS.$self.chunk_on_focus) return;
                         var dx=0,dy=0;
                         switch(evt.keyCode||evt.which){//这里是“视野移动”所以按键方向和方块移动方向相反
                                 case 87:dy=CHUNK_Y_MOVING_SPEED;break;//W

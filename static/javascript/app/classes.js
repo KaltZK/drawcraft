@@ -72,6 +72,16 @@ function Chunk(x,y,chunkbase){
                 return evt.clientY-(parseInt(div_ele.style.top)||0);
         };
 
+
+
+        //键盘移动
+        $(div_ele).on("mouseover",function(evt){
+                CHUNK_DRAWING_STATUS.$self.chunk_on_focus=true;
+        });
+        $(div_ele).on("mouseleave",function(evt){
+                CHUNK_DRAWING_STATUS.$self.chunk_on_focus=false;
+        });
+
         
         (function(){
                 var mouse_over=false;
