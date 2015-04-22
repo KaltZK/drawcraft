@@ -1,29 +1,17 @@
 <html>
 	<head>
 		<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<!--
+                <script src="http://cdn.bootcss.com/require.js/2.1.17/require.js"></script>
+-->
                 <script src="/socket.io.js"></script>
                 <script src="/jquery.min.js"></script>
 		<script src="/jquery-cookie/jquery.cookie.js"></script>
+                <script src="/js/indexready.js"></script>
 		<style type="text/css">
 		</style>
 		<title>DrawCraft</title>
                 <script>
-                        $(document).ready(function(){
-                                (function(){
-                                        var user=$.cookie("user");
-                                        var room=$.cookie("room");
-                                        if(user) $("#user_input").val(user);
-                                        if(room) $("#room_input").val(room);
-                                }).call();
-                        });
-                        function enterRoom(){
-                                var user=$("#user_input").val();
-                                var room=$("#room_input").val();
-                                if(!user||!room) return;
-                                $.cookie("user",user);
-                                $.cookie("room",room);
-                                window.location.href="/app?room="+room;
-                        }
                 </script>
 	</head>
 	<body>
@@ -35,12 +23,7 @@
                 <button id="enter_button">进入</button>
                 
                 <script>
-                        $("#room_input").val("Lobby");
-                        $(document).keydown(function(event){
-                                if(event.keyCode==13)//按下回车事件
-                                        enterRoom();
-                        });
-                        $("#enter_button").on("click",enterRoom);
+
                 </script>
 	</body>
 </html>
