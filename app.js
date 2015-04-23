@@ -53,9 +53,8 @@ io.on("connection",function(socket){
                         text: data.user + " joined "+data.room,
                 });
         });
-        socket.on('disconneect',function(data){//这样不行
-                console.log("LEAVE");
-                socket.leave(data.room);
+        socket.on('enter_room',function(data){
+                socket.join(data.room);
                 socket.broadcast.to(data.room).emit("text_message",{
                         author: "System",
                         text: data.user + " left "+data.room,
@@ -63,6 +62,7 @@ io.on("connection",function(socket){
         });
         socket.emit("news",{hello: "world"});
         socket.on("text_message",function(message){
+                console.log(message);
                 socket.broadcast.to(message.room).emit('text_message',message);
         });
         
@@ -72,7 +72,7 @@ io.on("connection",function(socket){
         socket.on("draw_point",function(msg){socket.broadcast.to(msg.room).emit("draw_point",msg);});
         socket.on("stop_drawing",function(msg){socket.broadcast.to(msg.room).emit("stop_drawing",msg);});
 });
-
+io.on("disconnect",function(ssocket){console.log(233);});
 
 console.log("Running...");
 console.log("PORT:",PORT);
