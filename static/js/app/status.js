@@ -4,10 +4,6 @@ SELF_DRAWING_STATUS=new ChunkDrawingStatus;
 
 GRAPHICS={};
 
-PAGE_INFO={
-        username: $.cookie("user"),
-        room:$.cookie("room"),
-};
 
 CHUNK={};//存有所有的chunk，以chunk_id为键，以chunk为值
 /*for(var i in CHUNK)可以取得所有chunk_id*/

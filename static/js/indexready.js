@@ -17,6 +17,5 @@ function enterRoom(){
         var room=$("#room_input").val();
         if(!user||!room) return;
         $.cookie("user",user);
-        $.cookie("room",room);
         window.location.href="/app?room="+room;
 }

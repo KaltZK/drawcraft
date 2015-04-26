@@ -59,13 +59,22 @@ function api(name,body){
 }
 
 
+function getQuery(){
+        var url=location.href;
+        var query={};
+        url.match(/\?(.+?)$/)[1].split("&").forEach(function(param){
+                var item=param.split("=");
+                query[item[0]]=item[1];
+        });
+        return query;
+}
 
 
 
 //这部分用到了ejs模板所以必须写在这里
 //Update:改用Cookies保存之后就不再需要了
 function getUsername(){
-        return PAGE_INFO.username;
+        return $.cookie("user");
 }
 function getXShiftedBetweenChunks(x,from_chunk,to_chunk){
         return x-(to_chunk.x-from_chunk.x)*CHUNK_WIDTH;
@@ -74,5 +83,5 @@ function getYShiftedBetweenChunks(y,from_chunk,to_chunk){
         return y-(to_chunk.y-from_chunk.y)*CHUNK_HEIGHT;
 }
 function getRoomname(){
-        return PAGE_INFO.room;
+        return getQuery()["room"];
 }
