@@ -8,13 +8,13 @@ div#board{
         position: absolute;
         z-index: 5;
         overflow: hidden;/*内部chunk超出时隐藏*/
+        background:#C3BED4;
 }
 div.chunk{
         position:absolute;
         border-style: solid; border-width: 1px;
         /*先加上边框方便看*/
         /*CSS不能使用//注释*/
-        background:#C3BED4;
 }
 div#chat{
         position: absolute;
