@@ -12,4 +12,8 @@ db.open(function(err,db){
         test.find({x:1,y:2}).forEach(function(doc){
                 console.log(doc);
         });
+        
+        exports.storeGraphic=function(msg){
+                console.log(msg);
+        };
 });

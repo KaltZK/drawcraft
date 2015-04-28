@@ -22,6 +22,8 @@ function Chunk(x,y,chunkbase){
         var chunkbase=chunkbase||CHUNK;
         var chunk_id=getChunkId(x,y);
 
+        socket.emit("load_chunk",{x:x,y:y});
+
         /*
         本来想写成getChunk这种函数但还是觉得类比较方便
         这么一想这个判断不是一点意义都没有吗?!
@@ -97,10 +99,11 @@ function Chunk(x,y,chunkbase){
                         mx=undefined;
                         my=undefined;
                 };
-                var move=function(evt){
+                var move=function(evt,touch){
                         if(!mouse_over) return;
                         var dx=parseInt(evt.clientX-mx),dy=parseInt(evt.clientY-my);
                         ABSOLUTE_POSITION.moveRelatively(dx,dy);
+                        if(touch) showPosition(VIEW_POSITION.x,VIEW_POSITION.y,"AbsPos");
                         mx=evt.clientX;
                         my=evt.clientY;
                 };
@@ -111,7 +114,7 @@ function Chunk(x,y,chunkbase){
                 });
                 $(div_ele).on("touchmove",function(evt){
                         if(evt.touches.length==1){
-                                move(evt.touches[0]);
+                                move(evt.touches[0],true);
                         }
                 });
                 $(div_ele).on("touchend",function(evt){

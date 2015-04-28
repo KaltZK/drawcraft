@@ -30,8 +30,33 @@ $(document).ready(function(){
                         var gra=new Graphic(msg.head);
                         gra.extendBodies(msg.body);
                 });
+                
+                socket.on("load_chunk",function(chunk_data){
+                        var chunk=getChunk(chunk_data.x,chunk_data.y);
+                        chunk_data.graphics.forEach(function(gra){
+                                /*
+                                        gra:
+                                                head:
+                                                        id
+                                                        author
+                                                        style
+                                                        room
+                                                bodies=body*n:
+                                                        id
+                                                        index
+                                                        chunk:
+                                                                x
+                                                                y
+                                                        points
+                                */
+                                var gra=new Graphic(gra.head);
+                                gra.extendBodies(gra.bodies);
+                        });
+                });
+                
         }).call();
-        
+
+
         (function(){
                 window.onunload=function(){
                         socket.emit('leave_room',{
@@ -54,11 +79,6 @@ $(document).ready(function(){
                         alert("svg.js is not supported.");
                 }
         }).call();//检测svg.js是否可用
-
-
-        socket.on("load_chunk",function(chunk_data){
-                
-        });
 
 
         //键盘移动

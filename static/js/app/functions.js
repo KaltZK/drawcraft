@@ -69,7 +69,9 @@ function getQuery(){
         return query;
 }
 
-
+function getChunk(x,y){
+        return CHUNK[getChunkId(x,y)];
+}
 
 //这部分用到了ejs模板所以必须写在这里
 //Update:改用Cookies保存之后就不再需要了

@@ -75,8 +75,13 @@ io.on("connection",function(socket){
                 console.log(message);
                 socket.broadcast.to(message.room).emit('text_message',message);
         });
+
+        socket.on("load_chunk",function(chunk){
+                console.log(chunk.x,chunk.y);
+        });
         
         socket.on("graphic_done",function(msg){
+                model.storeGraphic(msg);
                 socket.broadcast.to(msg.head.room).emit("graphic_done",msg);
         });
         
