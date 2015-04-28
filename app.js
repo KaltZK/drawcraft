@@ -5,6 +5,9 @@ var express = require('express');
 var url=require('url');
 var http=require('http');
 var bodyParser=require("body-parser");
+var crypto=require("crypto");
+
+var sha1=crypto.createHmac('sha1', "fkhso9GFIEgfogYG*G*^YG*Etg9ga9fhno9ugu989");
 var app = express();
 var server=http.createServer(app);
 var io=sio.listen(server);
@@ -13,6 +16,14 @@ var io=sio.listen(server);
 var model=require('./model');
 
 server.listen(PORT);
+
+
+function hashString(str){
+        return sha1.update(str).digest().toString('base64');
+}
+
+
+
 
 // express config
 (function(){
@@ -45,7 +56,6 @@ var apis={
 };
 
 io.on("connection",function(socket){
-        socket.join("");
         socket.on('enter_room',function(data){
                 socket.join(data.room);
                 socket.broadcast.to(data.room).emit("text_message",{
@@ -66,11 +76,10 @@ io.on("connection",function(socket){
                 socket.broadcast.to(message.room).emit('text_message',message);
         });
         
-        socket.on("graphic_done",function(msg){socket.broadcast.to(msg.head.room).emit("graphic_done",msg);});
+        socket.on("graphic_done",function(msg){
+                socket.broadcast.to(msg.head.room).emit("graphic_done",msg);
+        });
         
-        socket.on("start_drawing",function(msg){socket.broadcast.to(msg.room).emit("start_drawing",msg);});
-        socket.on("draw_point",function(msg){socket.broadcast.to(msg.room).emit("draw_point",msg);});
-        socket.on("stop_drawing",function(msg){socket.broadcast.to(msg.room).emit("stop_drawing",msg);});
 });
 io.on("disconnect",function(ssocket){console.log(233);});
 

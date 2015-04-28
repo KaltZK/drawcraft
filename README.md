@@ -38,6 +38,6 @@ npm install express socket.io url ejs body-parser
 
 使用npm安装mongodb客户端
 ```
-npm install bson mongo
+npm install bson mongodb
 ```
 [MongoDB官网](http://www.mongodb.org/)

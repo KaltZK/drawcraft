@@ -85,3 +85,7 @@ function getYShiftedBetweenChunks(y,from_chunk,to_chunk){
 function getRoomname(){
         return getQuery()["room"];
 }
+
+function showMessage(message){
+        alert(message);
+}

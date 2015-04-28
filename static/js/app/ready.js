@@ -56,6 +56,10 @@ $(document).ready(function(){
         }).call();//检测svg.js是否可用
 
 
+        socket.on("load_chunk",function(chunk_data){
+                
+        });
+
 
         //键盘移动
         (function(){

@@ -86,8 +86,8 @@ function Chunk(x,y,chunkbase){
         (function(){
                 var mouse_over=false;
                 var mx=undefined,my=undefined;
-                var start=function(evt){
-                        if(evt.which!=3||mouse_over) return;
+                var start=function(evt,touch){
+                        if(!touch&&(evt.which!=3||mouse_over)) return;
                         mouse_over=true;
                         mx=evt.clientX;
                         my=evt.clientY;
@@ -97,17 +97,33 @@ function Chunk(x,y,chunkbase){
                         mx=undefined;
                         my=undefined;
                 };
+                var move=function(evt){
+                        if(!mouse_over) return;
+                        var dx=parseInt(evt.clientX-mx),dy=parseInt(evt.clientY-my);
+                        ABSOLUTE_POSITION.moveRelatively(dx,dy);
+                        mx=evt.clientX;
+                        my=evt.clientY;
+                };
+                $(div_ele).on("touchstart",function(evt){
+                        if(evt.touches.length==1){
+                                start(evt.touches[0],true);
+                        }
+                });
+                $(div_ele).on("touchmove",function(evt){
+                        if(evt.touches.length==1){
+                                move(evt.touches[0]);
+                        }
+                });
+                $(div_ele).on("touchend",function(evt){
+                        if(evt.touches.length==1){
+                                stop();
+                        }
+                });
                 $(div_ele).on("mousedown",start);
                 $(div_ele).on("mouseup",stop);
                 $(div_ele).on("mouseout",stop);
                 $(div_ele).on("mouseenter",stop);
-                $(div_ele).on("mousemove",function(evt){
-                        if(!mouse_over) return;
-                        var dx=evt.clientX-mx,dy=evt.clientY-my;
-                        ABSOLUTE_POSITION.moveRelatively(dx,dy);
-                        mx=evt.clientX;
-                        my=evt.clientY;
-                });
+                $(div_ele).on("mousemove",move);
         }).call();//支持拖拽
         (function(){//用于左键绘制SVG线条
                 draw.on("mousedown",function(evt){
