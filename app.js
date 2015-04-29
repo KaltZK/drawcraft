@@ -63,7 +63,7 @@ io.on("connection",function(socket){
                         text: data.user + " joined "+data.room,
                 });
         });
-        socket.on('enter_room',function(data){
+        socket.on('leave_room',function(data){
                 socket.join(data.room);
                 socket.broadcast.to(data.room).emit("text_message",{
                         author: "System",

@@ -63,6 +63,7 @@ $(document).ready(function(){
                                 room: getRoomname(),
                                 user: getUsername(),
                         });
+                        socket.disconnect();
                 }
                 $("#text_message_button").on("click",sendTextMessage);
                 $("#text_message_input").keydown(function(event){
@@ -96,4 +97,7 @@ $(document).ready(function(){
                 });
         }).call();
         DISPLAYED_CHUNKS_STATUS.updateChunks(true);//更新区块
+
+
+        new Content(CHUNK["chunk(0,0)"]);
 });

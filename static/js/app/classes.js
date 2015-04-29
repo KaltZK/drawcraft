@@ -329,3 +329,15 @@ function GraphicBody(body,chunk){
         });
         this.path=chunk.draw.polyline();
 }
+
+function Content(chunk){
+        var div=document.createElement("div");
+        var img=document.createElement("img");
+        div.setAttribute("class","content");
+        img.src="http://ww4.sinaimg.cn/bmiddle/5306c1d3gw1erlfdb68zxj20jg0rjwmf.jpg";
+        this.div=div;
+        this.img=img;
+        div.appendChild(img);
+        chunk.div.appendChild(div);
+        div.style.top=div.style.left=0;
+}
