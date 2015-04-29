@@ -99,5 +99,5 @@ $(document).ready(function(){
         DISPLAYED_CHUNKS_STATUS.updateChunks(true);//更新区块
 
 
-        new Content(CHUNK["chunk(0,0)"]);
+        new ImageContent("http://ww3.sinaimg.cn/large/69917555jw1er0tkblbo5j20zk1gcam3.jpg",CHUNK["chunk(0,0)"]).move(50,50);
 });

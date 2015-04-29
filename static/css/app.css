@@ -34,3 +34,7 @@ div.content{
         position: absolute;
         z-index: 0;
 }
+svg{/*防止绘制层被遮挡*/
+        position: absolute;
+        z-index: 7;
+}

@@ -41,6 +41,7 @@ function Chunk(x,y,chunkbase){
         chunkbase[chunk_id]=this;
         
         div_ele=document.createElement("div");
+        div_ele.setAttribute("onselectstart","return false;");//阻止选中
         document.getElementById("board").appendChild(div_ele);
         div_ele.id=chunk_id;
         div_ele.classList.add("chunk");
@@ -332,12 +333,21 @@ function GraphicBody(body,chunk){
 
 function Content(chunk){
         var div=document.createElement("div");
-        var img=document.createElement("img");
         div.setAttribute("class","content");
-        img.src="http://ww4.sinaimg.cn/bmiddle/5306c1d3gw1erlfdb68zxj20jg0rjwmf.jpg";
         this.div=div;
-        this.img=img;
-        div.appendChild(img);
         chunk.div.appendChild(div);
-        div.style.top=div.style.left=0;
+        this.move=function(x,y){
+                div.style.top=y;
+                div.style.left=x;
+        };
+        this.setElement=function(ele){
+                div.appendChild(ele);
+        };
+}
+
+function ImageContent(src,chunk){
+        Content.call(this,chunk);
+        var img=document.createElement("img");
+        img.setAttribute("src",src);
+        this.setElement(img);
 }
