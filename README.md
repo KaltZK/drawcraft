@@ -17,27 +17,19 @@ DrawCraft是一个在线协作画板项目
 #一些说明
 **这部分是给项目成员看的**
 
-##安装软件包
 
-* nodejs
-* python2.7
-* Sublime Text 2
-* [msysgit](http://pan.baidu.com/s/1sj2rUod)
-* mongodb
-* nodejs组件见下面
 
-###npm
 
-安装完NodeJS之后应该可以在cmd里使用npm(Node Package Manager)安装需要的软件包
+###关于使用polymer
 
-在cmd里输入
-```
-npm install express socket.io url ejs body-parser
-```
-就可以了
+起步项目我放回static/components文件夹了
 
-使用npm安装mongodb客户端
-```
-npm install bson mongodb
-```
-[MongoDB官网](http://www.mongodb.org/)
+之前的那些文件还能直接用
+
+*使用自己想要的Element*
+
+1. 在[Elements集合](http://docs.polymerchina.org/docs/elements/)选择想要的Elemet
+2. 点进选中的介绍页面，会出现一个GET XXX按钮，点开之后切换到Github标签
+3. 复制绿色框里的命令，在static文件夹 右键>>Git Bash 点击窗口边框>>编辑>>粘贴 回车运行
+4. 完~成~，在页面引用即可直接使用
+

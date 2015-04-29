@@ -44,9 +44,9 @@ $(document).ready(function(){
                                                 bodies=body*n:
                                                         id
                                                         index
-                                                        chunk:
-                                                                x
-                                                                y
+                                                        chunk_x
+                                                        chunk_y
+                                                        room
                                                         points
                                 */
                                 var gra=new Graphic(gra.head);

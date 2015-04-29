@@ -259,7 +259,9 @@ function ChunkDrawingStatus(style){
                         this.polylines_data.push({
                                 id:this.id,
                                 index:this.gb_index,
-                                chunk:{x:chunk.x,y:chunk.y},
+                                chunk_x:chunk.x,
+                                chunk_y:chunk.y,
+                                roon:getRoomname(),
                                 points:this.chunk_path.array.value.join(" "),
                         });
                 this.chunk_path=
@@ -311,7 +313,7 @@ function Graphic(head){
         };
         this.extendBodies=function(body_list){
                 body_list.forEach(function(body){
-                        var chunk=CHUNK[getChunkId(body.chunk.x,body.chunk.y)];
+                        var chunk=CHUNK[getChunkId(body.chunk_x,body.chunk_y)];
                         if(!chunk) return;
                         self.bodies[body.index]=chunk.addGraphicBody(body);
                 });
