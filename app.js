@@ -70,7 +70,6 @@ io.on("connection",function(socket){
                         text: data.user + " left "+data.room,
                 });
         });
-        socket.emit("news",{hello: "world"});
         socket.on("text_message",function(message){
                 console.log(message);
                 socket.broadcast.to(message.room).emit('text_message',message);
@@ -80,9 +79,9 @@ io.on("connection",function(socket){
                 console.log(chunk.x,chunk.y);
         });
         
-        socket.on("graphic_done",function(msg){
+        socket.on("update_graphic",function(msg){
                 model.storeGraphic(msg);
-                socket.broadcast.to(msg.head.room).emit("graphic_done",msg);
+                socket.broadcast.to(msg.head.room).emit("update_graphic",msg);
         });
         
 });

@@ -21,7 +21,7 @@ $(document).ready(function(){
                 });
         }).call();
         (function(){
-                socket.on("graphic_done",function(msg){
+                socket.on("update_graphic",function(msg){
                         /*
                         //这部分是为了实时绘制做出来的，后来不用了，但姑且留着
                         var cds=CHUNK_DRAWING_STATUS[msg.head.author] ||

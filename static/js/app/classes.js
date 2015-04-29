@@ -22,7 +22,7 @@ function Chunk(x,y,chunkbase){
         var chunkbase=chunkbase||CHUNK;
         var chunk_id=getChunkId(x,y);
 
-        socket.emit("load_chunk",{x:x,y:y});
+        socket.emit("load_chunk",{x:x,y:y,room:getRoomname()});
 
         /*
         本来想写成getChunk这种函数但还是觉得类比较方便
@@ -278,7 +278,7 @@ function ChunkDrawingStatus(style){
                         room:getRoomname(),
                 };
                 new Graphic(head);
-                socket.emit("graphic_done",{
+                socket.emit("update_graphic",{
                         head:head,
                         body:this.polylines_data,
                 });
@@ -333,10 +333,11 @@ function GraphicBody(body,chunk){
         this.path=chunk.draw.polyline();
 }
 
-function Content(chunk){
+function Content(type,chunk){
         var div=document.createElement("div");
         div.setAttribute("class","content");
         this.div=div;
+        this.type=type;
         this.id=["content",getUsername(),new Date().getTime(),getRoomname()].join("_");
         chunk.div.appendChild(div);
         this.move=function(x,y){
@@ -354,6 +355,7 @@ function Content(chunk){
                         chunk_y:chunk.y,
                         x:div.style.left||0,
                         y:div.style.top||0,
+                        type:this.type,
                         data:this.data,
                 });
         };
@@ -364,11 +366,10 @@ function ImageContent(src,chunk){
         var img=document.createElement("img");
         img.setAttribute("src",src);
         this.data={
-                type:"img",
                 src:src,
         };
         
-        Content.call(this,chunk);
+        Content.call(this,"img",chunk);
         this.setElement(img);
 }
 
