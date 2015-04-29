@@ -4,26 +4,83 @@
 <!--
                 <script src="http://cdn.bootcss.com/require.js/2.1.17/require.js"></script>
 -->
+
+        <script src="/components/webcomponentsjs/webcomponents.js">
+        </script>
+
+        <link rel="import" href="/components//core-drawer-panel/core-drawer-panel.html">
+  <link rel="import" href="/components/font-roboto/roboto.html">
+  <link rel="import"
+    href="/components/core-header-panel/core-header-panel.html">
+  <link rel="import"
+    href="/components/core-toolbar/core-toolbar.html">
+  <link rel="import"
+    href="/components/paper-tabs/paper-tabs.html">
+
+
+
                 <script src="/socket.io.js"></script>
                 <script src="/jquery.min.js"></script>
 		<script src="/jquery-cookie/jquery.cookie.js"></script>
                 <script src="/js/indexready.js"></script>
 		<style type="text/css">
+                core-header-panel {
+                height: 100%;
+                overflow: auto;
+                -webkit-overflow-scrolling: touch; 
+                }
+  core-toolbar {
+    background: #03a9f4;
+    color: white;
+  }
+  #tabs {
+    width: 100%;
+    margin: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+	text-transform: uppercase;
+  }
 		</style>
 		<title>DrawCraft</title>
                 <script>
                 </script>
 	</head>
 	<body>
+<!--		<core-drawer-panel>
                 <h1>DrawCraft</h1>
                 <label>房间</label>
                 <input id="room_input"></input><br/>
                 <label>用户名</label>
                 <input id="user_input"></input>
                 <button id="enter_button">进入</button>
+-->
+                
+  <core-header-panel>
+
+    <core-toolbar>
+
+      <paper-tabs id="tabs" selected="all" self-end>
+        <paper-tab name="DrawCraft">DrawCraft</paper-tab>
+        <paper-tab name="Room">Room</paper-tab>
+        <input id="room_input"></input><br/>
+        <paper-tab name="UserName">UserName</paper-tab>
+        <input id="user_input"></input>
+        <button id="enter_button">进入</button>
+      </paper-tabs>
+
+    </core-toolbar>
+
+    <div class="container" layout vertical center>
+      <post-list show="all"></post-list>
+    </div>
+
+  </core-header-panel>
                 
                 <script>
 
                 </script>
+		</core-drawer-panel>
 	</body>
 </html>
