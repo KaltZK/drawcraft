@@ -98,6 +98,5 @@ $(document).ready(function(){
         }).call();
         DISPLAYED_CHUNKS_STATUS.updateChunks(true);//更新区块
 
-
-        new ImageContent("http://ww3.sinaimg.cn/large/69917555jw1er0tkblbo5j20zk1gcam3.jpg",CHUNK["chunk(0,0)"]).move(50,50);
+        createContent.img(0,0,50,50,"http://ww3.sinaimg.cn/large/69917555jw1er0tkblbo5j20zk1gcam3.jpg");
 });

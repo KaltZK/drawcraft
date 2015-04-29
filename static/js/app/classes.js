@@ -333,12 +333,14 @@ function GraphicBody(body,chunk){
         this.path=chunk.draw.polyline();
 }
 
-function Content(type,chunk){
+function Content(x,y,type,chunk){
         var div=document.createElement("div");
         div.setAttribute("class","content");
         this.div=div;
         this.type=type;
         this.id=["content",getUsername(),new Date().getTime(),getRoomname()].join("_");
+        div.style.top=y;
+        div.style.left=x;
         chunk.div.appendChild(div);
         this.move=function(x,y){
                 div.style.top=y;
@@ -361,7 +363,7 @@ function Content(type,chunk){
         };
 }
 
-function ImageContent(src,chunk){
+function ImageContent(x,y,src,chunk){
         
         var img=document.createElement("img");
         img.setAttribute("src",src);
@@ -369,7 +371,7 @@ function ImageContent(src,chunk){
                 src:src,
         };
         
-        Content.call(this,"img",chunk);
+        Content.call(this,x,y,"img",chunk);
         this.setElement(img);
 }
 

@@ -91,3 +91,11 @@ function getRoomname(){
 function showMessage(message){
         alert(message);
 }
+
+createContent={
+        img:function(chunk_x,chunk_y,x,y,src){
+                return new ImageContent(x,y,
+                src,
+                getChunk(chunk_x,chunk_y));
+        },
+};
