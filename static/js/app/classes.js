@@ -337,19 +337,41 @@ function Content(chunk){
         var div=document.createElement("div");
         div.setAttribute("class","content");
         this.div=div;
+        this.id=["content",getUsername(),new Date().getTime(),getRoomname()].join("_");
         chunk.div.appendChild(div);
         this.move=function(x,y){
                 div.style.top=y;
                 div.style.left=x;
+                this.update();
         };
         this.setElement=function(ele){
                 div.appendChild(ele);
         };
+        this.update=function(){
+                socket.emit("update_content",{
+                        id:this.id,
+                        chunk_x:chunk.x,
+                        chunk_y:chunk.y,
+                        x:div.style.left||0,
+                        y:div.style.top||0,
+                        data:this.data,
+                });
+        };
 }
 
 function ImageContent(src,chunk){
-        Content.call(this,chunk);
+        
         var img=document.createElement("img");
         img.setAttribute("src",src);
+        this.data={
+                type:"img",
+                src:src,
+        };
+        
+        Content.call(this,chunk);
         this.setElement(img);
 }
+
+ImageContent.fromMsg=function(msg){
+        return new ImageContent(data.src,getChunk(msg.chunk_x,msg.chunk_y));
+};
