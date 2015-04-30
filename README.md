@@ -118,6 +118,15 @@ update_graphic 服务器>>网页 广播其他用户更改或创建图形的行�
 }
 ```
 
+delete_graphic 网页>>服务器 删除图形
+```
+{
+        id: 图形id,
+        user: 操作人,
+        room: 所在房间
+}
+```
+
 update_content 网页>>服务器 创建了新内容 or 更改了已有内容
 
 update_content 服务器>>网页 广播其他用户更改或创建内容的行为
@@ -136,7 +145,14 @@ update_content 服务器>>网页 广播其他用户更改或创建内容的行�
         }
 }
 ```
-
+delete_content 网页>>服务器 删除内容
+```
+{
+        id: 内容id,
+        user: 操作人,
+        room: 所在房间
+}
+```
 
 load_chunk 网页>>服务器 请求一个区块的数据
 ```
