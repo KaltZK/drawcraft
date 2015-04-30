@@ -39,6 +39,9 @@ function hashString(str){
 app.get('/',function(req,res){
         res.render("index");
 });
+app.get('/room-list',function(req,res){
+        res.render("room-list");
+});
 app.get('/app',function(req,res){
         res.render("app");
 });
