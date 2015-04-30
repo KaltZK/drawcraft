@@ -92,10 +92,16 @@ function showMessage(message){
         alert(message);
 }
 
-createContent={
-        img:function(chunk_x,chunk_y,x,y,src){
-                return new ImageContent(x,y,
-                src,
-                getChunk(chunk_x,chunk_y));
-        },
-};
+function createContent(msg){
+        /*
+                msg包含id的话就不新建id
+                否则新建id并更新
+        */
+        var chunk=getChunk(msg.chunk_x,msg.chunk_y);
+        if(!chunk) return;
+        var content=({
+                "img":ImageContent,
+        })[msg.type];
+        var content=new content(msg.x,msg.y,msg.data,chunk);
+        return content;
+}

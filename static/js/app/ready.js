@@ -30,28 +30,14 @@ $(document).ready(function(){
                         var gra=new Graphic(msg.head);
                         gra.extendBodies(msg.body);
                 });
-                
+                socket.on("update_content",createContent);
                 socket.on("load_chunk",function(chunk_data){
                         var chunk=getChunk(chunk_data.x,chunk_data.y);
                         chunk_data.graphics.forEach(function(gra){
-                                /*
-                                        gra:
-                                                head:
-                                                        id
-                                                        author
-                                                        style
-                                                        room
-                                                bodies=body*n:
-                                                        id
-                                                        index
-                                                        chunk_x
-                                                        chunk_y
-                                                        room
-                                                        points
-                                */
                                 var gra=new Graphic(gra.head);
                                 gra.extendBodies(gra.bodies);
                         });
+                        chunk_data.contents.forEach(createContent);
                 });
                 
         }).call();
@@ -97,6 +83,4 @@ $(document).ready(function(){
                 });
         }).call();
         DISPLAYED_CHUNKS_STATUS.updateChunks(true);//更新区块
-
-        createContent.img(0,0,50,50,"http://ww3.sinaimg.cn/large/69917555jw1er0tkblbo5j20zk1gcam3.jpg");
 });

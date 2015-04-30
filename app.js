@@ -83,6 +83,10 @@ io.on("connection",function(socket){
                 model.storeGraphic(msg);
                 socket.broadcast.to(msg.head.room).emit("update_graphic",msg);
         });
+        socket.on("update_content",function(msg){
+                model.storeGraphic(msg);
+                socket.broadcast.to(msg.room).emit("update_content",msg);
+        });
         
 });
 io.on("disconnect",function(ssocket){console.log(233);});

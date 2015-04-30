@@ -333,12 +333,12 @@ function GraphicBody(body,chunk){
         this.path=chunk.draw.polyline();
 }
 
-function Content(x,y,type,chunk){
+function Content(x,y,type,chunk,id){
         var div=document.createElement("div");
         div.setAttribute("class","content");
         this.div=div;
         this.type=type;
-        this.id=["content",getUsername(),new Date().getTime(),getRoomname()].join("_");
+        this.id= id || ["content",getUsername(),new Date().getTime(),getRoomname()].join("_");
         div.style.top=y;
         div.style.left=x;
         chunk.div.appendChild(div);
@@ -357,24 +357,18 @@ function Content(x,y,type,chunk){
                         chunk_y:chunk.y,
                         x:div.style.left||0,
                         y:div.style.top||0,
+                        room:getRoomname(),
                         type:this.type,
                         data:this.data,
                 });
         };
 }
 
-function ImageContent(x,y,src,chunk){
-        
+function ImageContent(x,y,data,chunk,id){
         var img=document.createElement("img");
-        img.setAttribute("src",src);
-        this.data={
-                src:src,
-        };
-        
-        Content.call(this,x,y,"img",chunk);
+        img.setAttribute("src",data.src);
+        this.data=data;
+        Content.call(this,x,y,"img",chunk,id);
         this.setElement(img);
+        this.update();
 }
-
-ImageContent.fromMsg=function(msg){
-        return new ImageContent(data.src,getChunk(msg.chunk_x,msg.chunk_y));
-};
