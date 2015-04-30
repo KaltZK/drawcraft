@@ -181,3 +181,31 @@ load_chunk 服务器>>网页 发送区块数据
 3. 复制绿色框里的命令，在static文件夹 右键>>Git Bash 点击窗口边框>>编辑>>粘贴 回车运行
 4. 完~成~，在页面引用即可直接使用
 
+**Update: 关于页面加载慢的问题和更便利的安装方法**
+
+页面加载慢是因为所引用的roboto.html加载了GoogleAPI的roboto字体
+
+而GoogleAPI已经被封了，所以加载不上字体的情况下页面无法显示
+
+把导入roboto的那行去掉就行了
+
+
+用bower更便利一些
+
+首先安装bower
+
+```
+npm install bower
+```
+
+安装完成后进入static目录
+```
+cd C:\User\Admin\Desktop\Drawcraft(或其他项目所在的路径)\static
+```
+
+安装paper-elements
+```
+bower install Polymer/paper-elements
+```
+
+组件会被放在bower_components/中
