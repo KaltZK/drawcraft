@@ -157,21 +157,22 @@ function Chunk(x,y,chunkbase){
         this.remove=function(){
                 //$("div#"+chunk_id).remove();
                 this.graphic_body_list.forEach(function(body){
-                        var gra=GRAPHICS[body.id];
-                        if(gra)
-                                gra.remove(body);
+                        if(GRAPHICS[body.id]){
+                                GRAPHICS[body.id]=GRAPHICS[body.id].filter(function(body){
+                                        return body.chunk_x!=this.x||body.chunk_y!=this.y;
+                                });
+                                if(!GRAPHICS[body.id].length)
+                                        delete GRAPHICS[body.id];
+                        }
                 });
                 $(div_ele).remove();
                 delete CHUNK[this.id];
         };
 
-        this.addGraphicBody=function(gb){
-                var body=new GraphicBody(gb,this);
-                var gra=GRAPHICS[body.id];
+        this.addGraphicBody=function(body){
                 this.graphic_body_list.push(body);
-                gra.add(body);
-                body.path.plot(body.points).fill(gra.style.fill).stroke(gra.style.stroke);
-                this.graphic_body_list.push(body);
+                var path=draw.polyline();
+                path.plot(body.points).fill(body.style.fill).stroke(body.style.stroke);
                 return body;
         };
         
@@ -250,10 +251,13 @@ function ChunkDrawingStatus(style){
                 if(this.chunk_path)//以防出现奇怪的脑残情况 其实这里本来应该有个判断的
                         this.polylines_data.push({
                                 id:this.id,
-                                index:this.gb_index,
+                                index:this.gb_index++,
                                 chunk_x:chunk.x,
                                 chunk_y:chunk.y,
-                                roon:getRoomname(),
+                                author:getUsername(),
+                                style:SELF_DRAWING_STATUS.style,
+                                room:getRoomname(),
+                                create_time:new Date().getTime(),
                                 points:this.chunk_path.array.value.join(" "),
                         });
                 this.chunk_path=
@@ -262,55 +266,25 @@ function ChunkDrawingStatus(style){
         this.stop=function(x,y,chunk){
                 this.stop_in_chunk(x,y,chunk);
                 this.drawing=false;
+                if(!this.polylines_data.length) return;
+                //解决右键触发绘制事件的问题
                 this.items.push(this.polylines_data);
-                var head={
-                        id:this.id,
-                        author:getUsername(),
-                        style:SELF_DRAWING_STATUS.style,
+                GRAPHICS[this.id]=this.polylines_data;
+                var ugdata={
                         room:getRoomname(),
-                };
-                new Graphic(head);
-                socket.emit("update_graphic",{
-                        head:head,
-                        body:this.polylines_data,
-                });
+                        data:this.polylines_data,
+                }
+                socket.emit("update_graphic",ugdata);
+                console.log(ugdata);
                 /*在这里可以把图形打包成对象，方便上传和加载*/
                 this.points=[];
                 this.polylines_data=[];
         }
 }
 
-function Graphic(head){
-        GRAPHICS[head.id]=this;
-        var self=this;
-        this.head=head;
-        ["id","author","style","room"].forEach(function(symbol){
-                self.__defineGetter__(symbol,function(){
-                        return self.head[symbol];
-                })
-                self.__defineSetter__(symbol,function(val){
-                        self.head[symbol]=val;
-                })
-        });
-        this.counter=0;
-        this.bodies={};
-        this.add=function(body,chunk){
-                this.bodies[body.index]=body;
-                this.counter++;
-        };
-        this.remove=function(body,chunk){
-                delete this.bodies[body.index];
-                if(!(--this.counter))
-                        delete GRAPHICS[this.id];
-        };
-        this.extendBodies=function(body_list){
-                body_list.forEach(function(body){
-                        var chunk=CHUNK[getChunkId(body.chunk_x,body.chunk_y)];
-                        if(!chunk) return;
-                        self.bodies[body.index]=chunk.addGraphicBody(body);
-                });
-        };
-}
+
+
+
 function GraphicBody(body,chunk){
         var self=this;
         this.body=body;
@@ -324,6 +298,9 @@ function GraphicBody(body,chunk){
         });
         this.path=chunk.draw.polyline();
 }
+
+
+
 
 function Content(x,y,type,chunk,id){
         var div=document.createElement("div");
@@ -352,6 +329,7 @@ function Content(x,y,type,chunk,id){
                         room:getRoomname(),
                         type:this.type,
                         data:this.data,
+                        create_time:new Date().getTime(),
                 });
         };
 }

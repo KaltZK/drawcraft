@@ -21,24 +21,12 @@ $(document).ready(function(){
                 });
         }).call();
         (function(){
-                socket.on("update_graphic",function(msg){
-                        /*
-                        //这部分是为了实时绘制做出来的，后来不用了，但姑且留着
-                        var cds=CHUNK_DRAWING_STATUS[msg.head.author] ||
-                                (CHUNK_DRAWING_STATUS[msg.head.author]=new ChunkDrawingStatus());
-                        */
-                        var gra=new Graphic(msg.head);
-                        gra.extendBodies(msg.body);
+                socket.on("update_graphic",function(data){
+                        data.forEach(addGraphicBody);
                 });
+                socket.on("load_graphic_body",addGraphicBody);
                 socket.on("update_content",createContent);
-                socket.on("load_chunk",function(chunk_data){
-                        var chunk=getChunk(chunk_data.x,chunk_data.y);
-                        chunk_data.graphics.forEach(function(gra){
-                                var gra=new Graphic(gra.head);
-                                gra.extendBodies(gra.bodies);
-                        });
-                        chunk_data.contents.forEach(createContent);
-                });
+                socket.on("load_content",createContent);
                 
         }).call();
 

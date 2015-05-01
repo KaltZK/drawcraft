@@ -74,20 +74,24 @@ io.on("connection",function(socket){
                 });
         });
         socket.on("text_message",function(message){
-                console.log(message);
                 socket.broadcast.to(message.room).emit('text_message',message);
         });
 
         socket.on("load_chunk",function(chunk){
-                socket.emit("load_chunk",model.loadChunk(chunk));
+                model.loadChunk(chunk,function(body){
+                        socket.emit("load_graphic_body",body);
+                },
+                function(content){
+                        socket.emit("load_content",content);
+                });
         });
         
         socket.on("update_graphic",function(msg){
-                model.storeGraphic(msg);
-                socket.broadcast.to(msg.head.room).emit("update_graphic",msg);
+                model.storeGraphic(msg.data);
+                socket.broadcast.to(msg.room).emit("update_graphic",msg.data);
         });
         socket.on("update_content",function(msg){
-                model.storeGraphic(msg);
+                model.storeContent(msg);
                 socket.broadcast.to(msg.room).emit("update_content",msg);
         });
         
