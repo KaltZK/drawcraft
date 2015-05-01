@@ -3,14 +3,24 @@
 	<head>
 		<meta http_equiv=Content-Type content="text/html; charset=utf_8">
 
+                <!-- 固定页面大小阻止缩放 -->
+                <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+                
+
                 <!-- 接下来引用的js文件是从网上找来的库 -->
 		<script src="/socket.io.js"></script>
 		<script src="/jquery.min.js"></script>
 		<script src="/jquery-cookie/jquery.cookie.js"></script>
 		<script src="/jquery-touch/jquery.touch.js"></script>
                 <script src="/svg.js"></script>
+                <script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
 
-                <!-- 接下来引用的js文件是自己写的 在 static/javascript 里 -->
+                <!-- 接下来是components -->
+                
+                <!-- 由于GoogleAPI不能用改用360的roboto字体 -->
+                <link rel="import" href="/html/font-roboto.html">
+
+                <!-- 接下来引用的js文件是自己写的 在 static/js 里 -->
                 <script src="/js/app/forie.js"></script>
                 <script src="/js/app/config.js"></script>
                 <script src="/js/app/classes.js"></script>
@@ -22,8 +32,6 @@
                 <link rel="stylesheet" type="text/css" href="/css/app.css">
 
 
-                <!-- 固定页面大小阻止缩放 -->
-                <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
                 <!-- 标题 -->
                 <title id="page_title"></title>
 	</head>

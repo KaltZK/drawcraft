@@ -1,3 +1,10 @@
+html,body{
+        height: 100%;
+        margin: 0;
+        background-color: #eeeeee;
+        font-family: 'RobotoDraft', sans-serif;
+        overflow: hidden;
+}
 div#board{
         top: 0px;
         bottom: 0px;
@@ -8,7 +15,9 @@ div#board{
         position: absolute;
         z-index: 5;
         overflow: hidden;/*内部chunk超出时隐藏*/
+/*
         background:#C3BED4;
+*/
 }
 div.chunk{
         position:absolute;

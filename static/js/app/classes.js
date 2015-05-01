@@ -200,15 +200,7 @@ function ChunkDrawingStatus(style){
         };
         this.items=[];//一次绘制的所有图形
         /*之后做成类可能会比较好*/
-        this.style=style||{
-                fill:{
-                        color:'none',
-                },
-                stroke:{
-                        color:"red",
-                        width: 1,
-                },
-        };
+        this.style=style||DEFAULT_DRAWING_STYLE;
         this.add_point=function(x,y,chunk){
                 this.points.push([x,y]);
                 if(!this.points_list) this.start_in_chunk(x,y,chunk);

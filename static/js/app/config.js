@@ -16,6 +16,16 @@ HIDDEN_AREA_HEIGHT=1000;
 //不实时更新每个点以减轻服务器负担
 LIGHT_MODE=false;
 
+DEFAULT_DRAWING_STYLE={
+        fill:{
+                color:'none',
+        },
+        stroke:{
+                color:"#5677fc",
+                width: 10,
+                opacity: 0.8,
+        },
+};
 
 COMMANDS={//聊天框命令
         tp:function(s){
