@@ -73,6 +73,9 @@ function getChunk(x,y){
         return CHUNK[getChunkId(x,y)];
 }
 
+
+
+
 //这部分用到了ejs模板所以必须写在这里
 //Update:改用Cookies保存之后就不再需要了
 function getUsername(){
@@ -104,4 +107,13 @@ function createContent(msg){
         })[msg.type];
         var content=new content(msg.x,msg.y,msg.data,chunk);
         return content;
+}
+
+
+function addGraphicBody(body){
+        var chunk=getChunk(body.chunk_x,body.chunk_y);
+        if(!chunk) return;
+        var gra=GRAPHICS[body.id] || (GRAPHICS[body.id]=[]);
+        gra.push(body);
+        chunk.addGraphicBody(body);
 }
