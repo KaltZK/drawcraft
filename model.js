@@ -9,7 +9,8 @@ db.open(function(err,db){
         }
 
         var bodies=db.collection("graphic_bodies");
-        var contents=db.collection("contents");          
+        var contents=db.collection("contents");
+        var rooms=db.collection("rooms");
         exports.storeGraphic=function(data){
                 bodies.insert(data);
         };
@@ -18,11 +19,18 @@ db.open(function(err,db){
         };
         exports.loadChunk=function(load_chunk,graphic_callback,content_callback){
                 var gra={};
-                bodies.find({chunk_x:load_chunk.x,chunk_y:load_chunk.y,room:load_chunk.room}).forEach(function(body){
-                        graphic_callback(body);
-                });
-                contents.find({chunk_x:load_chunk.x,chunk_y:load_chunk.y,room:load_chunk.room}).forEach(function(content){
-                        content_callback(content);
-                });
+                bodies.find({chunk_x:load_chunk.x,chunk_y:load_chunk.y,room:load_chunk.room})
+                        //~ .sort({create_time:1})
+                        .forEach(graphic_callback);
+                contents.find({chunk_x:load_chunk.x,chunk_y:load_chunk.y,room:load_chunk.room})
+                        //~ .sort({create_time:1})
+                        .forEach(content_callback);
+        };
+        exports.enterRoom=function(room){
+                console.log(room);
+                rooms.update({room:room},{$inc:{enter_num:1}},{upsert:true,multi:false});
+        };
+        exports.loadRoomList=function(msg,loadRoomCallback){
+                rooms.find({}).sort({enter_num:-1}).limit(100).forEach(loadRoomCallback);
         };
 });

@@ -275,7 +275,6 @@ function ChunkDrawingStatus(style){
                         data:this.polylines_data,
                 }
                 socket.emit("update_graphic",ugdata);
-                console.log(ugdata);
                 /*在这里可以把图形打包成对象，方便上传和加载*/
                 this.points=[];
                 this.polylines_data=[];
