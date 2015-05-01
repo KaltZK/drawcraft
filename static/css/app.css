@@ -25,13 +25,7 @@ div.chunk{
         /*先加上边框方便看*/
         /*CSS不能使用//注释*/
 }
-div#chat{
-        position: absolute;
-        bottom: 0px;
-        left: 0px;
-        z-index: 10;
-        background: white;
-}
+
 div#position_bar{
         position: absolute;
         top: 0px;
@@ -39,10 +33,62 @@ div#position_bar{
         z-index:10;
 }
 
-div.content{
-        position: absolute;
-        z-index: 0;
+#core-header-panel{
+	z-index: 10;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	background-color: blue;
+	
 }
+#panel_shadow{
+	width: 20%;
+	height: 40%;
+	top: 50%;
+	position: absolute;
+
+}
+.core-header{
+        height: 20%;
+        font-size: 2em;
+        background-color: #5677fc;
+        color: #e7e9fd;
+        text-align:center;
+        line-height: 1.8em;
+}
+.content{
+	width:100%;
+	min-height:100%;
+	height: 400%;
+	position:absolute;
+	top:0;
+	background-color: white;
+}
+#block{
+	bottom: 1%;
+	left: 0;
+	width: 20%;
+	height: 8%;
+	background-color: white;
+	position: absolute;
+}
+#block_shadow{
+	width: 100%;
+	height: 100%;
+}
+#content_input{
+	width: 90%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 10;
+
+}
+#send_button{
+	z-index: 10;
+}
+
+
 svg{/*防止绘制层被遮挡*/
         position: absolute;
         z-index: 7;
