@@ -79,7 +79,7 @@ io.on("connection",function(socket){
         });
 
         socket.on("load_chunk",function(chunk){
-                console.log(chunk.x,chunk.y);
+                socket.emit("load_chunk",model.loadChunk(chunk));
         });
         
         socket.on("update_graphic",function(msg){
