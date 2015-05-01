@@ -12,8 +12,38 @@ db.open(function(err,db){
         test.find({x:1,y:2}).forEach(function(doc){
                 console.log(doc);
         });
-        
+        var head=db.collection("graphic_head");
+        var bodies=db.collection("graphic_bodies");
+        var contents=db.collection("contents");                
         exports.storeGraphic=function(msg){
                 console.log(msg);
+                bodies.insert(bodies);
+                head.insert(head);
+                contents.insert(contents);
+        };
+        exports.loadChunk=function(load_chunk){
+                bodies.find({x:load_chunk.x,y:load_chunk.y,room=load_chunk.room}).forEach(function(body){
+                        if(!gra[body.id]) {
+                                gra[body.id]={
+                                head:head.findOne({id:body.id}),
+                                bodies:[]
+                        };
+                        }
+                        gra[body.id].bodies.push(body);
+                });
+                var cont=[];
+                contents.find({x:load_chunk.x,y:load_chunk.y,room:load_chunk.room}).forEach(function(content){
+                        cont.push(content);
+                });
+                var chunk={
+                        x:load_chunk.x,
+                        y:load_chunk.y,
+                        graphics:[],
+                        contents:cont,
+                };
+                for(var i in gra){
+                        chunk.graphics.push(gra[i]);
+                }
+                return chunk;
         };
 });
