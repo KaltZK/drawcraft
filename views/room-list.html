@@ -8,6 +8,7 @@
                 <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
                 <link rel="import" href="/bower_components/core-field/core-field.html">
                 <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
+                <link rel="import" href="/bower_components/paper-input/paper-input.html">
 
                 <!-- 由于GoogleAPI不能用改用360的roboto字体 -->
                 <link rel="import" href="/html/font-roboto.html">
@@ -21,7 +22,7 @@
                         overflow: hidden;
                 }
                 #title{
-                        top: 10%;
+                        top: 1.5em;
                         width: 100%;
                         text-align:center;
                         font-size: 3em;
@@ -30,10 +31,17 @@
                         position: absolute;
                 }
                 #fab{
-			top: 10%;
+			top: 3em;
 			left: 5%;
 			background-color: white;
 			color: black;
+		}
+		#name_input{
+			top: 10em;
+			width: 50%;
+			left: 25%;
+			position: absolute;
+			z-index: 10;
 		}
                 #background{
 			height: 100%;
@@ -47,7 +55,7 @@
                         right: 50%;
                         width: 50%;
                         height: 25%;
-                        top: 30%;
+                        top: 12em;
                         position: absolute;
                         background-color: white;
                 }
@@ -60,7 +68,7 @@
                         color: #3b50ce;
                         font-size: 3em;/*em是一倍文字大小*/
                         /*text-align:center;*/
-                        line-height: 2.5em;
+                        line-height: 4em;
                         top: 0;
                         font-style: normal;
                         left: 5%;
@@ -72,7 +80,7 @@
                 }
                 #enter_button{
 			right: 1.5em;
-			top: 30%;
+			top: 5em;
 			position: absolute;
 		}
 			
@@ -84,6 +92,7 @@
 		
                 <div id="title">Room List</div>
                 <paper-fab id="fab" icon="reply" class="blue" z="1"></paper-fab>
+                <paper-input id="name_input" floatingLabel label="The room you're looking for"></paper-input>
                 <div id="background">
                   <div id="block">
 		   <paper-shadow id="block_shadow" z="1">
