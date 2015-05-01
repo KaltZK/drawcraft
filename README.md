@@ -139,6 +139,7 @@ update_content 服务器>>网页 广播其他用户更改或创建内容的行�
         x: 内容在chunk中的x,
         y: 内容在chunk中的y,
         type: 内容类型,
+        room: 所在房间,
         data:{
                 //content的数据
                 //视具体类型而定
