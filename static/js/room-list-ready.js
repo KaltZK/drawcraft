@@ -34,7 +34,7 @@ $(document).on("polymer-ready",function(){
         (function(){
                 var lrn=$.cookie("last_room");
                 if(lrn)
-                        $("#name_input").val(lrn);
+                        $("#name_input").val(decodeURI(lrn));
         }).call();
 
         $("#find_button").on("click",enterRoom);
