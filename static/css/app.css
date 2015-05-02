@@ -44,8 +44,9 @@ div#position_bar{
 #panel_shadow{
 	width: 20%;
 	height: 45%;
-	top: 40%;
+	bottom: 7em;
 	left: 1em;
+	min-height: 15em;
 	position: absolute;
 
 }
@@ -69,9 +70,10 @@ div#position_bar{
 	bottom: 5%;
 	left: 1em;
 	width: 20%;
-	height: 8%;
+	height: 3.5em;
 	background-color: white;
 	position: absolute;
+	z-index: 10;
 }
 #block_shadow{
 	width: 100%;
@@ -83,10 +85,12 @@ div#position_bar{
 	top: 0;
 	left: 0;
 	z-index: 10;
+	background-color: white;
 
 }
 #send_button{
 	z-index: 10;
+	background-color: white;
 }
 
 
