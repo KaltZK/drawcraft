@@ -25,7 +25,9 @@ div#board{
 }
 div.chunk{
         position:absolute;
-        border-style: solid; border-width: 1px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: bdbdbd;
         /*先加上边框方便看*/
         /*CSS不能使用//注释*/
 }
@@ -116,14 +118,11 @@ div#position_bar{
       width: 100%;
 }
 #color_button{
-	left:31%;
 }
 #ok_button{
-	left:39%;
+        position:absolute;
 	background-color: #5677fc;
 	color: white;
-	margin-left: auto;
-	margin-right: auto;
 }
 .color_list_item{
 	height: 1em;
@@ -152,4 +151,13 @@ svg{/*防止绘制层被遮挡*/
 }
 paper-shadow{
         z-index:10;
+}
+
+
+paper-radio-button.blue-radio::shadow #ink[checked] {
+        color: #5677fc;
+}
+    
+paper-radio-button.blue-radio::shadow #onRadio {
+        background-color: #5677fc;
 }

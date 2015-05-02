@@ -26,7 +26,7 @@ $(document).on("polymer-ready",function(){
                 if(!text) return false;
                 setTimeout(function(){
                         socket.disconnect();
-                        window.location.href="/app?room="+text;
+                        window.location.href="/app#"+text;
                 },500);
                 return true;
         }

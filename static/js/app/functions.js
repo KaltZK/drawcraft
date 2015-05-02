@@ -71,6 +71,10 @@ function getQuery(){
         });
         return query;
 }
+function getFragment(){
+        var url=location.href;
+        return url.match(/#(.+?)$/)[1];
+} 
 
 function getChunk(x,y){
         return CHUNK[getChunkId(x,y)];
@@ -91,7 +95,7 @@ function getYShiftedBetweenChunks(y,from_chunk,to_chunk){
         return y-(to_chunk.y-from_chunk.y)*CHUNK_HEIGHT;
 }
 function getRoomname(){
-        return decodeURI(getQuery()["room"]);
+        return decodeURI(getFragment());
 }
 
 function showMessage(message){

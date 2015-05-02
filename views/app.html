@@ -13,14 +13,7 @@
 		<script src="/jquery-cookie/jquery.cookie.js"></script>
 		<script src="/jquery-touch/jquery.touch.js"></script>
                 <script src="/svg.js"></script>
-                <script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
 
-                <!-- 接下来是components -->
-                
-                <!-- 由于GoogleAPI不能用改用360的roboto字体 -->
-                <link rel="import" href="/html/font-roboto.html">
-                <link rel="import" href="/html/right-button-menu.html">
-                <link rel="import" href="/html/add-image-dialog.html">
 
                 <!-- 接下来引用的js文件是自己写的 在 static/js 里 -->
                 <script src="/js/app/forie.js"></script>
@@ -29,6 +22,19 @@
                 <script src="/js/app/status.js"></script>
                 <script src="/js/app/functions.js"></script>
                 <script src="/js/app/ready.js"></script>
+
+
+                
+
+                <!-- 接下来是components -->
+                <script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
+                
+                <!-- 由于GoogleAPI不能用改用360的roboto字体 -->
+                <link rel="import" href="/html/font-roboto.html">
+                
+                <link rel="import" href="/html/right-button-menu.html">
+                <link rel="import" href="/html/add-image-dialog.html">
+
 
                 <!-- 接下来是导入的样式表 -->
                 <link rel="stylesheet" type="text/css" href="/css/app.css">
@@ -68,11 +74,11 @@
 
 		</div>            
 		 
-		<paper-dialog id="setting" heading="Setting" transition="paper-dialog-transition-center">
+		<paper-dialog id="setting" heading="Style Setting" transition="paper-dialog-transition-center">
 			  <br>
 			  <section class="green-slider">
   
-				<div>Transparency</div>
+				<div>Opacity</div>
                                 <br>
                                 <paper-slider id="slider" pin value="50"></paper-slider>
   
@@ -89,10 +95,7 @@
                           <br>
                           <br>
                           
-                          <paper-button id="color_button" >Color Choosing</paper-button>
-                          
-                          <br>
-                          <br>
+                          <paper-button id="color_button" >Select Color</paper-button>
                           
 		          <paper-button id="ok_button">OK</paper-button>
 
@@ -109,8 +112,8 @@
                 
                 <section id="Mode">
 			<paper-radio-group id="mode_radio_group" class="blue" selected="0">
-                          <paper-radio-button id="draw_radio_button" label="Draw"></paper-radio-button><br>
-                          <paper-radio-button id="move_radio_button" label="Move"></paper-radio-button>
+                          <paper-radio-button id="draw_radio_button" class="blue-radio" label="Draw"></paper-radio-button><br>
+                          <paper-radio-button id="move_radio_button" class="blue-radio" label="Move"></paper-radio-button>
                         </paper-radio-group>
                 </section>
 

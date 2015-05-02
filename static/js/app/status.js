@@ -27,7 +27,6 @@ ABSOLUTE_POSITION={
         */
         _x:0,
         _y:0,//默认在原点
-        _x:0,
         get x(){return this._x;},
         get y(){return this._y;},
         set x(val){
