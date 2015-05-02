@@ -1,15 +1,16 @@
 
 //全局函数
 function addTextMessage(message){
-        var divs=$("#text_messages");
+        var divs=$("#text_message_content");
         var para=document.createElement("p");
         para.textContent=message.author+": "+message.text;
+        para.classList.add("text_message_entry");
         divs.append(para);
         
 }
 function sendTextMessage(text){
-        var text= text || $("#text_message_input").val();
-        $("#text_message_input").val("");
+        var text= (typeof text=="string" && text) || $("#content_input").val();
+        $("#content_input").val("");
         if(!text) return;
         var matchres;
         if(matchres=text.match(/^\/(\w*)(.*)$/)){//如果格式符合命令的话

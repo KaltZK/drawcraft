@@ -98,3 +98,8 @@ svg{/*防止绘制层被遮挡*/
         position: absolute;
         z-index: 7;
 }
+
+
+.text_message_entry{
+        word-break: break-all;
+}
