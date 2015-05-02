@@ -61,7 +61,6 @@ div#position_bar{
 .content{
 	width:100%;
 	min-height:100%;
-	height: 100%;
 	position:absolute;
 	top:0;
 	background-color: white;

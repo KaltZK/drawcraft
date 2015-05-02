@@ -6,7 +6,9 @@ function addTextMessage(message){
         para.textContent=message.author+": "+message.text;
         para.classList.add("text_message_entry");
         divs.append(para);
-        
+        var header_panel=document.getElementById("core-header-panel");
+        var scroller=header_panel.scroller;
+        scroller.scrollTop=scroller.scrollHeight;
 }
 function sendTextMessage(text){
         var text= (typeof text=="string" && text) || $("#content_input").val();

@@ -74,6 +74,9 @@ $(document).ready(function(){
                         ABSOLUTE_POSITION.moveRelatively(dx,dy);
                 });
         }).call();
+
+        $("#text_message_header").text(getRoomname());
+
         DISPLAYED_CHUNKS_STATUS.updateChunks(true);//更新区块
 
         return;
