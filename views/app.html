@@ -36,6 +36,11 @@
                 <link rel="import" href="/bower_components/core-field/core-field.html">
                 <link rel="import" href="/bower_components/paper-input/paper-input.html">
                 <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+                <link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+                <link rel="import" href="/bower_components/paper-button/paper-button.html">
+                <link rel="import" href="/bower_components/paper-slider/paper-slider.html">
+                <link rel="import" href="/bower_components/paper-ripple/paper-ripple.html">
+                <link rel="import" href="/bower_components/paper-radio-group/paper-radio-group.html">
 
 
                 <!-- 标题 -->
@@ -59,8 +64,61 @@
 				 <paper-icon-button id="send_button" icon="check"></paper-icon-button>
 			 </core-field>
 		 </paper-shadow>
+
 		</div>            
-                <div id="position_bar">
+		 
+		<paper-dialog id="setting" heading="Setting" transition="paper-dialog-transition-center">
+			  <br>
+			  <section class="green-slider">
+  
+				<div>Transparency</div>
+                                <br>
+                                <paper-slider id="slider" pin value="50"></paper-slider>
+  
+                          </section>
+                          
+                          <section class="green-slider">
+  
+				<div>Width</div>
+                                <br>
+                                <paper-slider id="slider" pin snap value="50"></paper-slider>
+  
+                          </section>
+                          
+                          <br>
+                          <br>
+                          
+                          <paper-button id="color_button" onclick="toggleDialog1()">Color Choosing</paper-button>
+                          
+                          <br>
+                          <br>
+                          
+		          <paper-button id="ok_button">OK</paper-button>
+
+
+
+                </paper-dialog>
+    
+	
+                <paper-icon-button id="menu_button" icon="menu" onclick="toggleDialog('paper-dialog-transition-center')"></paper-icon-button>
+                
+                <paper-dialog id="color" heading="Color Choosing">
+                <div id="color_list"></div>
+                </paper-dialog>
+                
+                <section id="Mode">
+  
+
+    
+			<paper-radio-group class="blue" selected="0">
+                          <paper-radio-button label="Draw"></paper-radio-button><br>
+                          <paper-radio-button label="Move"></paper-radio-button>
+                        </paper-radio-group>
+    
+                </section>
+
+	                
+		<div id="position_bar">
                         <label id="position_label"></label>
                 </div>
                 <div id="board">
@@ -68,4 +126,15 @@
 
 
         </body>
+        
+        <script>
+		function toggleDialog(transition) {
+                var dialog = document.querySelector('paper-dialog[transition=' + transition + ']');
+                dialog.toggle();
+                }
+                function toggleDialog1() {
+                var dialog = document.querySelector('#color');
+                dialog.toggle();
+                }
+	</script>
 </html>

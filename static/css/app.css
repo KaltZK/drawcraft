@@ -5,6 +5,10 @@ html,body{
         font-family: 'RobotoDraft', sans-serif;
         overflow: hidden;
 }
+paper-shadow{
+	height:100%;
+	width:100%;
+}
 div#board{
         top: 0px;
         bottom: 0px;
@@ -92,7 +96,46 @@ div#position_bar{
 	z-index: 10;
 	background-color: white;
 }
+#setting{
+	z-index: 11;
+	width: 30em;
+	height: 26em;
+}
+#setting_button{
+	z-index: 20;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+#menu_button{
+	z-index: 20;
+	bottom: 1%;
+	right: 1%;
+	position: absolute;
+}
+#slider{
+      width: 100%;
+}
+#color_button{
+	left:31%;
+}
+#ok_button{
+	left:39%;
+	background-color: #5677fc;
+	color: white;
+}
+.color_list_item{
+	height: 1em;
+	width: 1em;
+}
+#Mode{
+	z-index: 30;
+	right: 1em;
+	bottom: 3em;
+	position: absolute;
 
+    
+}
 
 svg{/*防止绘制层被遮挡*/
         position: absolute;
