@@ -155,11 +155,10 @@ function Chunk(x,y,chunkbase){
                 });
         }).call(this);
         this.remove=function(){
-                //$("div#"+chunk_id).remove();
                 this.graphic_body_list.forEach(function(body){
                         if(GRAPHICS[body.id]){
-                                GRAPHICS[body.id]=GRAPHICS[body.id].filter(function(body){
-                                        return body.chunk_x!=this.x||body.chunk_y!=this.y;
+                                GRAPHICS[body.id]=GRAPHICS[body.id].filter(function(body_data){
+                                        return body_data.body.chunk_x!=this.x||body_data.body.chunk_y!=this.y;
                                 });
                                 if(!GRAPHICS[body.id].length)
                                         delete GRAPHICS[body.id];
@@ -173,7 +172,7 @@ function Chunk(x,y,chunkbase){
                 this.graphic_body_list.push(body);
                 var path=draw.polyline();
                 path.plot(body.points).fill(body.style.fill).stroke(body.style.stroke);
-                return body;
+                return path;
         };
         
         return;
@@ -246,10 +245,11 @@ function ChunkDrawingStatus(style){
                 this.id="graphic_"+[getUsername(),new Date().getTime(),getRoomname()].join("_");
                 this.start_in_chunk(x,y,chunk);
                 this.drawing=true;
+                GRAPHICS[this.id]=[];
         }
         this.stop_in_chunk=function(x,y,chunk){
-                if(this.chunk_path)//以防出现奇怪的脑残情况 其实这里本来应该有个判断的
-                        this.polylines_data.push({
+                if(this.chunk_path){//以防出现奇怪的脑残情况 其实这里本来应该有个判断的
+                        var body={
                                 id:this.id,
                                 index:this.gb_index++,
                                 chunk_x:chunk.x,
@@ -259,7 +259,14 @@ function ChunkDrawingStatus(style){
                                 room:getRoomname(),
                                 create_time:new Date().getTime(),
                                 points:this.chunk_path.array.value.join(" "),
+                        };
+                        GRAPHICS[this.id].push({
+                                body:body,
+                                path:this.chunk_path,
                         });
+                        this.polylines_data.push(body);
+                        
+                }
                 this.chunk_path=
                 this.points_list=undefined;
         }
@@ -269,7 +276,6 @@ function ChunkDrawingStatus(style){
                 if(!this.polylines_data.length) return;
                 //解决右键触发绘制事件的问题
                 this.items.push(this.polylines_data);
-                GRAPHICS[this.id]=this.polylines_data;
                 var ugdata={
                         room:getRoomname(),
                         data:this.polylines_data,

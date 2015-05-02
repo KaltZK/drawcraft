@@ -33,5 +33,10 @@ COMMANDS={//聊天框命令
                 var x=parseInt(ra[1]),y=parseInt(ra[2]);
                 if(isNaN(x) || isNaN(y)) throw "Invalid arguments.";//NaN!=NaN
                 ABSOLUTE_POSITION.moveRelatively(-(x-VIEW_POSITION.x),-(y-VIEW_POSITION.y));
-        }
+        },
+        clear:function(){
+                for(var id in GRAPHICS){
+                        removeGraphic(id,true);
+                }
+        },
 };

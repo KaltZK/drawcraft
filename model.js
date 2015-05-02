@@ -14,6 +14,10 @@ db.open(function(err,db){
         exports.storeGraphic=function(data){
                 bodies.insert(data);
         };
+        exports.removeGraphic=function(msg){
+                console.log(msg);
+                bodies.remove({id:msg.id,room:msg.room});
+        };
         exports.storeContent=function(data){
                 contents.insert(data);
         };
@@ -27,7 +31,6 @@ db.open(function(err,db){
                         .forEach(content_callback);
         };
         exports.enterRoom=function(room){
-                console.log(room);
                 rooms.update({room:room},{$inc:{enter_num:1}},{upsert:true,multi:false});
         };
         exports.loadRoomList=function(msg,loadRoomCallback){

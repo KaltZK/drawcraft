@@ -23,18 +23,30 @@ $(document).on("polymer-ready",function(){
         
         function enterRoom(){
                 var text=$("#name_input").val();
-                if(!text) return;
+                if(!text) return false;
                 setTimeout(function(){
                         socket.disconnect();
                         window.location.href="/app?room="+text;
                 },500);
+                return true;
         }
+
+        (function(){
+                var lrn=$.cookie("last_room");
+                if(lrn)
+                        $("#name_input").val(lrn);
+        }).call();
+
         $("#find_button").on("click",enterRoom);
         $("#name_input").on("keydown",function(evt){
                 if(evt.keyCode==13)
                         enterRoom();
         });
-
+        $(document).on("keydown",function(evt){
+                if(evt.keyCode==13)
+                        enterRoom();
+        });
+        
         $("#back_fab").on("click",function(){
                 setTimeout(function(){
                         window.location.href="/";

@@ -16,6 +16,7 @@ $(document).ready(function(){
                         room: getRoomname(),
                         user: getUsername(),
                 });
+                $.cookie("last_room",getRoomname());
                 socket.on("text_message",function(message){
                         addTextMessage(message);
                 });
@@ -27,6 +28,9 @@ $(document).ready(function(){
                 socket.on("load_graphic_body",addGraphicBody);
                 socket.on("update_content",createContent);
                 socket.on("load_content",createContent);
+                socket.on("remove_graphic",function(msg){
+                        removeGraphic(msg.id);
+                });
                 
         }).call();
 

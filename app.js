@@ -95,10 +95,13 @@ io.on("connection",function(socket){
                 model.storeContent(msg);
                 socket.broadcast.to(msg.room).emit("update_content",msg);
         });
+        socket.on("remove_graphic",function(msg){
+                model.removeGraphic(msg);
+                socket.broadcast.to(msg.room).emit("remove_graphic",msg);
+        });
 
         socket.on("load_room_list",function(msg){
                 model.loadRoomList(msg,function(room_data){
-                        console.log(room_data);
                         socket.emit("load_room",room_data);
                 });
         });

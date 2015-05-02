@@ -7,8 +7,8 @@ function addTextMessage(message){
         divs.append(para);
         
 }
-function sendTextMessage(){
-        var text=$("#text_message_input").val();
+function sendTextMessage(text){
+        var text= text || $("#text_message_input").val();
         $("#text_message_input").val("");
         if(!text) return;
         var matchres;
@@ -113,7 +113,24 @@ function createContent(msg){
 function addGraphicBody(body){
         var chunk=getChunk(body.chunk_x,body.chunk_y);
         if(!chunk) return;
+        var path=chunk.addGraphicBody(body);
         var gra=GRAPHICS[body.id] || (GRAPHICS[body.id]=[]);
-        gra.push(body);
-        chunk.addGraphicBody(body);
+        gra.push({
+                path:path,
+                body:body,
+        });
+}
+
+function removeGraphic(id,update){
+        var gra=GRAPHICS[id];
+        if(!gra) return;
+        gra.forEach(function(body_data){
+                body_data.path.remove();
+        });
+        if(update)
+                socket.emit("remove_graphic",{
+                        user:getUsername(),
+                        room:getRoomname(),
+                        id:id,
+                });
 }
