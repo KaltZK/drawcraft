@@ -88,7 +88,7 @@ function getYShiftedBetweenChunks(y,from_chunk,to_chunk){
         return y-(to_chunk.y-from_chunk.y)*CHUNK_HEIGHT;
 }
 function getRoomname(){
-        return getQuery()["room"];
+        return decodeURI(getQuery()["room"]);
 }
 
 function showMessage(message){
