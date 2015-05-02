@@ -15,11 +15,13 @@ db.open(function(err,db){
                 bodies.insert(data);
         };
         exports.removeGraphic=function(msg){
-                console.log(msg);
                 bodies.remove({id:msg.id,room:msg.room});
         };
         exports.storeContent=function(data){
                 contents.insert(data);
+        };
+        exports.removeContent=function(data){
+                contents.remove({id:msg.id,room:msg.room});
         };
         exports.loadChunk=function(load_chunk,graphic_callback,content_callback){
                 var gra={};

@@ -61,7 +61,7 @@
                 <div id="block">
 		 <paper-shadow id="block_shadow" z="2">
 			 <core-field>
-				 <paper-input id="content_input" label="Type to send to others"></paper-input>
+				 <paper-input id="content_input" label="Your Words"></paper-input>
 				 <paper-icon-button id="send_button" icon="check"></paper-icon-button>
 			 </core-field>
 		 </paper-shadow>
@@ -89,7 +89,7 @@
                           <br>
                           <br>
                           
-                          <paper-button id="color_button" onclick="toggleDialog1()">Color Choosing</paper-button>
+                          <paper-button id="color_button" >Color Choosing</paper-button>
                           
                           <br>
                           <br>
@@ -101,21 +101,17 @@
                 </paper-dialog>
     
 	
-                <paper-icon-button id="menu_button" icon="menu" onclick="toggleDialog('paper-dialog-transition-center')"></paper-icon-button>
+                <paper-icon-button id="menu_button" icon="menu"></paper-icon-button>
                 
                 <paper-dialog id="color" heading="Color Choosing">
                 <div id="color_list"></div>
                 </paper-dialog>
                 
                 <section id="Mode">
-  
-
-    
-			<paper-radio-group class="blue" selected="0">
-                          <paper-radio-button label="Draw"></paper-radio-button><br>
-                          <paper-radio-button label="Move"></paper-radio-button>
+			<paper-radio-group id="mode_radio_group" class="blue" selected="0">
+                          <paper-radio-button id="draw_radio_button" label="Draw"></paper-radio-button><br>
+                          <paper-radio-button id="move_radio_button" label="Move"></paper-radio-button>
                         </paper-radio-group>
-    
                 </section>
 
                 <add-image-dialog id="add-image-dialog"></add-image-dialog>
@@ -128,15 +124,4 @@
 
 
         </body>
-        
-        <script>
-		function toggleDialog(transition) {
-                var dialog = document.querySelector('paper-dialog[transition=' + transition + ']');
-                dialog.toggle();
-                }
-                function toggleDialog1() {
-                var dialog = document.querySelector('#color');
-                dialog.toggle();
-                }
-	</script>
 </html>

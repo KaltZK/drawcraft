@@ -137,3 +137,10 @@ function removeGraphic(id,update){
                         id:id,
                 });
 }
+function removeContent(id){
+        socket.emit("remove_content",{
+                user:getUsername(),
+                room:getRoomname(),
+                id:id,
+        });
+}

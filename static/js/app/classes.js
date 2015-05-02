@@ -93,7 +93,7 @@ function Chunk(x,y,chunkbase){
                 var mouse_over=false;
                 var mx=undefined,my=undefined;
                 var start=function(evt,touch){
-                        if(!touch&&(evt.which!=2||mouse_over)) return;
+                        if(!(touch || ((evt.which==1&&LEFT_BUTTON_MODE==LEFT_BUTTON_MODE_CODE.MOVE))||(evt.which==2||mouse_over))) return;
                         mouse_over=true;
                         mx=evt.clientX;
                         my=evt.clientY;
@@ -134,7 +134,7 @@ function Chunk(x,y,chunkbase){
         }).call();//支持拖拽
         (function(){//用于左键绘制SVG线条
                 draw.on("mousedown",function(evt){
-                        if(evt.which!=1) return;
+                        if(!(evt.which==1&&LEFT_BUTTON_MODE==LEFT_BUTTON_MODE_CODE.DRAW)) return;
                         SELF_DRAWING_STATUS.start(self.getEvtX(evt),self.getEvtY(evt),self);
                 });
                 draw.on("mouseup",function(evt){
@@ -315,7 +315,8 @@ function Content(x,y,type,chunk,id){
         div.setAttribute("class","content");
         this.div=div;
         this.type=type;
-        this.id= id || ["content",getUsername(),new Date().getTime(),getRoomname()].join("_");
+        var id= id || ["content",getUsername(),new Date().getTime(),getRoomname()].join("_");
+        this.id=id;
         div.style.top=y;
         div.style.left=x;
         chunk.div.appendChild(div);

@@ -97,17 +97,24 @@ $(document).on("polymer-ready",function(){
                 });
         }).call();
 
+        (function(){                
+		$("#menu_button").on("click",function(){
+                        var dialog = document.querySelector('paper-dialog#setting');
+                        dialog.toggle();
+                });
+                $("#color_button").on("click",function() {
+                var dialog = document.querySelector('#color');
+                dialog.toggle();
+                });
+
+                $("#draw_radio_button").on("change",function(evt){
+                        LEFT_BUTTON_MODE=LEFT_BUTTON_MODE_CODE.DRAW;
+                });
+                $("#move_radio_button").on("change",function(evt){
+                        LEFT_BUTTON_MODE=LEFT_BUTTON_MODE_CODE.MOVE;
+                });
+        
+        }).call();
 
         DISPLAYED_CHUNKS_STATUS.updateChunks(true);//更新区块
-
-        return;
-        //测试用
-        (function(){
-                var d=document.getElementById("text_message_content");
-                for(var i=0;i<=233;i++){
-                        var p=document.createElement("p");
-                        p.textContent=i;
-                        d.appendChild(p);
-                }
-        }).call();
 });

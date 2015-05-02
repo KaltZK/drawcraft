@@ -99,14 +99,16 @@ io.on("connection",function(socket){
                 model.removeGraphic(msg);
                 socket.broadcast.to(msg.room).emit("remove_graphic",msg);
         });
-
+        socket.on("remove_content",function(msg){
+                model.removeContent(msg);
+                socket.broadcast.to(msg.room).emit("remove_content",msg);
+        });
         socket.on("load_room_list",function(msg){
                 model.loadRoomList(msg,function(room_data){
                         socket.emit("load_room",room_data);
                 });
         });
 });
-io.on("disconnect",function(ssocket){console.log(233);});
 
 console.log("Running...");
 console.log("PORT:",PORT);
