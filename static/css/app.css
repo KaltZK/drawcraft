@@ -146,3 +146,10 @@ svg{/*防止绘制层被遮挡*/
 .text_message_entry{
         word-break: break-all;
 }
+
+#add-image-dialog,#right-button-menu{
+        z-index:20;
+}
+paper-shadow{
+        z-index:10;
+}

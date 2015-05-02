@@ -8,7 +8,7 @@ Update: 因为实在太长了所以拆成了5个文件
 //页面加载完成时的初始化操作
 /*姑且当成main吧*/
 var socket;
-$(document).ready(function(){
+$(document).on("polymer-ready",function(){
         socket=io.connect();
 
         (function(){
@@ -76,6 +76,27 @@ $(document).ready(function(){
         }).call();
 
         $("#text_message_header").text(getRoomname());
+
+
+        (function(){
+                var dialog=document.getElementById("add-image-dialog");
+                var menu=document.getElementById("right-button-menu");
+                RIGHT_BUTTON_MENU=menu;
+                menu.addItem("Add Image",function(data){
+                        dialog.toggle(data);
+                });
+                dialog.setCallback(function(text,data){
+                        createContent({
+                                type:"img",
+                                chunk_x:data.chunk_x,
+                                chunk_y:data.chunk_y,
+                                x:data.x,
+                                y:data.y,
+                                data:{src:text,},
+                        });
+                });
+        }).call();
+
 
         DISPLAYED_CHUNKS_STATUS.updateChunks(true);//更新区块
 

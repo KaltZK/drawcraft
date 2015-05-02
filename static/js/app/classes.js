@@ -68,6 +68,8 @@ function Chunk(x,y,chunkbase){
                 });
         };
 
+        RIGHT_BUTTON_MENU.addChunk(self);
+
         this.getEvtX=function(evt){
                 return evt.clientX-(parseInt(div_ele.style.left)||0);
         };
@@ -75,7 +77,9 @@ function Chunk(x,y,chunkbase){
                 return evt.clientY-(parseInt(div_ele.style.top)||0);
         };
 
-
+        $(div_ele).on("mousedown",function(evt){
+                if(evt.which!=3) return;
+        });
 
         //键盘移动
         $(div_ele).on("mouseover",function(evt){
@@ -84,13 +88,12 @@ function Chunk(x,y,chunkbase){
         $(div_ele).on("mouseleave",function(evt){
                 SELF_DRAWING_STATUS.chunk_on_focus=false;
         });
-
         
         (function(){
                 var mouse_over=false;
                 var mx=undefined,my=undefined;
                 var start=function(evt,touch){
-                        if(!touch&&(evt.which!=3||mouse_over)) return;
+                        if(!touch&&(evt.which!=2||mouse_over)) return;
                         mouse_over=true;
                         mx=evt.clientX;
                         my=evt.clientY;

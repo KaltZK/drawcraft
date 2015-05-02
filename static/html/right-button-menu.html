@@ -1,0 +1,61 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/core-menu/core-menu.html">
+<link rel="import" href="/bower_components/paper-shadow/paper-shadow.html">
+<polymer-element name="right-button-menu">
+        <template>
+                <style>
+                :host{
+                        display:block;
+                        position:absolute;
+                        display:none;
+                }
+                #right_button_menu{
+                        background-color:white;
+                }
+                </style>
+                <core-menu id="right_button_menu">
+                        <paper-shadow z="1" id="shadow">
+                        </paper-shadow>
+                </core-menu>
+        </template>
+        <script>
+        Polymer({
+                target_data:{},
+                addChunk:function(chunk){
+                        var parent=chunk.div;
+                        var menu=this.$.right_button_menu;
+                        var self=this;
+                        $(parent).on("mouseup",function(evt){
+                                if(self.style.display!="block"){
+                                        if(evt.which!=3) return;
+                                        self.target_data.x=evt.clientX;
+                                        self.target_data.y=evt.clientY;
+                                        self.target_data.chunk_x=chunk.x;
+                                        self.target_data.chunk_y=chunk.y;
+                                        self.target_data.x=chunk.getEvtX(evt);
+                                        self.target_data.y=chunk.getEvtY(evt);
+                                        self.style.left=evt.clientX;
+                                        self.style.top=evt.clientY;
+                                        self.style.display="block";
+                                }
+                                else{
+                                        self.style.display="none";
+                                }
+                        });
+                },
+                addItem:function(text,callback){
+                        var self=this;
+                        var item=document.createElement("paper-item");
+                        this.$.shadow.appendChild(item);
+                        item.textContent=text;
+                        item.addEventListener("click",function(){
+                                setTimeout(function(){
+                                        callback(self.target_data);
+                                        self.style.display="none";
+                                },500);
+                        });
+                },
+        });
+        </script>
+</polymer-element>

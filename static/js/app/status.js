@@ -90,3 +90,5 @@ DISPLAYED_CHUNKS_STATUS={
                 this.range=new_status;
         },
 };
+
+var RIGHT_BUTTON_MENU;
