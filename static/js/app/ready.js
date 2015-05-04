@@ -82,7 +82,7 @@ $(document).on("polymer-ready",function(){
                 var dialog=document.getElementById("add-image-dialog");
                 var menu=document.getElementById("right-button-menu");
                 RIGHT_BUTTON_MENU=menu;
-                menu.addItem("Add Image",function(data){
+                menu.addItem("Insert Image",function(data){
                         dialog.toggle(data);
                 });
                 dialog.setCallback(function(text,data){
@@ -115,6 +115,15 @@ $(document).on("polymer-ready",function(){
                 });
                 $("#move_radio_button").on("change",function(evt){
                         LEFT_BUTTON_MODE=LEFT_BUTTON_MODE_CODE.MOVE;
+                });
+        }).call();
+        (function(){
+                var dialog = document.querySelector('#help_dialog');
+                $("#help_button").on("click",function(){
+                        dialog.toggle();
+                });
+                $("#close_help_button").on("click",function(){
+                        dialog.toggle(false);
                 });
         
         }).call();

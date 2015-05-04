@@ -104,7 +104,7 @@ function Chunk(x,y,chunkbase){
                         my=undefined;
                 };
                 var move=function(evt,touch){
-                        if(!mouse_over) return;
+                        if(!mouse_over||(LEFT_BUTTON_MODE!=LEFT_BUTTON_MODE_CODE.MOVE&&evt.which!=2)) return;
                         var dx=parseInt(evt.clientX-mx),dy=parseInt(evt.clientY-my);
                         ABSOLUTE_POSITION.moveRelatively(dx,dy);
                         if(touch) showPosition(VIEW_POSITION.x,VIEW_POSITION.y,"AbsPos");
@@ -133,22 +133,57 @@ function Chunk(x,y,chunkbase){
                 $(div_ele).on("mousemove",move);
         }).call();//支持拖拽
         (function(){//用于左键绘制SVG线条
+                function start(evt){
+                        if(LEFT_BUTTON_MODE==LEFT_BUTTON_MODE_CODE.DRAW)
+                                SELF_DRAWING_STATUS.start(self.getEvtX(evt),self.getEvtY(evt),self);
+                }
+                //~ draw.on("touchstart",function(evt){
+                        //~ if(evt.touches.length==1)
+                                //~ start(evt.touches[0]);
+                //~ });
                 draw.on("mousedown",function(evt){
-                        if(!(evt.which==1&&LEFT_BUTTON_MODE==LEFT_BUTTON_MODE_CODE.DRAW)) return;
-                        SELF_DRAWING_STATUS.start(self.getEvtX(evt),self.getEvtY(evt),self);
+                        if(evt.which==1)
+                                start(evt);
                 });
-                draw.on("mouseup",function(evt){
+                function stop(evt){
                         SELF_DRAWING_STATUS.stop(self.getEvtX(evt),self.getEvtY(evt),self);
-                });
-                draw.mousemove(function(evt){
-                        showPosition(self.getEvtX(evt),self.getEvtY(evt),chunk_id);
+                }
+                draw.on("mouseup",stop);
+                //~ draw.on("touchend",function(evt){
+                        //~ if(evt.touches.length==1)
+                                //~ stop(evt.touches[0]);
+                //~ });
+                function move(evt){
+                        showPosition(parseInt(self.getEvtX(evt)),parseInt(self.getEvtY(evt)),chunk_id);
                         if(!SELF_DRAWING_STATUS.drawing) return;
+                        if(LEFT_BUTTON_MODE!=LEFT_BUTTON_MODE_CODE.DRAW)
+                                SELF_DRAWING_STATUS.stop_in_chunk(self.getEvtX(evt),self.getEvtY(evt),self);
                         var x=self.getEvtX(evt),y=self.getEvtY(evt);
                         if(!SELF_DRAWING_STATUS.last_chunk.id||
                                 SELF_DRAWING_STATUS.last_chunk.id!=chunk_id)
                                 SELF_DRAWING_STATUS.start_in_chunk(x,y,self);//因为mouseenter事件在鼠标按下的时候不触发所以只能这样处理
                         SELF_DRAWING_STATUS.add_point(x,y,self);
-                });
+                }
+                draw.mousemove(move);
+                //~ draw.on("touchmove",function(evt){
+                        //~ if(evt.touches.length==1){
+                                //~ var tevt=evt.touches[0];
+                                //~ var x=self.getEvtX(tevt);
+                                //~ var y=self.getEvtY(tevt);
+                                //~ if(0<=x&&x<=CHUNK_WIDTH&&0<=y&&y<=CHUNK_HEIGHT)
+                                        //~ move(tevt);
+                                //~ else{
+                                        //~ var target_chunk=getChunk(Math.floor(x/CHUNK_WIDTH),Math.floor(y/CHUNK_HEIGHT));
+                                        //~ if(!target_chunk) return;
+                                        //~ console.log(x,y);
+                                        //~ SELF_DRAWING_STATUS.add_point(
+                                                //~ parseInt(getXShiftedBetweenChunks(x,self,target_chunk)),
+                                                //~ parseInt(getYShiftedBetweenChunks(y,self,target_chunk)),
+                                                //~ target_chunk
+                                        //~ );
+                                //~ }
+                        //~ }
+                //~ });
                 atAllElement(div_ele,function(div){
                         div.style.width=CHUNK_WIDTH;
                         div.style.height=CHUNK_HEIGHT;

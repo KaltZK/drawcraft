@@ -110,8 +110,14 @@ div#position_bar{
 }
 #menu_button{
 	z-index: 20;
-	bottom: 1%;
+	bottom: 0.1em;
 	right: 4.2em;
+	position: absolute;
+}
+#help_button{
+	z-index: 20;
+	bottom: 0.1em;
+	right: 1.2em;
 	position: absolute;
 }
 #slider{
