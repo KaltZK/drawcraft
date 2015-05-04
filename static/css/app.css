@@ -117,13 +117,7 @@ div#position_bar{
 #slider{
       width: 100%;
 }
-#color_button{
-}
-#ok_button{
-        position:absolute;
-	background-color: #5677fc;
-	color: white;
-}
+
 .color_list_item{
 	height: 1em;
 	width: 1em;

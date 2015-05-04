@@ -97,10 +97,13 @@ $(document).on("polymer-ready",function(){
                 });
         }).call();
 
-        (function(){                
-		$("#menu_button").on("click",function(){
-                        var dialog = document.querySelector('paper-dialog#setting');
-                        dialog.toggle();
+        (function(){
+                document.querySelector('#style_setting_dialog')
+                .setStyleObject(SELF_DRAWING_STATUS.style.stroke);
+
+                $("#menu_button").on("click",function(){
+                        var dialog = document.querySelector('#style_setting_dialog');
+                        dialog.show();
                 });
                 $("#color_button").on("click",function() {
                 var dialog = document.querySelector('#color');
