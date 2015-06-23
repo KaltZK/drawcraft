@@ -18,6 +18,5 @@ require.config({
 });
 
 require(["dc/board"],function(Board){
-        console.log(Board);
         board=new Board("board");
 });

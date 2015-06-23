@@ -1,5 +1,5 @@
-define('dc/board',['jquery','svg','dc/graphic','jquery.mousewheel',],
-function($,svg,Graphic){return function(id){
+define('dc/board',['jquery','svg','dc/graphic','dc/abspos','jquery.mousewheel',],
+function($,svg,Graphic,abspos){return function(id){
         var self=this;
         var draw=this.draw=svg(id);
         var element=this.element=document.getElementById(id);
@@ -21,13 +21,14 @@ function($,svg,Graphic){return function(id){
                         $(element).bind("mousemove",function(evt){
                                 var dx=+evt.clientX-x;
                                 var dy=evt.clientY-y;
-                                graphics.forEach(function(gr){gr.dmove(dx,dy)});
+                                self.dmove(dx,dy);
                                 x=evt.clientX;y=evt.clientY;
                         });
                         $(element).bind("mouseup",function(evt){
-                                var dx=+evt.clientX-x;
+                                var dx=evt.clientX-x;
                                 var dy=evt.clientY-y;
-                                graphics.forEach(function(gr){gr.dmove(dx,dy)});
+                                self.dmove(dx,dy);
+                                x=evt.clientX;y=evt.clientY;
                                 $(element).unbind("mousemove");
                                 $(element).unbind("mouseup");
                         });
@@ -44,11 +45,29 @@ function($,svg,Graphic){return function(id){
                         $(element).bind("mouseup",function(evt){
                                 points.push([evt.clientX,evt.clientY]);
                                 line.plot(points);
-                                graphics.push(new Graphic(line,zIndex,self));
+                                if(points.length>1)
+                                        graphics.push(new Graphic(line,zIndex,self));
                                 $(element).unbind("mousemove");
                                 $(element).unbind("mouseup");
                         });
                         break;
                 }
         });
+        $(element).keydown(function(evt){
+                var dx=0,dy=0;
+                var speed=5;
+                switch(evt.keyCode||evt.which){//这里是“视野移动”所以按键方向和方块移动方向相反
+                        case 87:dy=speed;break;//W
+                        case 83:dy=-speed;break;//S
+                        case 65:dx=speed;break;//A
+                        case 68:dx=-speed;break;//D
+                };
+                console.log(evt);
+                self.dmove(dx,dy);
+        });
+        
+        this.dmove=function(dx,dy){
+                graphics.forEach(function(gr){gr.dmove(dx,dy)});
+                abspos.dmove(dx,dy);
+        };
 }});
