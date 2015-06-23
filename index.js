@@ -7,6 +7,7 @@ require.config({
                 'jquery.mousewheel':"//cdn.bootcss.com/jquery-mousewheel/3.1.12/jquery.mousewheel",
 
                 'dc/board':'dc/board',
+                "dc/graphic":"dc/graphic",
         },
         shim:{
                 'jquery': {exports: '$',},
