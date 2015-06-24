@@ -1,34 +1,31 @@
 define('dc/board',['jquery','svg','dc/graphic','dc/abspos','jquery.mousewheel',],
 function($,svg,Graphic,abspos){return function(id){
         var self=this;
-        var draw=this.draw=svg(id);
         var element=this.element=document.getElementById(id);
+        var draw=this.draw=svg(element);
         var graphics=[];
-        
-        g=draw.polyline("0,0 1000,1000");
-        g.stroke({color:"blue",width:2,});
 
-        graphics.push(new Graphic(g,0,this));
+        //~ g=draw.polyline("0,0 "+[document.body.clientWidth,document.body.clientHeight].toString());
+        //~ g.stroke({color:"blue",width:2,});
+//~ 
+        //~ graphics.push(new Graphic(g,0,this));
 
-        var zIndex=0;
         $(element).bind("mousewheel",function(evt,delta){
-                graphics.forEach(function(gr){gr.zoom(zIndex+=delta)});
+                abspos.dzoom(delta);
+                graphics.forEach(function(gr){gr.zoom(abspos.z())});
+                absdiv.style.left=abspos.x();
+                absdiv.style.top=abspos.y();
         });
         $(element).on("mousedown",function(evt){
                 switch(evt.which){
                 case 2:
                         var x=evt.clientX,y=evt.clientY;
                         $(element).bind("mousemove",function(evt){
-                                var dx=+evt.clientX-x;
-                                var dy=evt.clientY-y;
-                                self.dmove(dx,dy);
+                                self.dmove(evt.clientX-x,evt.clientY-y);
                                 x=evt.clientX;y=evt.clientY;
                         });
                         $(element).bind("mouseup",function(evt){
-                                var dx=evt.clientX-x;
-                                var dy=evt.clientY-y;
-                                self.dmove(dx,dy);
-                                x=evt.clientX;y=evt.clientY;
+                                self.dmove(evt.clientX-x,evt.clientY-y);
                                 $(element).unbind("mousemove");
                                 $(element).unbind("mouseup");
                         });
@@ -46,28 +43,19 @@ function($,svg,Graphic,abspos){return function(id){
                                 points.push([evt.clientX,evt.clientY]);
                                 line.plot(points);
                                 if(points.length>1)
-                                        graphics.push(new Graphic(line,zIndex,self));
+                                        graphics.push(new Graphic(line,abspos.z(),self));
                                 $(element).unbind("mousemove");
                                 $(element).unbind("mouseup");
                         });
                         break;
                 }
         });
-        $(element).keydown(function(evt){
-                var dx=0,dy=0;
-                var speed=5;
-                switch(evt.keyCode||evt.which){//这里是“视野移动”所以按键方向和方块移动方向相反
-                        case 87:dy=speed;break;//W
-                        case 83:dy=-speed;break;//S
-                        case 65:dx=speed;break;//A
-                        case 68:dx=-speed;break;//D
-                };
-                console.log(evt);
-                self.dmove(dx,dy);
-        });
         
         this.dmove=function(dx,dy){
-                graphics.forEach(function(gr){gr.dmove(dx,dy)});
                 abspos.dmove(dx,dy);
+                graphics.forEach(function(gr){gr.dmove(dx,dy)});
+                absdiv.style.left=abspos.x();
+                absdiv.style.top=abspos.y();
         };
+
 }});
