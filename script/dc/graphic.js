@@ -20,6 +20,11 @@ Graphic=function(polyline,board,style){
         });
 
 
+        polyline.on("mouseenter",function(evt){console.log("enter!")});
+        polyline.on("mouseup",function(evt){console.log("click!")});
+        polyline.on("mouseleave",function(evt){console.log("leave!")});
+
+
         this.updateZoom=function(){
                 var     centerX=posfuncs.centerX(),
                         centerY=posfuncs.centerY();
