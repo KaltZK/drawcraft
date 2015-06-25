@@ -10,8 +10,8 @@ zoomMapping:function(zIndex){
         //~ return  (Math.atan((zIndex||0)/10)/Math.PI+1);
         return Math.atan(zIndex/10-z0)/Math.PI*2*d+a+d;
 },
-centerX:function(){return window.screen.availWidth/2;},
-centerY:function(){return window.screen.availHeight/2;},
+centerX:function(width){return (width||window.screen.availWidth)/2;},
+centerY:function(height){return (height||window.screen.availHeight)/2;},
 mapPos:function(x1,z1,z2,cx){return cx-this.zoomMapping(z2)/this.zoomMapping(z1)*(cx-x1);},
 mapX:function(x1,z1,z2){return this.mapPos(x1,z1,z2||0,this.centerX());},
 mapY:function(y1,z1,z2){return this.mapPos(y1,z1,z2||0,this.centerY());},

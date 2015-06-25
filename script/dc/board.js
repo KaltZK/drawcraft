@@ -1,18 +1,19 @@
 define('dc/board',['jquery','svg','dc/graphic','dc/abspos','jquery.mousewheel',],
-function($,svg,Graphic,abspos){return function(id){
+function($,svg,Graphic,AbsPos){return function(id){
         var self=this;
         var element=this.element=document.getElementById(id);
         var draw=this.draw=svg(element);
         var graphics=[];
+        var abspos=this.abspos=new AbsPos(this);
 
-        //~ g=draw.polyline("0,0 "+[document.body.clientWidth,document.body.clientHeight].toString());
-        //~ g.stroke({color:"blue",width:2,});
-//~ 
-        //~ graphics.push(new Graphic(g,0,this));
+        g=draw.polyline("0,0 "+[document.body.clientWidth,document.body.clientHeight].toString());
+        g.stroke({color:"blue",width:2,});
+
+        graphics.push(new Graphic(g,0,this));
 
         $(element).bind("mousewheel",function(evt,delta){
                 abspos.dzoom(delta);
-                graphics.forEach(function(gr){gr.zoom(abspos.z())});
+                graphics.forEach(function(gr){gr.updateZoom()});
                 absdiv.style.left=abspos.x();
                 absdiv.style.top=abspos.y();
         });
@@ -50,10 +51,10 @@ function($,svg,Graphic,abspos){return function(id){
                         break;
                 }
         });
-        
+        $(document).on("keydown",function(evt){console.log(evt.keyCode)});
         this.dmove=function(dx,dy){
                 abspos.dmove(dx,dy);
-                graphics.forEach(function(gr){gr.dmove(dx,dy)});
+                graphics.forEach(function(gr){gr.updatePos()});
                 absdiv.style.left=abspos.x();
                 absdiv.style.top=abspos.y();
         };
