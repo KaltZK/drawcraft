@@ -6,8 +6,18 @@ function($,svg,Graphic,AbsPos){return function(id){
         var graphics=[];
         var abspos=this.abspos=new AbsPos(this);
 
+        var gstyle={stroke:{color:"#5677fc",width:3,opacity:0.5},fill:"none"};
+        g=draw.polyline("0,0 "+[document.body.clientWidth,document.body.clientHeight].toString());
+        g.stroke(gstyle.stroke);
+        g.fill(gstyle.fill);
+        graphics.push(new Graphic(g,this,gstyle));
+
+        $(element).bind("contextmenu",function(evt){console.log(evt);return false;});
+        //屏蔽右键菜单&使用自制右键菜单
+
         $(element).bind("mousewheel",function(evt,delta){
                 abspos.dzoom(delta);
+                console.log(abspos.chunkLeft(),abspos.chunkRight(),abspos.chunkTop(),abspos.chunkBottom());
                 graphics.forEach(function(gr){gr.updateZoom()});
                 absdiv.style.left=abspos.x();
                 absdiv.style.top=abspos.y();
@@ -29,7 +39,7 @@ function($,svg,Graphic,AbsPos){return function(id){
                 case 1:
                         var     points=[],
                                 line=draw.polyline([evt.clientX,evt.clientY].toLocaleString());
-                        var style={stroke:{color:"blue",width:1},fill:"none"};
+                        var style={stroke:{color:"#5677fc",width:2,opacity:0.5},fill:"none"};
                         line.stroke(style.stroke);
                         line.fill(style.fill);
                         $(element).bind("mousemove",function(evt){
@@ -47,7 +57,20 @@ function($,svg,Graphic,AbsPos){return function(id){
                         break;
                 }
         });
-        $(document).on("keydown",function(evt){console.log(evt.keyCode)});
+        $(document).on("keydown",function(evt){
+                var speed=25,dx=0,dy=0;
+                switch(evt.keyCode){
+                case 37://LEFT
+                case 65:dx=speed;break;//A
+                case 39://RIGHT
+                case 68:dx=-speed;break;//D
+                case 38://UP
+                case 87:dy=speed;break;//W
+                case 40://BOTTOM
+                case 83:dy=-speed;break;//S
+                }
+                self.dmove(dx,dy);
+        });
         this.dmove=function(dx,dy){
                 abspos.dmove(dx,dy);
                 graphics.forEach(function(gr){gr.updatePos()});

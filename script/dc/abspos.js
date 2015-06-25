@@ -23,5 +23,16 @@ return function(board){
         };
         this.reMapXFromAbs=function(absx){return this.x()+absx*this.zoomMapping();};
         this.reMapYFromAbs=function(absy){return this.y()+absy*this.zoomMapping();};
+
+        //当前视野在绝对坐标系上的大小
+        this.viewLeft=function(){return this.mapXToAbs(0)};
+        this.viewRight=function(){return this.mapXToAbs(window.screen.availWidth)};
+        this.viewTop=function(){return this.mapYToAbs(0)};
+        this.viewBottom=function(){return this.mapYToAbs(window.screen.availHeight)};
+
+        this.chunkLeft=function(){return Math.floor(this.viewLeft()/posfuncs.chunkWidth)};
+        this.chunkRight=function(){return Math.floor(this.viewRight()/posfuncs.chunkWidth)};
+        this.chunkTop=function(){return Math.floor(this.viewTop()/posfuncs.chunkHeight)};
+        this.chunkBottom=function(){return Math.floor(this.viewBottom()/posfuncs.chunkHeight)};
 };
 });

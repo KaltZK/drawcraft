@@ -1,4 +1,4 @@
-define("dc/graphic",['jquery','svg','dc/posfuncs'],function($,svg,posfuncs){
+define("dc/graphic",['jquery','svg','dc/posfuncs','dc/color'],function($,svg,posfuncs,color){
         //debug用
         centerdiv.style.left=posfuncs.centerX();
         centerdiv.style.top=posfuncs.centerY();
@@ -20,10 +20,20 @@ Graphic=function(polyline,board,style){
         });
 
 
-        polyline.on("mouseenter",function(evt){console.log("enter!")});
+        polyline.on("mouseenter",function(evt){
+                self.polyline.stroke({
+                        color:color.invert(style.stroke.color),
+                        width:style.stroke.width+7,
+                        opacity:1,
+                });
+        });
         polyline.on("mouseup",function(evt){console.log("click!")});
-        polyline.on("mouseleave",function(evt){console.log("leave!")});
+        polyline.on("mouseleave",function(evt){
+                self.polyline.stroke(style.stroke);
+        });
 
+        this.scrX=function(){return abspos.reMapXFromAbs(absx)};
+        this.scrY=function(){return abspos.reMapYFromAbs(absy)};
 
         this.updateZoom=function(){
                 var     centerX=posfuncs.centerX(),
@@ -38,13 +48,24 @@ Graphic=function(polyline,board,style){
                 this.polyline.move(abspos.reMapXFromAbs(this.absx),
                         abspos.reMapYFromAbs(this.absy));
         };
-        
+
+        this.chunkRight=function(){return Math.floor((this.absx+width)/posfuncs.chunkWidth);};//最右侧所在chunk
+        this.chunkLeft=function(){return Math.ceil(this.absx/posfuncs.chunkWidth);};
+        this.chunkBottom=function(){return Math.floor((this.absy+height)/posfuncs.chunkHeight);};
+        this.chunkTop=function(){return Math.ceil(this.absy/posfuncs.chunkHeight);};
+                
         this.toStruct=function(){
                 return{
                         x:absx,y:absy,
                         width:width,height:height,
                         points:this.absPoints,
                         style:style,
+                        chunk:{
+                                right:this.chunkRight(),
+                                left:this.chunkLeft(),
+                                top:this.chunkTop(),
+                                bottom:this.chunkBottom(),
+                        },
                 };
         };
 };
