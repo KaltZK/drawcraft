@@ -22,12 +22,14 @@ Graphic=function(polyline,board,style){
 
         polyline.on("mouseenter",function(evt){
                 self.polyline.stroke({
-                        color:color.invert(style.stroke.color),
                         width:style.stroke.width+7,
                         opacity:1,
                 });
         });
-        polyline.on("mouseup",function(evt){console.log("click!")});
+        $(polyline.node).on("contextmenu",function(evt){
+                console.log("click!");
+                return false;//阻止父元素获取事件
+        });
         polyline.on("mouseleave",function(evt){
                 self.polyline.stroke(style.stroke);
         });
