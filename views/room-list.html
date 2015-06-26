@@ -1,0 +1,35 @@
+<!DOCTYPE HTML5>
+<html>
+	<head>
+
+		<script src="/socket.io.js"></script>
+		<script src="/jquery.min.js"></script>
+		<script src="/jquery-cookie/jquery.cookie.js"></script>
+                
+                <script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
+                <link rel="import" href="/bower_components/paper-shadow/paper-shadow.html">
+                <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+                <link rel="import" href="/bower_components/core-field/core-field.html">
+                <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
+                <link rel="import" href="/bower_components/paper-input/paper-input.html">
+                <link rel="import" href="/html/room-name.html">
+
+                <link rel="import" href="/html/font-roboto.html">
+
+                
+                <link rel="stylesheet" type="text/css" href="/css/room-list.css">
+                <script src="/js/room-list-ready.js"></script>
+                
+                <title>Enter Room</title>
+        </head>
+        <body unresolved>
+		
+                <div id="title">Enter Room</div>
+                <paper-fab id="back_fab" icon="reply" class="blue" z="1"></paper-fab>
+                <core-field>
+                        <paper-input id="name_input" floatingLabel label="Your Room"></paper-input>
+                        <paper-icon-button id="find_button" icon="arrow-forward"></paper-icon-button>
+                </core-fab>
+                <div id="background">
+		</div>
+	</body>

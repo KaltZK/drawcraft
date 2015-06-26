@@ -1,0 +1,69 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/core-field/core-field.html">
+<polymer-element name="selecting-color-dialog">
+        <template>
+                <style>
+                </style>
+                <paper-dialog id="color_dialog" heading="Select Color">
+                        <div id="color_list">
+                        </div>
+                </paper-dialog>
+        </template>
+        <script>
+                var color_list=[
+                                "#e51c23",
+                                "#e91e63",
+                                "#9c27b0",
+                                "#673ab7",
+                                "#3f51b5",
+                                "#5677fc",
+                                "#03a9f4",
+                                "#00bcd4",
+                                "#009688",
+                                "#259b24",
+                                "#8bc34a",
+                                "#cddc39",
+                                "#ffeb3b",
+                                "#ffc107",
+                                "#ff9800",
+                                "#ff5722",
+                                "#795548",
+                                "#607d8b",
+                                "#9e9e9e",
+                                "white",
+                                "black",];
+                Polymer({
+                        __initialized:false,
+                        initialize:function(){
+                                var self=this;
+                                var field;
+                                for(var i=0;i<color_list.length;i++){
+                                        if(i%3==0){
+                                                field=document.createElement("core-field");
+                                                this.$.color_list.appendChild(field);
+                                        }
+                                        var color_button=document.createElement("paper-button");
+                                        color_button.style.color="#eeeeee";
+                                        color_button.textContent=
+                                        color_button.style.backgroundColor=color_list[i];
+                                        field.appendChild(color_button);
+                                }
+                                this.$.color_list.addEventListener("click",function(evt){
+                                        self.selected(evt.target.textContent);
+                                });
+                                this.__initialized=true;
+                        },
+                        select:function(callback){
+                                this.__callback=callback;
+                                this.$.color_dialog.toggle(true);
+                                if(!this.__initialized)
+                                        this.initialize();
+                        },
+                        selected:function(color){
+                                this.$.color_dialog.toggle(false);
+                                this.__callback(color);
+                        },
+                });
+        </script>
+</polymer-element>

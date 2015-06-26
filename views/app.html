@@ -1,0 +1,111 @@
+<!DOCTYPE HTML5>
+<html>
+	<head>
+		<meta http_equiv=Content-Type content="text/html; charset=utf_8">
+
+                <!-- 固定页面大小阻止缩放 -->
+                <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+                
+
+                <!-- 接下来引用的js文件是从网上找来的库 -->
+		<script src="/socket.io.js"></script>
+		<script src="/jquery.min.js"></script>
+		<script src="/jquery-cookie/jquery.cookie.js"></script>
+		<script src="/jquery-touch/jquery.touch.js"></script>
+                <script src="/svg.js"></script>
+
+
+                <!-- 接下来引用的js文件是自己写的 在 static/js 里 -->
+                <script src="/js/app/forie.js"></script>
+                <script src="/js/app/config.js"></script>
+                <script src="/js/app/classes.js"></script>
+                <script src="/js/app/status.js"></script>
+                <script src="/js/app/functions.js"></script>
+                <script src="/js/app/ready.js"></script>
+
+
+                
+
+                <!-- 接下来是components -->
+                <script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
+                
+                <!-- 由于GoogleAPI不能用改用360的roboto字体 -->
+                <link rel="import" href="/html/font-roboto.html">
+                
+                <link rel="import" href="/html/right-button-menu.html">
+                <link rel="import" href="/html/add-image-dialog.html">
+                <link rel="import" href="/html/style-setting-dialog.html">
+
+                <!-- 接下来是导入的样式表 -->
+                <link rel="stylesheet" type="text/css" href="/css/app.css">
+                
+                <link rel="import" href="/bower_components/core-header-panel/core-header-panel.html">
+                <link rel="import" href="/bower_components/paper-shadow/paper-shadow.html">
+                <link rel="import" href="/bower_components/core-field/core-field.html">
+                <link rel="import" href="/bower_components/paper-input/paper-input.html">
+                <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+                <link rel="import" href="/bower_components/paper-ripple/paper-ripple.html">
+                <link rel="import" href="/bower_components/paper-radio-group/paper-radio-group.html">
+                <link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+
+
+                <!-- 标题 -->
+                <title id="page_title"></title>
+	</head>
+	<body>
+		<paper-shadow id="panel_shadow" z="2">
+                <core-header-panel id="core-header-panel">
+                        
+			<div class="core-header" id="text_message_header">Room 23333</div>
+                        <div class="content" id="text_message_content">
+                        </div>
+                  
+                </core-header-panel> 
+                </paper-shadow> 
+                <div id="block">
+		 <paper-shadow id="block_shadow" z="2">
+			 <core-field>
+				 <paper-input id="content_input" label="Your Words"></paper-input>
+				 <paper-icon-button id="send_button" icon="check"></paper-icon-button>
+			 </core-field>
+		 </paper-shadow>
+
+		</div>            
+		 
+                <style-setting-dialog id="style_setting_dialog">
+                </style-setting-dialog>
+
+                <paper-icon-button id="menu_button" icon="settings"></paper-icon-button>
+
+                <paper-dialog id="help_dialog" heading="Help">
+                        <p>建议使用Chrome或Opera浏览本页面</p>
+                        <p>使用WASD或鼠标中键移动视野</p>
+                        <p>可以通过左下角的两个单选按钮切换左键操作模式</p>
+                        <p>右键可插入图片，图片太大可能会卡</p>
+                        <p>可通过右下角的设置按钮设置画笔</p>
+                        <p>在聊天框使用/tp x y命令可移动到指定位置</p>
+                        <p>按钮用英文是因为字体好看，求不吐槽</p>
+                        <p>移动设备暂时无法绘制</p>
+                        <paper-icon-button id="close_help_button" icon="close"></paper-icon-button>
+                </paper-dialog>
+                <paper-icon-button id="help_button" icon="help"></paper-icon-button>
+                
+                
+                <section id="Mode">
+			<paper-radio-group id="mode_radio_group" class="blue" selected="0">
+                          <paper-radio-button id="draw_radio_button" class="blue-radio" label="Draw"></paper-radio-button><br>
+                          <paper-radio-button id="move_radio_button" class="blue-radio" label="Move"></paper-radio-button>
+                        </paper-radio-group>
+                </section>
+
+                <add-image-dialog id="add-image-dialog"></add-image-dialog>
+                <right-button-menu id="right-button-menu"></right-button-menu>
+		<div id="position_bar">
+                        <label id="position_label"></label>
+                </div>
+                <div id="board">
+                </div>
+
+
+        </body>
+</html>

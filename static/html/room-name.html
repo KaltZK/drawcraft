@@ -1,0 +1,78 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/core-field/core-field.html">
+<link rel="import" href="/bower_components/paper-ripple/paper-ripple.html">
+
+<polymer-element name="room-name">
+        <template>
+                <style>
+			:host{
+				left: 0;
+				width: 100%;
+				height: 13em;
+				display: block;
+                                min-width: 5em;
+                                padding: 1em;
+			}
+			#block{
+                                left: 0;
+                                width: 100%;
+                                height: 13em;
+                                position: absolute;
+                                background-color: white;
+                        }
+                        #block_shadow{
+                                width: 100%;
+                                height: 100%;
+                                position: absolute;
+                        }
+                        #name_label{
+                                color: #3b50ce;
+                                font-size: 3em;/*em是一倍文字大小*/
+                                /*text-align:center;*/
+                                line-height: 4em;
+                                top: 0;
+                                font-style: normal;
+                                left: 5%;
+                                right: 50%;
+                                width: 45%;
+                                height: 25%;
+                                left: 1em;
+                                position: absolute;
+                        }
+                        #enter_button{
+	         		right: 1.5em;
+		        	top: 5em;
+		        	position: absolute;
+		        }
+                        .ripple{
+                                width:100%;
+                                height:100%;
+                        }
+		</style>
+		<div id="block" on-click="{{enterRoom}}">
+		   <paper-shadow id="block_shadow" z="{{z_height}}">
+			   <core-field>
+			   <label id="name_label">{{roomname}}</label>
+			   <paper-icon-button id="enter_button" icon="arrow-forward" on-click="{{enterRoom}}"></paper-icon-button>
+			   </core-field>
+                        <paper-ripple class="ripple" fit>
+                        </paper-ripple>
+                   </paper-shadow>
+                </div>
+        </template>
+        
+        <script>
+		Polymer({
+                        z_height: 1,
+                        roomname:"Lobby",
+                        enterRoom:function(){
+                                var self=this;
+                                setTimeout(function(){
+                                        window.location.href="/app#"+self.roomname;
+                                },500);
+                        },
+		});
+        </script>
+</polymer-element>
