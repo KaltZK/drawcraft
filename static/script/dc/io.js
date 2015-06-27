@@ -1,12 +1,13 @@
 define("dc/io",["jquery","socket.io","jquery.cookie"],function($,io){
+return function(room){
         var socket=io.connect();
         socket.on('connect',function(){
-                socket.emit('authentication',{//身份验证
-                        client: "John",
-                        password: "secret"
+                console.log(6);
+                socket.emit('authentication',{
+                        room:room,
                 });
         });
         return{
                 
         };
-});
+}});

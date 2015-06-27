@@ -5,15 +5,17 @@ var express = require('express');
 var url=require('url');
 var http=require('http');
 var bodyParser=require("body-parser");
-var crypto=require("crypto");
 
-var sha1=crypto.createHmac('sha1', "fkhso9GFIEgfogYG*G*^YG*Etg9ga9fhno9ugu989");
 var app = express();
 var server=http.createServer(app);
 var io=sio.listen(server);
 
-//对数据库访问接口
+
+
 var model=require('./model');
+var decorators=require('./decorators');
+var auth=require('./auth');
+
 
 server.listen(PORT);
 
@@ -58,6 +60,8 @@ var apis={
         test:function(body){return body;},
 };
 
+auth.io(io);
+
 io.on("connection",function(socket){
         socket.on('enter_room',function(data){
                 socket.join(data.room);
@@ -68,7 +72,6 @@ io.on("connection",function(socket){
                 });
         });
         socket.on('leave_room',function(data){
-                socket.join(data.room);
                 socket.broadcast.to(data.room).emit("text_message",{
                         author: "System",
                         text: data.user + " left "+data.room,

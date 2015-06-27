@@ -1,10 +1,11 @@
-define('dc/board',['jquery','svg','dc/graphic','dc/abspos','jquery.mousewheel',],
-function($,svg,Graphic,AbsPos){return function(id){
+define('dc/board',['jquery','svg','dc/graphic','dc/abspos','dc/io','dc/infofuncs','jquery.mousewheel',],
+function($,svg,Graphic,AbsPos,IO,infofuncs){return function(id){
         var self=this;
         var element=this.element=document.getElementById(id);
         var draw=this.draw=svg(element);
         var graphics=[];
         var abspos=this.abspos=new AbsPos(this);
+        var io=this.io=new IO(infofuncs.getRoom());
 
         var gstyle={stroke:{color:"#5677fc",width:3,opacity:0.5},fill:"none"};
         g=draw.polyline("0,0 "+[document.body.clientWidth,document.body.clientHeight].toString());

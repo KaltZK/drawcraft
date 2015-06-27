@@ -5,7 +5,7 @@ require.config({
                 'jquery.cookie':"//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie",
                 'svg':"//cdn.bootcss.com/svg.js/2.0.0-rc.1/svg",
                 'jquery.mousewheel':"//cdn.bootcss.com/jquery-mousewheel/3.1.12/jquery.mousewheel",
-                'socket.io':"//cdn.bootcss.com/socket.io/1.3.5/socket.io.js",
+                'socket.io':"//cdn.bootcss.com/socket.io/1.3.5/socket.io",
 
                 'dc/board':'dc/board',
                 "dc/graphic":"dc/graphic",
