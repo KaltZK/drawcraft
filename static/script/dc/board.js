@@ -1,27 +1,19 @@
 define('dc/board',['jquery','svg','dc/graphic','dc/abspos','dc/io','dc/infofuncs','jquery.mousewheel',],
 function($,svg,Graphic,AbsPos,IO,infofuncs){return function(id){
         var self=this;
+        this.room=infofuncs.getRoom();
         var element=this.element=document.getElementById(id);
         var draw=this.draw=svg(element);
-        var graphics=[];
         var abspos=this.abspos=new AbsPos(this);
-        var io=this.io=new IO(infofuncs.getRoom());
-
-        var gstyle={stroke:{color:"#5677fc",width:3,opacity:0.5},fill:"none"};
-        g=draw.polyline("0,0 "+[document.body.clientWidth,document.body.clientHeight].toString());
-        g.stroke(gstyle.stroke);
-        g.fill(gstyle.fill);
-        graphics.push(new Graphic(g,this,gstyle));
+        var io=this.io=new IO(this);
+        var graphicsManager=this.graphicsManager=new Graphic.Manager(this);
 
         $(element).bind("contextmenu",function(evt){console.log(evt);return false;});
         //屏蔽右键菜单&使用自制右键菜单
 
         $(element).bind("mousewheel",function(evt,delta){
                 abspos.dzoom(delta);
-                console.log(abspos.chunkLeft(),abspos.chunkRight(),abspos.chunkTop(),abspos.chunkBottom());
-                graphics.forEach(function(gr){gr.updateZoom()});
-                absdiv.style.left=abspos.x();
-                absdiv.style.top=abspos.y();
+                graphicsManager.updateZoom();
         });
         $(element).on("mousedown",function(evt){
                 switch(evt.which){
@@ -40,9 +32,8 @@ function($,svg,Graphic,AbsPos,IO,infofuncs){return function(id){
                 case 1:
                         var     points=[],
                                 line=draw.polyline([evt.clientX,evt.clientY].toLocaleString());
-                        var style={stroke:{color:"#5677fc",width:2,opacity:0.5},fill:"none"};
-                        line.stroke(style.stroke);
-                        line.fill(style.fill);
+                        line.stroke(graphicsManager.style.stroke);
+                        line.fill(graphicsManager.style.fill);
                         $(element).bind("mousemove",function(evt){
                                 points.push([evt.clientX,evt.clientY]);
                                 line.plot(points);
@@ -50,8 +41,10 @@ function($,svg,Graphic,AbsPos,IO,infofuncs){return function(id){
                         $(element).bind("mouseup",function(evt){
                                 points.push([evt.clientX,evt.clientY]);
                                 line.plot(points);
-                                if(points.length>1)
-                                        graphics.push(new Graphic(line,self,style));
+                                if(points.length>1){
+                                        var gr=new Graphic(line,graphicsManager);
+                                        io.createGraphic(gr);
+                                }
                                 $(element).unbind("mousemove");
                                 $(element).unbind("mouseup");
                         });
@@ -74,7 +67,7 @@ function($,svg,Graphic,AbsPos,IO,infofuncs){return function(id){
         });
         this.dmove=function(dx,dy){
                 abspos.dmove(dx,dy);
-                graphics.forEach(function(gr){gr.updatePos()});
+                graphicsManager.updatePos();
                 absdiv.style.left=abspos.x();
                 absdiv.style.top=abspos.y();
         };

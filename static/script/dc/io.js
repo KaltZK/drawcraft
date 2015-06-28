@@ -1,13 +1,19 @@
 define("dc/io",["jquery","socket.io","jquery.cookie"],function($,io){
-return function(room){
+return function(board){
         var socket=io.connect();
         socket.on('connect',function(){
-                console.log(6);
                 socket.emit('authentication',{
-                        room:room,
+                        room:board.room,
+                        id:"233",
                 });
         });
-        return{
-                
+        socket.on('disconnect',function(){
+                console.log("Disconnected.");
+        });
+        socket.on("create_graphic",function(graphic){
+                board.graphicsManager.updateNewGraphic(graphic);
+        });
+        this.createGraphic=function(graphic){
+                socket.emit("create_graphic",graphic.toStruct(graphic));
         };
 }});

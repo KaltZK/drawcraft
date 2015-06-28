@@ -13,7 +13,6 @@ var io=sio.listen(server);
 
 
 var model=require('./model');
-var decorators=require('./decorators');
 var auth=require('./auth');
 
 

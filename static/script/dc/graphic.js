@@ -2,11 +2,14 @@ define("dc/graphic",['jquery','svg','dc/posfuncs','dc/color'],function($,svg,pos
         //debug用
         centerdiv.style.left=posfuncs.centerX();
         centerdiv.style.top=posfuncs.centerY();
-Graphic=function(polyline,board,style){
+Graphic=function(polyline,manager){
         var self=this;
         this.polyline=polyline;
-        this.board=board;
-        var abspos=this.abspos=this.board.abspos;
+        this.board=manager.board;
+        var style=manager.style;
+        var abspos=this.abspos=manager.board.abspos;
+
+        manager.graphics.push(this);
         
         var pwidth=polyline.width(),pheight=polyline.height();
         var px=polyline.x(),py=polyline.y();//图形相对屏幕位置
@@ -16,7 +19,7 @@ Graphic=function(polyline,board,style){
         var absy=this.absy=abspos.mapYToAbs(py);
         this.absPoints=polyline._array.value.map(function(pos){
                 return [abspos.mapXToAbs(pos[0]),
-                abspos.mapXToAbs(pos[1])];
+                abspos.mapYToAbs(pos[1])];
         });
 
 
@@ -51,10 +54,10 @@ Graphic=function(polyline,board,style){
                         abspos.reMapYFromAbs(this.absy));
         };
 
-        this.chunkRight=function(){return Math.floor((this.absx+width)/posfuncs.chunkWidth);};//最右侧所在chunk
-        this.chunkLeft=function(){return Math.ceil(this.absx/posfuncs.chunkWidth);};
-        this.chunkBottom=function(){return Math.floor((this.absy+height)/posfuncs.chunkHeight);};
-        this.chunkTop=function(){return Math.ceil(this.absy/posfuncs.chunkHeight);};
+        this.chunkRight=function(){return Math.ceil((this.absx+width)/posfuncs.chunkWidth);};//最右侧所在chunk
+        this.chunkLeft=function(){return Math.floor(this.absx/posfuncs.chunkWidth);};
+        this.chunkBottom=function(){return Math.ceil((this.absy+height)/posfuncs.chunkHeight);};
+        this.chunkTop=function(){return Math.floor(this.absy/posfuncs.chunkHeight);};
                 
         this.toStruct=function(){
                 return{
@@ -71,13 +74,49 @@ Graphic=function(polyline,board,style){
                 };
         };
 };
-Graphic.fromStruct=function(struct,board){
-        var line=board.draw.polyline(
-                struct.points.map(function(pos){
-                        return [abspos.reMapXFromAbs(pos[0]),
-                        abspos.reMapXFromAbs(pos[1])]
-        }));
-        return new this(line,board,struct.style);
-};
+
+Graphic.Manager=function(board){
+        this.board=board;
+        this.graphics=[];
+        this.style={stroke:{color:"#5677fc",width:2,opacity:0.5},fill:"none"};
+        this.updateZoom=function(dz){
+                this.graphics.forEach(function(gr){gr.updateZoom()});
+                absdiv.style.left=board.abspos.x();
+                absdiv.style.top=board.abspos.y();
+        }
+        this.updatePos=function(){
+                console.log(
+                        board.abspos.chunkLeft(),
+                        board.abspos.chunkRight(),
+                        board.abspos.chunkTop(),
+                        board.abspos.chunkBottom()
+                );
+                this.graphics.forEach(function(gr){gr.updatePos()});
+        }
+        this.fromStruct=function(struct){
+                console.log("s:",
+                        struct.chunk.right,
+                        struct.chunk.left,
+                        struct.chunk.bottom,
+                        struct.chunk.top
+                );
+                var points=struct.points.map(function(pos){
+                                return [board.abspos.reMapXFromAbs(pos[0]),
+                                board.abspos.reMapYFromAbs(pos[1])];
+                });
+                var line=board.draw.polyline(points);
+                line.fill(this.style.fill);
+                line.stroke(this.style.stroke);
+                var gr=new Graphic(line,this);
+                return gr;
+        };
+        this.updateNewGraphic=function(struct){
+                if(     struct.chunk.left<=board.abspos.chunkRight()&&
+                        struct.chunk.right>=board.abspos.chunkLeft()&&
+                        struct.chunk.bottom>=board.abspos.chunkTop()&&
+                        struct.chunk.top<=board.abspos.chunkBottom())
+                        return this.fromStruct(struct);
+        };
+}
 return Graphic;
 });

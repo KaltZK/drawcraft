@@ -15,6 +15,10 @@ require.config({
                 'jqueryUI':{deps:["jquery"],},
                 'jquery.cookie':{deps:["jquery"],},
                 'jquery.mousewheel':{deps:["jquery"],},
+
+                'socket.io':{exports:"io",},
+                
+                'dc/exportfuncs':{exports:"exportfuncs",},
         },
 });
 
