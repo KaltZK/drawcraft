@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+		<script src="/jquery.min.js"></script>
+		<style type="text/css">
+
+		</style>
+		<title>RoomList</title>
+	</head>
+	<body>
+                <ul>
+                <script>
+                $.post("/api?action=roomList",function(res){
+                        res.forEach(function(data){
+                                document.write("<li>"+decodeURI(data.room).link("/app#"+data.room)+"</li>");
+                        });
+                });
+                </script>
+                </ul>
+	</body>
+</html>

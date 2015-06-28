@@ -41,7 +41,7 @@ app.get('/',function(req,res){
         res.render("index");
 });
 app.get('/room-list',function(req,res){
-        res.render("room-list");
+        res.render("newroomlist");
 });
 app.get('/app',function(req,res){
         res.render("newapp");
@@ -53,10 +53,15 @@ app.post('/api',function(req,res){
                 return;
         }
         console.log(req.body);
-        res.json(apis[action](req.body));
+        apis[action](req.body,function(result){
+                res.json(result);
+        });
 });
 var apis={
         test:function(body){return body;},
+        roomList:function(body,callback){
+                return model.loadRoomList(callback);
+        },
 };
 
 auth.io(io);

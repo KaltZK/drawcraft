@@ -35,7 +35,9 @@ db.open(function(err,db){
         exports.enterRoom=function(room){
                 rooms.update({room:room},{$inc:{enter_num:1}},{upsert:true,multi:false});
         };
-        exports.loadRoomList=function(msg,loadRoomCallback){
-                rooms.find({}).sort({enter_num:-1}).limit(100).forEach(loadRoomCallback);
+        exports.loadRoomList=function(callback){//msg,loadRoomCallback){
+                var array=rooms.find({}).sort({enter_num:-1}).toArray(function(err,array){
+                        callback(array);
+                });
         };
 });
