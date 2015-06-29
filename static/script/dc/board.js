@@ -17,8 +17,9 @@ function($,svg,Graphic,AbsPos,IO,infofuncs,BoardEvents){return function(id){
                 graphicsManager.updateZoom();
                 eventsManager.send("zoom",
                         abspos.viewX(),abspos.viewY(),abspos.height());
+                return false;
         });
-        $(element).on("mousedown",function(evt){
+        $(element).bind("mousedown",function(evt){
                 switch(evt.which){
                 case 2:
                         var x=evt.clientX,y=evt.clientY;
@@ -53,6 +54,7 @@ function($,svg,Graphic,AbsPos,IO,infofuncs,BoardEvents){return function(id){
                         });
                         break;
                 }
+                return false;
         });
         $(document).on("keydown",function(evt){
                 var speed=25,dx=0,dy=0;
