@@ -7,6 +7,9 @@ return function(board){
         this.x=function(){return this.__screen.x};
         this.y=function(){return this.__screen.y};
         this.z=function(){return this.__screen.z};
+        this.viewX=function(){return -(this.x()-posfuncs.centerX())/this.zoomMapping()};
+        this.viewY=function(){return -(this.y()-posfuncs.centerY())/this.zoomMapping()};
+        this.height=function(){return 1/this.zoomMapping()};
         this.dmove=function(dx,dy){this.__screen.x+=dx;this.__screen.y+=dy;};
         this.dzoom=function(dz){
                 this.__screen.x=posfuncs.mapX(this.__screen.x,this.__screen.z,this.__screen.z+dz);

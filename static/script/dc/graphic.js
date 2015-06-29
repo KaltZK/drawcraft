@@ -85,12 +85,6 @@ Graphic.Manager=function(board){
                 absdiv.style.top=board.abspos.y();
         }
         this.updatePos=function(){
-                console.log(
-                        board.abspos.chunkLeft(),
-                        board.abspos.chunkRight(),
-                        board.abspos.chunkTop(),
-                        board.abspos.chunkBottom()
-                );
                 this.graphics.forEach(function(gr){gr.updatePos()});
         }
         this.fromStruct=function(struct){

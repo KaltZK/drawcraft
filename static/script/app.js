@@ -22,6 +22,7 @@ require.config({
         },
 });
 
-require(["dc/board"],function(Board){
-        board=new Board("board");
+require(["dc/board",'dc/poslabel'],function(Board,PosLabel){
+        var board=new Board("board");
+        var poslabel=new PosLabel("pos_label",board);
 });

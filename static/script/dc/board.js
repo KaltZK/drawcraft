@@ -1,5 +1,5 @@
-define('dc/board',['jquery','svg','dc/graphic','dc/abspos','dc/io','dc/infofuncs','jquery.mousewheel',],
-function($,svg,Graphic,AbsPos,IO,infofuncs){return function(id){
+define('dc/board',['jquery','svg','dc/graphic','dc/abspos','dc/io','dc/infofuncs','dc/boardevents','jquery.mousewheel',],
+function($,svg,Graphic,AbsPos,IO,infofuncs,BoardEvents){return function(id){
         var self=this;
         this.room=infofuncs.getRoom();
         var element=this.element=document.getElementById(id);
@@ -7,6 +7,7 @@ function($,svg,Graphic,AbsPos,IO,infofuncs){return function(id){
         var abspos=this.abspos=new AbsPos(this);
         var io=this.io=new IO(this);
         var graphicsManager=this.graphicsManager=new Graphic.Manager(this);
+        var eventsManager=this.eventsManager=new BoardEvents(this);
 
         $(element).bind("contextmenu",function(evt){console.log(evt);return false;});
         //屏蔽右键菜单&使用自制右键菜单
@@ -14,6 +15,8 @@ function($,svg,Graphic,AbsPos,IO,infofuncs){return function(id){
         $(element).bind("mousewheel",function(evt,delta){
                 abspos.dzoom(delta);
                 graphicsManager.updateZoom();
+                eventsManager.send("zoom",
+                        abspos.viewX(),abspos.viewY(),abspos.height());
         });
         $(element).on("mousedown",function(evt){
                 switch(evt.which){
@@ -68,6 +71,9 @@ function($,svg,Graphic,AbsPos,IO,infofuncs){return function(id){
         this.dmove=function(dx,dy){
                 abspos.dmove(dx,dy);
                 graphicsManager.updatePos();
+                eventsManager.send("move",
+                        abspos.viewX(),abspos.viewY(),abspos.height());
+                
                 absdiv.style.left=abspos.x();
                 absdiv.style.top=abspos.y();
         };
