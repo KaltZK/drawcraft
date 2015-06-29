@@ -10,12 +10,12 @@ require.config({
         },
 });
 require(["jquery","dc/api"],function($,api){
-    $(document).on("polymer-ready",function(){
+    $(document).on("WebComponentsReady",function(){
             api.getRoomList(function(rooms){
-                    var list=document.getElementById("back_fab");
+                    var list=document.getElementById("background");
                     rooms.forEach(function(data){
-                            var room=Object.create("room-name");
-                            room.roomname=data.room;
+                            var room=document.createElement("room-name");
+                            room.roomname=decodeURI(data.room);
                             list.appendChild(room);
                     });
             });

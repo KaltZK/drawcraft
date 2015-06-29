@@ -18,6 +18,7 @@ html,body{
         left: 5%;
         background-color: white;
         color: black;
+        position: absolute;
 }
 #find_button{
         top: 11em;
@@ -38,6 +39,8 @@ html,body{
         right: 25%;
         top: 16em;
         position: absolute;
+        z-index: 5;
+        min-height: 100%;
 }
 #block{
         left: 0;
