@@ -1,12 +1,11 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="/bower_components/core-field/core-field.html">
+<link rel="import" href="/bower_components/iron-field/iron-field.html">
 <link rel="import" href="/bower_components/paper-ripple/paper-ripple.html">
 
-<polymer-element name="room-name">
-        <template>
-                <style>
+<dom-element name="room-name">
+        <style>
 			:host{
 				left: 0;
 				width: 100%;
@@ -51,6 +50,7 @@
                                 height:100%;
                         }
 		</style>
+        <template>
 		<div id="block" on-click="{{enterRoom}}">
 		   <paper-shadow id="block_shadow" z="{{z_height}}">
 			   <core-field>
@@ -62,7 +62,6 @@
                    </paper-shadow>
                 </div>
         </template>
-        
         <script>
 		Polymer({
                         z_height: 1,
@@ -75,4 +74,4 @@
                         },
 		});
         </script>
-</polymer-element>
+</dom-element>

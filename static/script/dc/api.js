@@ -1,0 +1,9 @@
+define("dc/api",["jquery"],function($){
+return{
+        getRoomList:function(callback){
+                $.post("/api?action=roomList",function(rooms){
+                        callback(rooms);
+                });
+        },
+};
+});
