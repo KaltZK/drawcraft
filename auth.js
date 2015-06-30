@@ -1,3 +1,4 @@
+var model=require('./model');
 var decorators=require('./decorators');//装饰器
 
 function authenticate(msg,callback){
@@ -5,6 +6,7 @@ function authenticate(msg,callback){
         return callback(null,true);
 }
 function postAuthenticate(socket,data){
+        model.enterRoom(data.room);
         socket.join(data.room);
         socket.on('create_graphic',function(graphic){
                 socket.broadcast.to(data.room).emit('create_graphic',graphic);

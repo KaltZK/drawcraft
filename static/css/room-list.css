@@ -40,7 +40,6 @@ html,body{
         top: 16em;
         position: absolute;
         z-index: 5;
-        min-height: 100%;
 }
 #block{
         left: 0;

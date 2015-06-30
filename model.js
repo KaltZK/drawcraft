@@ -36,7 +36,7 @@ db.open(function(err,db){
                 rooms.update({room:room},{$inc:{enter_num:1}},{upsert:true,multi:false});
         };
         exports.loadRoomList=function(callback){//msg,loadRoomCallback){
-                var array=rooms.find({}).sort({enter_num:-1}).toArray(function(err,array){
+                var array=rooms.find({public:true}).sort({enter_num:-1}).toArray(function(err,array){
                         callback(array);
                 });
         };
