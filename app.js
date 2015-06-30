@@ -46,23 +46,8 @@ app.get('/room-list',function(req,res){
 app.get('/app',function(req,res){
         res.render("newapp");
 });
-app.post('/api',function(req,res){
-        var action = req.query["action"];
-        if(!action || !apis[action]){
-                res.status(417).json({err:"Action not found."});
-                return;
-        }
-        console.log(req.body);
-        apis[action](req.body,function(result){
-                res.json(result);
-        });
-});
-var apis={
-        test:function(body){return body;},
-        roomList:function(body,callback){
-                return model.loadRoomList(callback);
-        },
-};
+
+require("./apis")(app);
 
 auth.io(io);
 

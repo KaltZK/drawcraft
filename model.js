@@ -32,6 +32,8 @@ db.open(function(err,db){
                         //~ .sort({create_time:1})
                         .forEach(content_callback);
         };
+        exports.createRoom=function(data){
+        };
         exports.enterRoom=function(room){
                 rooms.update({room:room},{$inc:{enter_num:1}},{upsert:true,multi:false});
         };
