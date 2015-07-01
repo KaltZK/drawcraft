@@ -1,3 +1,4 @@
+//socket.io 认证及初始化模块
 var model=require('./model');
 var decorators=require('./decorators');//装饰器
 
@@ -11,9 +12,10 @@ function postAuthenticate(socket,data){
         socket.on('create_graphic',function(graphic){
                 socket.broadcast.to(data.room).emit('create_graphic',graphic);
         });
+        require("./socket-events")(socket,data);
 }
 
-exports.io=function(io){
+module.exports=function(io){
         require('socketio-auth')(io,{
                 authenticate: authenticate, 
                 postAuthenticate: postAuthenticate,

@@ -6,6 +6,7 @@ return function(board){
                         room:board.room,
                         id:"233",
                 });
+                socket.emit("666",{});
         });
         socket.on('disconnect',function(){
                 console.log("Disconnected.");

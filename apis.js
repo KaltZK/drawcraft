@@ -1,6 +1,7 @@
 var model=require("./model");
 var apis={};
 
+//利用express提供JSON API的模块
 apis.test=function(body){
         return body;
 }
