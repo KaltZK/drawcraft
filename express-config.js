@@ -23,4 +23,7 @@ module.exports=function(app,PORT){
         app.get('/app',function(req,res){
                 res.render("newapp");
         });
+        app.get('/chat',function(req,res){
+                res.render("chat");
+        });
 }

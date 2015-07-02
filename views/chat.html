@@ -1,0 +1,38 @@
+<!DOCTYPE html5>
+<html>
+	<head>
+		<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+		<style type="text/css">
+
+		</style>
+		<title>title</title>
+	</head>
+	<body>
+                <video id="video"></video>
+                <script>
+                var video=document.getElementById("video");
+                navigator.getMedia = ( navigator.getUserMedia ||
+                        navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia ||
+                        navigator.msGetUserMedia);
+                navigator.getMedia(
+                {
+                        video: true,
+                        audio: true,
+                },
+                function(stream) {
+                        if (navigator.mozGetUserMedia) {
+                                video.mozSrcObject = stream;
+                        } else {
+                                var vendorURL = window.URL || window.webkitURL;
+                                video.src = vendorURL.createObjectURL(stream);
+                        }
+                        video.play();
+                },
+                function(err){
+                        console.log("An error occured! " + err);
+                }
+                );
+                </script>
+	</body>
+</html>
