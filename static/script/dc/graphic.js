@@ -22,7 +22,6 @@ Graphic=function(polyline,manager){
                 abspos.mapYToAbs(pos[1])];
         });
 
-
         polyline.on("mouseenter",function(evt){
                 self.polyline.stroke({
                         width:style.stroke.width+7,
@@ -77,15 +76,35 @@ Graphic=function(polyline,manager){
 
 Graphic.Manager=function(board){
         this.board=board;
+        var abspos=board.abspos;
+        var draw=board.draw;
         this.graphics=[];
-        this.style={stroke:{color:"#5677fc",width:2,opacity:0.5},fill:"none"};
+        var style=this.style={stroke:{color:"#5677fc",width:2,opacity:0.5},fill:"none"};
+        var new_graphic_status=undefined;
         this.updateZoom=function(dz){
                 this.graphics.forEach(function(gr){gr.updateZoom()});
                 absdiv.style.left=board.abspos.x();
                 absdiv.style.top=board.abspos.y();
+                if(new_graphic_status)with(new_graphic_status){
+                        var     centerX=posfuncs.centerX(),
+                                centerY=posfuncs.centerY();
+                        var multiple=posfuncs.zoomMapping(abspos.z());
+                        if(multiple<1e-6) return;
+                        polyline.size(width*multiple,height*multiple);
+                        polyline.move(
+                                abspos.reMapXFromAbs(absx),
+                                abspos.reMapYFromAbs(absy)
+                        );
+                }
         }
         this.updatePos=function(){
                 this.graphics.forEach(function(gr){gr.updatePos()});
+                if(new_graphic_status) with(new_graphic_status){
+                        polyline.move(
+                                abspos.reMapXFromAbs(absx),
+                                abspos.reMapYFromAbs(absy)
+                        );
+                }
         }
         this.fromStruct=function(struct){
                 console.log("s:",
@@ -111,6 +130,51 @@ Graphic.Manager=function(board){
                         struct.chunk.top<=board.abspos.chunkBottom())
                         return this.fromStruct(struct);
         };
+
+        (function(){
+                this.newGraphic=function(px,py){
+                        new_graphic_status={
+                                polyline:draw.polyline([]),
+                                points:[],
+                        };
+                        with(new_graphic_status){
+                                polyline.stroke(style.stroke);
+                                polyline.fill(style.fill);
+                        }
+                        this.addGraphicPoint(px,py)
+                };
+                this.addGraphicPoint=function(px,py){
+                        new_graphic_status.points.push([
+                                abspos.mapXToAbs(px),
+                                abspos.mapYToAbs(py)]);
+                        new_graphic_status.polyline.plot(
+                                new_graphic_status.points.map(function(p){
+                                return [abspos.reMapXFromAbs(p[0]),
+                                        abspos.reMapYFromAbs(p[1])]}));
+                        new_graphic_status.width=
+                                new_graphic_status.polyline.width()
+                                /posfuncs.zoomMapping(abspos.z());
+                        new_graphic_status.height=
+                                new_graphic_status.polyline.height()
+                                /posfuncs.zoomMapping(abspos.z());
+                        new_graphic_status.absx=
+                                abspos.mapXToAbs(
+                                new_graphic_status.polyline.x());
+                        new_graphic_status.absy=
+                                abspos.mapYToAbs(
+                                new_graphic_status.polyline.y());
+                };
+                this.updateGraphicPoint=function(px,py){
+                        new_graphic_status.points.pop();
+                };
+                this.finishGraphic=function(px,py){
+                        if(px!=undefined&&py!=undefined) this.addGraphicPoint(px,py);
+                        if(new_graphic_status.points.length<1) return null;
+                        var ngr=new Graphic(new_graphic_status.polyline,this);
+                        new_graphic_status=undefined;
+                        return ngr;
+                };
+        }).call(this);
 }
 return Graphic;
 });

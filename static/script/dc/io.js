@@ -15,6 +15,7 @@ return function(board){
                 board.graphicsManager.updateNewGraphic(graphic);
         });
         this.createGraphic=function(graphic){
-                socket.emit("create_graphic",graphic.toStruct(graphic));
+                if(graphic)
+                        socket.emit("create_graphic",graphic.toStruct(graphic));
         };
 }});
