@@ -130,7 +130,7 @@ return  function(self,liteMode){
                 var dist=getDist(evt);
                 $(self.element).bind("touchmove",function(evt){
                         var nd=getDist(evt);
-                        self.dzoom((nd-dist)/50);
+                        self.dzoom((nd-dist)/30);
                         dist=nd;
                         return false;
                 });
