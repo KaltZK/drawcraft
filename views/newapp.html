@@ -1,3 +1,4 @@
+<!DOCTYPE html5>
 <html>
         <head>
 		<meta http_equiv=Content-Type content="text/html; charset=utf_8">
@@ -15,6 +16,7 @@
                 
                 <!-- 由于GoogleAPI不能用改用360的roboto字体 -->
                 <link rel="import" href="/dc_components/font-roboto.html">
+                <link rel="import" href="/dc_components/context-menu.html">
         </head>
         <body>
                 <div id="board">
@@ -24,7 +26,6 @@
                 </div>
                 <div id="centerdiv" style="position:absolute;width:1em;height:1em;background:red">
                 </div>
-
                 <section id="mode_radio">
 			<paper-radio-group id="mode_radio_group" class="blue" selected="Draw">
                                 <paper-radio-button
@@ -41,5 +42,9 @@
                                 </paper-radio-button>
                         </paper-radio-group>
                 </section>
+<!--
+                <context-menu id="contextmenu">
+                </context-menu>
+-->
         </body>
 </html>

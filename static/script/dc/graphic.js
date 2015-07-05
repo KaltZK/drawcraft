@@ -164,9 +164,6 @@ Graphic.Manager=function(board){
                                 abspos.mapYToAbs(
                                 new_graphic_status.polyline.y());
                 };
-                this.updateGraphicPoint=function(px,py){
-                        new_graphic_status.points.pop();
-                };
                 this.finishGraphic=function(px,py){
                         if(px!=undefined&&py!=undefined) this.addGraphicPoint(px,py);
                         if(new_graphic_status.points.length<1) return null;

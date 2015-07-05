@@ -1,0 +1,72 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/iron-menu-behavior/iron-menu-behavior.html">
+<link rel="import" href="/bower_components/paper-material/paper-material.html">
+<dom-module id="context-menu">
+        <style>
+        :host{
+                display:block;
+                position:absolute;
+                display:none;
+        }
+        #right_button_menu{
+                background-color:white;
+        }
+        </style>
+        <template>
+                <iron-menu-behavior id="right_button_menu">
+                        <paper-material elevation="1" id="shadow">
+                                <template is="dom-repeat" items="[[data]]">
+                                {{item}}
+                                </template>
+                        </paper-material>
+                </iron-menu-behavior>
+        </template>
+</dom-module>
+<script>
+Polymer({
+        is: "context-menu",
+        target_data:{},
+        properties: {
+                data:{
+                        type:Array,
+                        value: [ 'a', 'b', 'c', 'd' ]
+                }
+        },
+        setElement:function(ele){
+                var self=this;
+                $(ele).on("mouseup",function(evt){
+                        if(self.style.display!="block"){
+                                if(evt.which!=3) return;
+                                self.target_data.x=evt.clientX;
+                                self.target_data.y=evt.clientY;
+                                self.target_data.chunk_x=chunk.x;
+                                self.target_data.chunk_y=chunk.y;
+                                self.target_data.x=chunk.getEvtX(evt);
+                                self.target_data.y=chunk.getEvtY(evt);
+                                self.style.left=evt.clientX;
+                                self.style.top=evt.clientY;
+                                self.style.display="block";
+                        }
+                        else{
+                                self.style.display="none";
+                        }
+                });
+        },
+        addItem:function(text,callback){
+                var self=this;
+                var item=document.createElement("paper-item");
+                this.$.shadow.appendChild(item);
+                item.textContent=text;
+                item.addEventListener("click",function(){
+                        setTimeout(function(){
+                                callback(self.target_data);
+                                self.style.display="none";
+                        },500);
+                });
+        },
+        append:function(item){
+                this.push('data', item);
+        }
+});
+</script>

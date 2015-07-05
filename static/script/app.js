@@ -24,7 +24,7 @@ require.config({
 });
 
 require(["dc/board",'dc/poslabel'],function(Board,PosLabel){
-        board=new Board("board",true);
+        board=new Board("board");
         var poslabel=new PosLabel("pos_label",board);
         $("#draw_radio_button").on("change",function(evt){
                 board.touchMode=0;
@@ -32,4 +32,15 @@ require(["dc/board",'dc/poslabel'],function(Board,PosLabel){
         $("#move_radio_button").on("change",function(evt){
                 board.touchMode=1;
         });
+        return;
+        (function(){
+                var contextmenu=document.getElementById("contextmenu");
+                contextmenu.setElement(
+                document.getElementById(
+                "board"));
+                contextmenu.addItem("show",function(){console.log()});
+                $("#board").bind("contextmenu",function(){
+                        return false;
+                })
+        }).call();
 });

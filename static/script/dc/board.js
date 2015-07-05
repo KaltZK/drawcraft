@@ -16,7 +16,7 @@ function($,svg,Graphic,AbsPos,IO,infofuncs,BoardEvents,initDeviceEvents){return 
         1: Move
         */
         
-        $(element).bind("contextmenu",function(evt){console.log(evt);return false;});
+        //~ $(element).bind("contextmenu",function(evt){console.log(evt);return false;});
         //屏蔽右键菜单&使用自制右键菜单
 
         this.dmove=function(dx,dy){

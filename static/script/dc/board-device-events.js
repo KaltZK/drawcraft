@@ -76,7 +76,8 @@ return  function(self,liteMode){
                 });
         }
         function initDraw(evt,config){
-                if(liteMode) initDrawLite(evt,config);
+                if(evt.shiftKey) initStraightLine(evt,config);
+                else if(liteMode) initDrawLite(evt,config);
                 else initDrawFull(evt,config);
         }
         function initDrawLite(evt,config){
@@ -107,12 +108,35 @@ return  function(self,liteMode){
         function initDrawFull(evt,config){
                 self.graphicsManager.newGraphic(config.evt2x(evt),config.evt2y(evt));
                 $(config.element).bind(config.onevt,function(evt){
-                        self.graphicsManager.addGraphicPoint(config.evt2x(evt),config.evt2y(evt));
+                        self.graphicsManager.addGraphicPoint(
+                                config.evt2x(evt),config.evt2y(evt),
+                                evt.shiftKey);
                 });
                 $(config.element).bind(config.doneevt,function(evt){
                         self.io.createGraphic(
                                 self.graphicsManager.finishGraphic(
                                         config.evt2x(evt),config.evt2y(evt)));
+                        $(config.element).unbind(config.onevt);
+                        $(config.element).unbind(config.doneevt);
+                });
+        }
+        function initStraightLine(evt,config){
+                var afx=self.abspos.mapXToAbs(config.evt2x(evt)),
+                    afy=self.abspos.mapYToAbs(config.evt2y(evt));
+                var line=self.draw.polyline([config.evt2x(evt),config.evt2y(evt)].toLocaleString());
+                line.stroke(self.graphicsManager.style.stroke);
+                line.fill(self.graphicsManager.style.fill);
+                $(config.element).bind(config.onevt,function(evt){
+                        var tx=config.evt2x(evt),ty=config.evt2y(evt);
+                        line.plot([[self.abspos.reMapXFromAbs(afx),
+                                    self.abspos.reMapYFromAbs(afy)],[tx,ty]]);
+                });
+                $(config.element).bind(config.doneevt,function(evt){
+                        var tx=config.evt2x(evt),ty=config.evt2y(evt);
+                        if(tx!=undefined&&ty!=undefined)
+                                line.plot([[self.abspos.reMapXFromAbs(afx),
+                                        self.abspos.reMapYFromAbs(afy)],[tx,ty]]);
+                        self.io.createGraphic(new Graphic(line,self.graphicsManager));
                         $(config.element).unbind(config.onevt);
                         $(config.element).unbind(config.doneevt);
                 });
