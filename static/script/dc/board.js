@@ -10,7 +10,7 @@ function($,svg,Graphic,AbsPos,IO,infofuncs,BoardEvents,initDeviceEvents){return 
         var graphicsManager=this.graphicsManager=new Graphic.Manager(this);
         var eventsManager=this.eventsManager=new BoardEvents(this);
 
-        this.touchMode=1;
+        this.touchMode=0;
         /*
         0: Draw
         1: Move
