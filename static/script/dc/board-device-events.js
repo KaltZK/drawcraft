@@ -42,16 +42,18 @@ return  function(self,liteMode){
                 var start_evt=evt;
                 $(self.element).bind("touchmove",function(evt){
                         $(self.element).unbind("touchmove");
-                        switch(evt.touches.length){
-                        case 1:
-                                switch(self.touchMode){
-                                        case 0: initDraw(start_evt,touch_config);break;
-                                        case 1: initMove(start_evt,touch_config);break;
-                                }
-                                break;
-                        case 2:
-                                initTouchZoom(start_evt);
-                                break;
+                        switch(self.touchMode){
+                                case 0: initDraw(start_evt,touch_config);break;
+                                case 1:
+                                        switch(evt.touches.length){
+                                        case 1:
+                                                initMove(start_evt,touch_config);
+                                                break;
+                                        case 2:
+                                                initTouchZoom(start_evt);
+                                                break;
+                                        }
+                                        break;
                         }
                         return false;
                 });

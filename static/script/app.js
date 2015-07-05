@@ -26,4 +26,10 @@ require.config({
 require(["dc/board",'dc/poslabel'],function(Board,PosLabel){
         board=new Board("board",true);
         var poslabel=new PosLabel("pos_label",board);
+        $("#draw_radio_button").on("change",function(evt){
+                board.touchMode=0;
+        });
+        $("#move_radio_button").on("change",function(evt){
+                board.touchMode=1;
+        });
 });

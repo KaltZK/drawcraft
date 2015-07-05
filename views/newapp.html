@@ -1,8 +1,20 @@
 <html>
         <head>
+		<meta http_equiv=Content-Type content="text/html; charset=utf_8">
+                <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
                 <title>DrawCraft</title>
                 <link rel="stylesheet" href="/css/newapp.css">
                 <script src="//cdn.bootcss.com/require.js/2.1.18/require.js" data-main="/script/app.js"></script>
+
+
+                <!-- 接下来是components -->
+                <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+                
+                <link rel="import" href="/bower_components/paper-radio-group/paper-radio-group.html">
+                <link rel="import" href="/bower_components/paper-radio-button/paper-radio-button.html">
+                
+                <!-- 由于GoogleAPI不能用改用360的roboto字体 -->
+                <link rel="import" href="/dc_components/font-roboto.html">
         </head>
         <body>
                 <div id="board">
@@ -12,5 +24,22 @@
                 </div>
                 <div id="centerdiv" style="position:absolute;width:1em;height:1em;background:red">
                 </div>
+
+                <section id="mode_radio">
+			<paper-radio-group id="mode_radio_group" class="blue" selected="Draw">
+                                <paper-radio-button
+                                        id="draw_radio_button"
+                                        class="blue-radio"
+                                        name="Draw">
+                                        Draw
+                                </paper-radio-button><br>
+                                <paper-radio-button
+                                        id="move_radio_button"
+                                        class="blue-radio"
+                                        name="Move">
+                                        Move
+                                </paper-radio-button>
+                        </paper-radio-group>
+                </section>
         </body>
 </html>
