@@ -39,17 +39,22 @@ return  function(self,liteMode){
                 },
         };
         $(self.element).bind("touchstart",function(evt){
-                switch(evt.touches.length){
-                case 1:
-                        switch(self.touchMode){
-                                case 0: initDraw(evt,touch_config);break;
-                                case 1: initMove(evt,touch_config);break;
+                var start_evt=evt;
+                $(self.element).bind("touchmove",function(evt){
+                        $(self.element).unbind("touchmove");
+                        switch(evt.touches.length){
+                        case 1:
+                                switch(self.touchMode){
+                                        case 0: initDraw(start_evt,touch_config);break;
+                                        case 1: initMove(start_evt,touch_config);break;
+                                }
+                                break;
+                        case 2:
+                                initTouchZoom(start_evt);
+                                break;
                         }
-                        break;
-                case 2:
-                        initTouchZoom(evt);
-                        break;
-                }
+                        return false;
+                });
                 return false;
         });
         function initMove(evt,config){
