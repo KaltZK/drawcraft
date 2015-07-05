@@ -118,6 +118,8 @@ return  function(self,liteMode){
                 });
         }
         function initTouchZoom(evt){
+                $(self.element).unbind("touchmove");
+                $(self.element).unbind("touchend");
                 function getDist(evt){
                         with(Math) return sqrt(
                                 pow(evt.touches[0].clientX-
