@@ -40,4 +40,7 @@ module.exports=function(app,PORT){
         app.get('/chat',function(req,res){
                 res.render("chat");
         });
+        app.get('/login',function(req,res){
+                res.render("login");
+        });
 }

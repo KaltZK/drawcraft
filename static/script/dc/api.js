@@ -5,5 +5,10 @@ return{
                         callback(rooms);
                 });
         },
+        login:function(callback){
+                $.post("/api?action=login",function(status){
+                        callback(status);
+                });
+        },
 };
 });

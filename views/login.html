@@ -1,0 +1,30 @@
+<html>
+        <head>
+                <meta charset="utf-8">
+                <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.js"></script>
+        </head>
+        <body>
+                <input id="username"></input><br/>
+                <input id="password" type="password"></input><br/>
+                <button id="send">Login</button>
+                <button id="register">Register</button>
+                <script>
+                $("#send").on("click",function(){
+                        $.post("/api?action=login",{
+                                username:$("#username").val(),
+                                passowrd:$("#password").val(),
+                        },function(res){
+                                alert(res);
+                        });
+                });
+                $("#register").on("click",function(){
+                        $.post("/api?action=register",{
+                                username:$("#username").val(),
+                                passowrd:$("#password").val(),
+                        },function(res){
+                                alert(res);
+                        });
+                });
+                </script>
+        </body>
+</html>

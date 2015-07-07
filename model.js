@@ -1,7 +1,14 @@
 //这是对数据库访问的模块
 var mongodb=require('mongodb');
+var crypto=require("crypto");
 var server=new mongodb.Server('localhost', 27017, {auto_reconnect:true});
 var db=new mongodb.Db('drawcraft', server, {safe:true});
+
+function hash(src){
+        var app_secret="2333333";//这部分后面要改掉
+        return crypto.createHmac('sha1',app_secret).update('待加密字串').digest();
+}
+
 db.open(function(err,db){
         if(err){
                 console.log(err);
@@ -11,6 +18,7 @@ db.open(function(err,db){
         var bodies=db.collection("graphic_bodies");
         var contents=db.collection("contents");
         var rooms=db.collection("rooms");
+        var users=db.collection("users");
         exports.storeGraphic=function(data){
                 bodies.insert(data);
         };
@@ -40,6 +48,28 @@ db.open(function(err,db){
         exports.loadRoomList=function(callback){//msg,loadRoomCallback){
                 var array=rooms.find({public:true}).sort({enter_num:-1}).toArray(function(err,array){
                         callback(array);
+                });
+        };
+        exports.checkUser=function(username,password,callback){
+                users.findOne({name:username.toLowerCase()},function(err,user){
+                        if(err || user==null || user.password!=hash(password)){
+                                callback(null);
+                        }else{
+                                callback(user.name);
+                        }
+                });
+        };
+        exports.registerUser=function(username,password,callback){
+                users.findOne({name:username.toLowerCase()},function(err,user){
+                        if(user==null){
+                                users.insert({
+                                        name:username,
+                                        password:hash(password)
+                                });
+                                callback(username);
+                        }else{
+                                callback(null);
+                        }
                 });
         };
 });
