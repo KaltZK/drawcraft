@@ -12,17 +12,23 @@
                 $("#send").on("click",function(){
                         $.post("/api?action=login",{
                                 username:$("#username").val(),
-                                passowrd:$("#password").val(),
+                                password:$("#password").val(),
                         },function(res){
-                                alert(res);
+                                if(res.login)
+                                        alert("Secceed.");
+                                else
+                                        alert(res.err);
                         });
                 });
                 $("#register").on("click",function(){
                         $.post("/api?action=register",{
                                 username:$("#username").val(),
-                                passowrd:$("#password").val(),
+                                password:$("#password").val(),
                         },function(res){
-                                alert(res);
+                                if(res.login)
+                                        alert("Secceed.");
+                                else
+                                        alert(res.err);
                         });
                 });
                 </script>

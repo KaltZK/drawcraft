@@ -6,8 +6,10 @@ var db=new mongodb.Db('drawcraft', server, {safe:true});
 
 function hash(src){
         var app_secret="2333333";//这部分后面要改掉
-        return crypto.createHmac('sha1',app_secret).update('待加密字串').digest();
+        return  crypto.createHmac('sha1',app_secret)
+                .update(src).digest("hex");
 }
+exports.hash=hash;
 
 db.open(function(err,db){
         if(err){
@@ -50,6 +52,11 @@ db.open(function(err,db){
                         callback(array);
                 });
         };
+        exports.getRoomData=function(name,callback){
+                rooms.findOne({room:name},function(err,room){
+                        callback(room);
+                });
+        }
         exports.checkUser=function(username,password,callback){
                 users.findOne({name:username.toLowerCase()},function(err,user){
                         if(err || user==null || user.password!=hash(password)){
@@ -62,9 +69,10 @@ db.open(function(err,db){
         exports.registerUser=function(username,password,callback){
                 users.findOne({name:username.toLowerCase()},function(err,user){
                         if(user==null){
+                                console.log(password);
                                 users.insert({
-                                        name:username,
-                                        password:hash(password)
+                                        name:username.toLowerCase(),
+                                        password:hash(password),
                                 });
                                 callback(username);
                         }else{

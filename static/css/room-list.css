@@ -23,23 +23,25 @@ html,body{
 #find_button{
         top: 11em;
         position: absolute;
-        left: 72%;
-        z-index: 10;
+        right: 10%;
+        z-index: 4;
 }
 #name_input{
         top: 10.5em;
-        width: 46%;
-        left: 25%;
+        width: 80%;
+        left: 10%;
+        right: 10%;
         position: absolute;
-        z-index: 10;
+        z-index: 7;
 }
-#background{
-        width: 50%;
-        left: 25%;
-        right: 25%;
-        top: 16em;
+#rooms_background{
+        width: 80%;
+        left: 10%;
+        right: 10%;
+        /*top: 16em;*/
+        top: 1em;
         position: absolute;
-        z-index: 5;
+        z-index: 3;
 }
 #block{
         left: 0;
@@ -47,11 +49,6 @@ html,body{
         height: 13em;
         position: absolute;
         background-color: white;
-}
-#block_shadow{
-        width: 100%;
-        height: 100%;
-        position: absolute;
 }
 #name_label{
         color: #3b50ce;
@@ -71,4 +68,20 @@ html,body{
         right: 1.5em;
         top: 5em;
         position: absolute;
+}
+#notify{
+        z-index: 10;
+}
+paper-material{
+        z-index: 5;
+}
+.paper-header{
+        width: 100%;
+        height: 15em;
+        color: white;
+        background-color: #303F9F;
+        color: #FFFFFF;
+}
+.fit{
+        z-index: 6;
 }

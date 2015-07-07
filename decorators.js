@@ -16,3 +16,8 @@ addDecorator("withRoom",function(msg,room){
         msg["room"]=room;
         return msg;
 });
+addDecorator("withUser",function(msg,session){
+        if(session)
+                msg["user"]=session["user"];
+        return msg;
+});

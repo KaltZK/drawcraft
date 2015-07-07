@@ -1,14 +1,17 @@
 define("dc/api",["jquery"],function($){
-return{
-        getRoomList:function(callback){
-                $.post("/api?action=roomList",function(rooms){
-                        callback(rooms);
-                });
-        },
-        login:function(callback){
-                $.post("/api?action=login",function(status){
-                        callback(status);
-                });
-        },
-};
+        var apis={};
+        var names=[
+                "getRoomList",
+                "login",
+                "getUserData",
+                
+        ];
+        names.forEach(function(name){
+                apis[name]=function(callback){
+                        $.post("/api?action="+name,function(data){
+                                callback(data);
+                        });
+                };
+        });
+        return apis;
 });

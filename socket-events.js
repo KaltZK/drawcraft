@@ -1,4 +1,5 @@
 //在socket.io中的事件所在模块 被auth模块调用
+var decorators=require('./decorators');
 module.exports=function(socket){
         socket.on('enter_room',function(data){
                 socket.join(data.room);

@@ -1,7 +1,7 @@
 require.config({
         baseUrl:'/script',
         paths:{
-                'jquery':"//cdn.bootcss.com/jquery/2.1.4/jquery",
+                'jquery':"/jquery.min",
                 'jquery.cookie':"//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie",
         },
         shim:{
@@ -20,7 +20,7 @@ require(["jquery","dc/api"],function($,api){
         }
         $(document).on("WebComponentsReady",function(){
                 api.getRoomList(function(rooms){
-                        var list=document.getElementById("background");
+                        var list=document.getElementById("rooms_background");
                         rooms.forEach(function(data){
                                 var room=document.createElement("room-name");
                                 room.roomname=decodeURI(data.room);
@@ -38,5 +38,18 @@ require(["jquery","dc/api"],function($,api){
                                 enterRoom();
                 });
                 $("#find_button").on("click",enterRoom);
+                api.getUserData(function(data){
+                        var notify=document.getElementById("notify");
+                        console.log(data);
+                        if(data.last_room)
+                                $("#name_input").val(data.last_room);
+                        if(data.login){
+                                notify.text="Welcome, "+data.name+"!";
+                        }else{
+                                notify.text="You are an anonymous.";
+                                notify.duration=5000;
+                        }
+                        notify.toggle();
+                });
         });
 });

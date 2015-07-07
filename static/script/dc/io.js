@@ -4,9 +4,8 @@ return function(board){
         socket.on('connect',function(){
                 socket.emit('authentication',{
                         room:board.room,
-                        id:"233",
+                        user:$.cookie("user"),
                 });
-                socket.emit("666",{});
         });
         socket.on('disconnect',function(){
                 console.log("Disconnected.");
