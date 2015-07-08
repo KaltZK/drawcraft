@@ -43,11 +43,6 @@ require(["jquery","dc/api"],function($,api){
                                 list.appendChild(room);
                         });
                 });
-                $("#back_fab").on("click",function(){
-                        setTimeout(function(){
-                                window.location.href="/";
-                        },500);
-                });
                 api.getUserData({},function(data){
                         if(data.last_room)
                                 $("#name_input").val(data.last_room);
@@ -66,6 +61,18 @@ require(["jquery","dc/api"],function($,api){
                         displayLogin(evt.name);
                 }
                 notifySend(evt.text);
+        });
+        $(document).on("enterroom",function(evt){
+                api.roomExists({room:evt.room},function(re){
+                        if(re) enterRoom(evt.room);
+                        else{
+                                $.event.trigger({type:"create_room",room:evt.room});
+                                $(document).bind("new_room_done",function(){
+                                        enterRoom(evt.room);
+                                        $(document).unbind("new_room_done");
+                                });
+                        }
+                });
         });
         $("#login_button").on("click",function(){
                 var dialog=document.getElementById("login_dialog");

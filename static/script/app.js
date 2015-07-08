@@ -23,8 +23,20 @@ require.config({
         },
 });
 
-require(["dc/board",'dc/poslabel'],function(Board,PosLabel){
+require(["jquery","dc/board",'dc/poslabel'],function($,Board,PosLabel){
+        $(document).on("pass_auth",function(){
+                notify("Connected.");
+        });
+        $(document).on("disconnect",function(msg){
+                notify("Disonnected. "+(msg.err||""));
+        });
+        $(document).on("create_graphic",function(evt){
+                board.graphicsManager.updateNewGraphic(evt.msg);
+        });
+
+        
         board=new Board("board");
+        
         var poslabel=new PosLabel("pos_label",board);
         $("#draw_radio_button").on("change",function(evt){
                 board.touchMode=0;
@@ -43,4 +55,11 @@ require(["dc/board",'dc/poslabel'],function(Board,PosLabel){
                         return false;
                 })
         }).call();
+
+        function notify(text){
+                var notify=document.getElementById("notify");
+                notify.duration=5000;
+                notify.text=text;
+                notify.toggle();
+        }
 });

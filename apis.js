@@ -71,10 +71,29 @@ addAPI("getUserData",{},function(body,session,callback){
 });
 addAPI("logout",{},function(body,session,callback){
         session.destroy();
-        session.username="666";
-        session.login=false;
 });
 
+addAPI("roomNeedPassword",{room:"string"},function(body,session,callback){
+        model.roomNeedPassword(body.room,callback);
+});
+addAPI("roomExists",{room:"string"},function(body,session,callback){
+        model.roomExists(body.room,callback);
+});
+addAPI("createRoom",{
+        room:"string",
+        public:"string",
+        password:"string",
+        members: "string",
+        },function(body,session,callback){
+                body.members=body.members.split(",");
+                body.public= body.public=="true";
+                model.roomExists(body.room,function(re){
+                        if(re) return callback({err:"Room exists."});
+                        if(!session.login && !body.public) return callback({err:"Insufficient permissions."});
+                        body.members.concat(session.username);
+                        model.createRoom(body);
+                });
+});
 module.exports=function DCApi(app){
         app.post('/api',function(req,res){
                 var action = req.query["action"];

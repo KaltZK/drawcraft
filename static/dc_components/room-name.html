@@ -72,16 +72,18 @@
         </template>
 </dom-module>
         <script>
+        require(["jquery"],function($){
 		Polymer({
                         is:"room-name",
                         z_height: 1,
                         roomname:"Lobby",
                         number:0,
                         enterRoom:function(){
-                                var self=this;
-                                setTimeout(function(){
-                                        window.location.href="/app#"+self.roomname;
-                                },500);
+                                $.event.trigger({
+                                        type: "enterroom",
+                                        room: this.roomname,
+                                });
                         },
 		});
+        });
         </script>

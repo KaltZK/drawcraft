@@ -70,9 +70,10 @@ Polymer({
         enterRoom:function(){
                 var text=$("#name_input").val();
                 if(!text) return false;
-                setTimeout(function(){
-                        window.location.href="/app#"+text;
-                },500);
+                $.event.trigger({
+                        type: "enterroom",
+                        room: text,
+                });
                 return true;
         },
 });

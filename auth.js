@@ -19,14 +19,15 @@ module.exports=function(io){
                 var authentication=false;
                 var timeout=1000,data_;
                 setTimeout(function(){
-                        if(authentication)
+                        if(authentication){
                                 enterRoom(socket,data_);
+                                socket.emit("pass_auth",{});
+                        }
                         else
                                 socket.disconnect();
                 },timeout);
                 socket.on("authentication",function(data){
                         model.getRoomData(data.room,function(room){
-                                console.log(room);
                                 authentication= room!=null &&(
                                         room.public || (
                                         typeof data.password=="string" &&
@@ -45,7 +46,7 @@ module.exports=function(io){
         require('socketio-auth')(io,{
                 authenticate: authenticate, 
                 postAuthenticate: postAuthenticate,
-                timeout: 1000
+                timeout: 10000
         });
 }
 }

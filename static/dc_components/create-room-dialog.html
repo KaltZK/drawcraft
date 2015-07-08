@@ -1,0 +1,120 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
+<link rel="import" href="/bower_components/paper-material/paper-material.html">
+<link rel="import" href="/bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
+<dom-module id="create-room-dialog">
+        <link rel="stylesheet" href="/bower_components/paper-dialog-behavior/paper-dialog-common.css">
+        <style>
+                :host{
+                        display:block;
+                        width: 70%;
+                        left: 15%;
+                        right: 15%;
+                        position: absolute;
+                        top: 2em;
+                }
+                #dialog_members_input{
+                        width: 70%;
+                }
+                .dialog_login_button{
+                        color:white;
+                        background: #F50057;
+                        width:8em;
+                }
+                .login-shadow{
+                        margin: 0;
+                        padding: 2em;
+                }
+                .login-background{
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                        background-color: #FFFFFF;
+                        padding: 0.1em;
+                }
+        </style>
+        <template>
+                <div class="login-background">
+                <paper-material class="login-shadow" elevation="2">
+                        <label>Create Your Room</label>
+                        <paper-input
+                                mode="floatinglabel"
+                                label="Room Name"
+                                id="dialog_roomname_input">
+                        </paper-input>
+                        <paper-checkbox id="public_checkbox" on-change="onChange">
+                                Public
+                        </paper-checkbox>
+                        <paper-input
+                                mode="floatinglabel"
+                                label="Password"
+                                type="password"
+                                on-keydown="onKeyDown"
+                                id="dialog_room_password_input">
+                        </paper-input>
+                        <paper-input
+                                mode="floatinglabel"
+                                label='Members(Splited with ",")'
+                                id="dialog_members_input">
+                        </paper-input>
+                        <paper-button
+                                dialog-confirm
+                                class="dialog_login_button"
+                                on-click="create"
+                                id="dialog_create_button">
+                                Create
+                        </paper-button>
+                        <paper-button
+                                dialog-dismiss
+                                class="dialog_login_button"
+                                id="dialog_cancel_button">
+                                Cancel
+                        </paper-button>
+                </paper-material>
+                </div>
+                <paper-toast id="login_notify"></paper-toast>
+        </template>
+</dom-module>
+<script>
+require(["jquery","dc/api"],function($,api){
+        Polymer({
+                is:"create-room-dialog",
+                create:function(){
+                        var self=this;
+                        api.createRoom({
+                                room:$("#dialog_roomname_input").val(),
+                                public:this.$.public_checkbox.checked,
+                                password:$("#dialog_room_password_input").val(),
+                                members:$("#dialog_members_input").val(),
+                        });
+                        $.event.trigger({type:"new_room_done",room:$("#dialog_roomname_input").val()});
+                },
+                
+                ready:function(){
+                        var self=this;
+                        $(document).on("create_room",function(evt){
+                                $("#dialog_roomname_input").val(evt.room);
+                                self.toggle(true);
+                        });
+                        this.$.public_checkbox.checked=true;
+                        this.$.dialog_room_password_input.disabled=true;
+                        this.$.dialog_members_input.disabled=true;
+                        api.getUserData({},function(data){
+                                if(!data.login)
+                                        self.$.public_checkbox.disabled=true;
+                                else
+                                        self.$.public_checkbox.disabled=false;
+                        });
+                },
+                onChange:function(){
+                        this.$.dialog_room_password_input.disabled=
+                                this.$.dialog_members_input.disabled=
+                                this.$.public_checkbox.checked;
+                },
+                behaviors: [ Polymer.PaperDialogBehavior ]
+        });
+});
+</script>

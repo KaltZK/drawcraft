@@ -36,13 +36,15 @@
                         padding: 0.1em;
                 }
         </style>
-        <template>
+        <template
+                >
                 <div class="login-background">
                 <paper-material class="login-shadow" elevation="2">
                         <label>Register or Login</label>
                         <paper-input
                                 mode="floatinglabel"
                                 label="Username"
+                                on-keydown="onKeyDown"
                                 id="dialog_username_input">
                         </paper-input>
                         <paper-input
@@ -52,14 +54,12 @@
                                 id="dialog_password_input">
                         </paper-input>
                         <paper-button
-                                dialog-confirm
                                 class="dialog_login_button"
                                 on-click="login"
                                 id="dialog_login_button">
                                 Login
                         </paper-button>
                         <paper-button
-                                dialog-confirm
                                 class="dialog_login_button"
                                 on-click="register"
                                 id="dialog_register_button">
@@ -95,25 +95,30 @@ require(["jquery","dc/api","jquery.cookie"],function($,api){
                         password:$("#dialog_password_input").val('');
                 },
                 login:function(){
+                        var self=this;
                         api.login({
                                 username:$("#dialog_username_input").val(),
                                 password:$("#dialog_password_input").val(),
                         },function(data){
                                 if(data.login){
                                         notify("Welcome back, "+data.name+".",true,data.name);
+                                        self.toggle(false);
+                                        self.clearText();
                                 }else{
                                         notify("Failed: "+data.err,false);
                                 }
                         });
-                        this.clearText();
                 },
                 register:function(){
+                        var self=this;
                         api.register({
                                 username:$("#dialog_username_input").val(),
                                 password:$("#dialog_password_input").val(),
                         },function(data){
                                 if(data.login){
                                         notify("Welcome, "+data.name+".",true,data.name);
+                                        self.toggle(false);
+                                        self.clearText();
                                 }else{
                                         notify("Failed: "+data.err,false);
                                 }
@@ -121,8 +126,13 @@ require(["jquery","dc/api","jquery.cookie"],function($,api){
                         this.clearText();
                 },
                 ready:function(){
+                        
                         if($.cookie("user"))
                                 this.$.dialog_username_input.value=$.cookie("user");
+                },
+                onKeyDown:function(evt){
+                        if(evt.keyCode==13)
+                                this.login();
                 },
                 behaviors: [ Polymer.PaperDialogBehavior ]
         });

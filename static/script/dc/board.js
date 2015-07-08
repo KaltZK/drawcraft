@@ -6,7 +6,8 @@ function($,svg,Graphic,AbsPos,IO,infofuncs,BoardEvents,initDeviceEvents){return 
         var element=this.element=document.getElementById(id);
         var draw=this.draw=svg(element);
         var abspos=this.abspos=new AbsPos(this);
-        var io=this.io=new IO(this);
+        var io=this.io=new IO(this.room);
+        this.io.connect();
         var graphicsManager=this.graphicsManager=new Graphic.Manager(this);
         var eventsManager=this.eventsManager=new BoardEvents(this);
 

@@ -15,6 +15,7 @@
                 <link rel="import" href="/dc_components/font-roboto.html">
                 <link rel="import" href="/dc_components/enter-room-header.html">
                 <link rel="import" href="/dc_components/login-dialog.html">
+                <link rel="import" href="/dc_components/create-room-dialog.html">
 
                 
                 <link is="custom-style" rel="stylesheet" type="text/css" href="/css/room-list.css">
@@ -48,8 +49,18 @@
                                 </div>
                         </div>
                 </paper-header-panel>
-                <login-dialog id="login_dialog">
+
+                <login-dialog
+                        id="login_dialog"
+                        entry-animation="scale-up-animation"
+                        exit-animation="fade-out-animation">
                 </login-dialog>
+
+                <create-room-dialog
+                        entry-animation="scale-up-animation"
+                        exit-animation="fade-out-animation">>
+                </create-room-dialog>
                 
-                <paper-toast id="notify"></paper-toast>
+                <paper-toast id="notify">
+                </paper-toast>
 	</body>

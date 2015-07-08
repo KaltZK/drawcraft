@@ -42,7 +42,44 @@ db.open(function(err,db){
                         //~ .sort({create_time:1})
                         .forEach(content_callback);
         };
+        exports.roomExists=function(room,callback){
+                rooms.findOne({room:room},function(err,room){
+                        callback(room!=null);
+                });
+        };
         exports.createRoom=function(data){
+                rooms.insert({
+                        room:data.room,
+                        public: data.public || false,
+                        password: data.password && hash(data.password),
+                        members:data.members || [],
+                        enter_num: 0,
+                });
+        };
+        exports.roomNeedPassword=function(room,callback){
+                rooms.findOne({room:room},function(err,room){
+                        callback(room && typeof room.password=="string" && room.password);
+                });
+        };
+        exports.checkRoom=function(username,password,callback){
+                password = password || "";
+                rooms.findOne({$or:[
+                        {public:true},
+                        {password:hash(password)},
+                        {members:{$in:username}}
+                ]},function(err,room){
+                        callback(room!=null);
+                });
+        };
+        exports.checkRoom=function(username,password,callback){
+                password = password || "";
+                rooms.findOne({$or:[
+                        {public:true},
+                        {password:hash(password)},
+                        {members:{$in:username}}
+                ]},function(err,room){
+                        callback(room!=null);
+                });
         };
         exports.enterRoom=function(room){
                 rooms.update({room:room},{$inc:{enter_num:1}},{upsert:true,multi:false});

@@ -6,7 +6,9 @@ define("dc/api",["jquery"],function($){
                 "logout",
                 "register",
                 "getUserData",
-                
+                "roomNeedPassword",
+                "createRoom",
+                "roomExists",
         ];
         names.forEach(function(name){
                 apis[name]=function(data,callback){
