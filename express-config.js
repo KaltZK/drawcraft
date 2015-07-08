@@ -23,8 +23,8 @@ module.exports=function(app,PORT){
                                 host: 'localhost',
                                 port: 27017,
                         }),
-                        resave: false,
-                        saveUninitialized: false,
+                        resave: true,
+                        saveUninitialized: true,
                 }));
                 app.use(bodyParser.urlencoded({extended:false}));
         }).call();

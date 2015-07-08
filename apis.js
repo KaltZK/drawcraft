@@ -2,19 +2,21 @@ var model=require("./model");
 var apis={};
 
 //利用express提供JSON API的模块
-function checkArgs(format,args){
+function checkArgs(format,args,res){
         for(var name in format){
                 if ((typeof format[name]=="string" &&
                 format[name]!=typeof args[name]) ||
-                (typeof format[name] == "object" && !checkArgs(name,args[name])) )
+                (typeof format[name] == "object" && !checkArgs(name,args[name])) ){
+                        res.status(417).json({err:"Invalid arguments."});
                         return false;
+                }
         }
         return true;
 }
 
 function addAPI(name,format,func){
-        apis[name]=function(body,session,callback){
-                if(!checkArgs(format,body))return false;
+        apis[name]=function(body,session,callback,res){
+                if(!checkArgs(format,body,res))return false;
                 func(body,session,callback);
                 return true;
         }
@@ -29,7 +31,7 @@ addAPI("login",{
         },function(body,session,callback){
         model.checkUser(body.username,body.password,function(username){
                 if(username){
-                        session.user=username;
+                        session.username=username;
                         session.login=true;
                         callback({
                                 login:true,
@@ -53,7 +55,7 @@ addAPI("register",{
                         session.login=true;
                         callback({
                                 login:true,
-                                user:username
+                                name:username
                         });
                 }else{
                         callback({err:"User exists."});
@@ -61,17 +63,16 @@ addAPI("register",{
         });
 });
 addAPI("getUserData",{},function(body,session,callback){
-        console.log(session);
         callback({
                 login:session.login,
                 name:session.username,
                 last_room:session.last_room,
         });
 });
-addAPI("logout",{
-        username:"string",
-        },function(body,session,callback){
-        session.username=undefined;
+addAPI("logout",{},function(body,session,callback){
+        session.destroy();
+        session.username="666";
+        session.login=false;
 });
 
 module.exports=function DCApi(app){
@@ -81,9 +82,9 @@ module.exports=function DCApi(app){
                         res.status(417).json({err:"Action not found."});
                         return;
                 }
-                if(!apis[action](req.body,req.session,function(result){
+                !apis[action](req.body,req.session,function(result){
                         res.json(result);
-                }))res.status(417).json({err:"Invalid arguments."});
+                },res);
         });
         return apis;
 }
