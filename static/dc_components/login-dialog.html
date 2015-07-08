@@ -19,10 +19,10 @@
                         top:0;
                         left:0;
                 }
-                .login_button{
+                .dialog_login_button{
                         color:white;
                         background: red;
-                        width:auto;
+                        width:8em;
                 }
                 .login-shadow{
                         margin: 0;
@@ -33,42 +33,43 @@
                         width: 100%;
                         height: 100%;
                         background-color: #FFFFFF;
+                        padding: 0.1em;
                 }
         </style>
         <template>
                 <div class="login-background">
                 <paper-material class="login-shadow" elevation="2">
-                        <label>Login or register</label>
+                        <label>Register or Login</label>
                         <paper-input
                                 mode="floatinglabel"
                                 label="Username"
-                                id="username_input">
+                                id="dialog_username_input">
                         </paper-input>
                         <paper-input
                                 mode="floatinglabel"
                                 label="Password"
                                 type="password"
-                                id="password_input">
+                                id="dialog_password_input">
                         </paper-input>
                         <paper-button
                                 dialog-confirm
-                                class="login_button"
+                                class="dialog_login_button"
                                 on-click="login"
-                                id="login_button">
+                                id="dialog_login_button">
                                 Login
                         </paper-button>
                         <paper-button
                                 dialog-confirm
-                                class="login_button"
+                                class="dialog_login_button"
                                 on-click="register"
-                                id="register_button">
+                                id="dialog_register_button">
                                 Register
                         </paper-button>
                         <paper-button
                                 dialog-dismiss
-                                class="login_button"
+                                class="dialog_login_button"
                                 on-click="cancel"
-                                id="cancel_button">
+                                id="dialog_cancel_button">
                                 Cancel
                         </paper-button>
                 </paper-material>
@@ -77,45 +78,51 @@
         </template>
 </dom-module>
 <script>
-require(["jquery","dc/api"],function($,api){
-        function notify(text){
-                $.event.trigger({  
+require(["jquery","dc/api","jquery.cookie"],function($,api){
+        function notify(text,login,name){
+                $.event.trigger({
                         type: "notify",  
-                        text: text,  
+                        text: text,
+                        login: login,
+                        name: name,
                         time: new Date(),
                 });
         }
         Polymer({
                 is:"login-dialog",
                 clearText:function(){
-                        username:$("#username_input").val('');
-                        password:$("#password_input").val('');
+                        username:$("#dialog_username_input").val('');
+                        password:$("#dialog_password_input").val('');
                 },
                 login:function(){
                         api.login({
-                                username:$("#username_input").val(),
-                                password:$("#password_input").val(),
+                                username:$("#dialog_username_input").val(),
+                                password:$("#dialog_password_input").val(),
                         },function(data){
                                 if(data.login){
-                                        notify("Welcome back, "+data.name+".");
+                                        notify("Welcome back, "+data.name+".",true,data.name);
                                 }else{
-                                        notify("Failed: "+data.err);
+                                        notify("Failed: "+data.err,false);
                                 }
                         });
                         this.clearText();
                 },
                 register:function(){
                         api.register({
-                                username:$("#username_input").val(),
-                                password:$("#password_input").val(),
+                                username:$("#dialog_username_input").val(),
+                                password:$("#dialog_password_input").val(),
                         },function(data){
                                 if(data.login){
-                                        notify("Welcome to join us, "+data.name+".");
+                                        notify("Welcome, "+data.name+".",true,data.name);
                                 }else{
-                                        notify("Failed: "+data.err);
+                                        notify("Failed: "+data.err,false);
                                 }
                         });
                         this.clearText();
+                },
+                ready:function(){
+                        if($.cookie("user"))
+                                this.$.dialog_username_input.value=$.cookie("user");
                 },
                 behaviors: [ Polymer.PaperDialogBehavior ]
         });

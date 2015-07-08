@@ -12,7 +12,7 @@ html,body{
         /*top: 16em;*/
         top: 1em;
         position: absolute;
-        z-index: 3;
+        z-index: 7;
 }
 #block{
         left: 0;
@@ -63,3 +63,25 @@ paper-material{
         position: absolute;
         top: 2em;
 }
+
+#user_data_bar{
+        right: 0.1em;
+        top: 0.1em;
+        position: absolute;
+        color: #FFFFFF;
+}
+#user_data_bar > a:link,a:visited{
+        color: #FFFFFF;
+        text-decoration: none;
+}
+#user_data_bar > a:hover,a:active{
+        color: #FFFFFF;
+        text-decoration: underline;
+}
+#login_lab{
+        display: none;
+}
+#login_button{
+        display: none;
+}
+

@@ -2,7 +2,7 @@ require.config({
         baseUrl:'/script',
         paths:{
                 'jquery':"/jquery.min",
-                'jquery.cookie':"//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie",
+                'jquery.cookie':"/jquery.cookie",
         },
         shim:{
                 'jquery': {exports: '$',},
@@ -18,8 +18,23 @@ require(["jquery","dc/api"],function($,api){
                 },500);
                 return true;
         }
+        function displayLogin(name){
+                $("#un_lab").text("Hi, "+name+". ");
+                $("#login_button").css("display","none");
+                $("#login_lab").css("display","block");
+        }
+        function displayLogout(){
+                $("#login_button").css("display","block");
+                $("#login_lab").css("display","none");
+        }
+        function notifySend(text){
+                var notify=document.getElementById("notify");
+                notify.duration=10000;
+                notify.text=text;
+                notify.toggle();
+        }
         $(document).on("WebComponentsReady",function(){
-                api.getRoomList(function(rooms){
+                api.getRoomList({},function(rooms){
                         var list=document.getElementById("rooms_background");
                         rooms.forEach(function(data){
                                 var room=document.createElement("room-name");
@@ -33,30 +48,33 @@ require(["jquery","dc/api"],function($,api){
                                 window.location.href="/";
                         },500);
                 });
-                api.getUserData(function(data){
-                        var notify=document.getElementById("notify");
-                        console.log(data);
+                api.getUserData({},function(data){
                         if(data.last_room)
                                 $("#name_input").val(data.last_room);
                         if(data.login){
-                                notify.text="Welcome, "+data.name+"!";
+                                displayLogin(data.name);
                         }else{
-                                notify.text="You are an anonymous.";
-                                notify.duration=5000;
+                                notifySend("You are an anonymous.");
+                                displayLogout();
                         }
-                        notify.toggle();
                 });
         });
 
-        
+
         $(document).on("notify",function(evt){
-                var notify=document.getElementById("notify");
-                notify.text=evt.text;
-                notify.toggle();
+                if(evt.login){
+                        displayLogin(evt.name);
+                }
+                notifySend(evt.text);
         });
         $("#login_button").on("click",function(){
                 var dialog=document.getElementById("login_dialog");
                 dialog.toggle();
+        });
+        $("#logout_button").on("click",function(){
+                api.logout({});
+                displayLogout();
+                notifySend("Bye.");
         });
         
 });

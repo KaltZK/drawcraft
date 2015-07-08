@@ -3,6 +3,7 @@ define("dc/api",["jquery"],function($){
         var names=[
                 "getRoomList",
                 "login",
+                "logout",
                 "register",
                 "getUserData",
                 
