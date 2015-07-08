@@ -33,11 +33,6 @@ require(["jquery","dc/api"],function($,api){
                                 window.location.href="/";
                         },500);
                 });
-                $(document).on("keydown",function(evt){
-                        if(evt.keyCode==13)
-                                enterRoom();
-                });
-                $("#find_button").on("click",enterRoom);
                 api.getUserData(function(data){
                         var notify=document.getElementById("notify");
                         console.log(data);
@@ -52,4 +47,16 @@ require(["jquery","dc/api"],function($,api){
                         notify.toggle();
                 });
         });
+
+        
+        $(document).on("notify",function(evt){
+                var notify=document.getElementById("notify");
+                notify.text=evt.text;
+                notify.toggle();
+        });
+        $("#login_button").on("click",function(){
+                var dialog=document.getElementById("login_dialog");
+                dialog.toggle();
+        });
+        
 });

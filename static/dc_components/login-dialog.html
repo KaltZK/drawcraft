@@ -1,0 +1,123 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/paper-material/paper-material.html">
+<link rel="import" href="/bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
+<dom-module id="login-dialog">
+        <link rel="stylesheet" href="/bower_components/paper-dialog-behavior/paper-dialog-common.css">
+        <style>
+                :host{
+                        display:block;
+                        width: 70%;
+                        left: 15%;
+                        right: 15%;
+                        position: absolute;
+                        top: 2em;
+                }
+                #login_register_dialog{
+                        top:0;
+                        left:0;
+                }
+                .login_button{
+                        color:white;
+                        background: red;
+                        width:auto;
+                }
+                .login-shadow{
+                        margin: 0;
+                        padding: 2em;
+                }
+                .login-background{
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                        background-color: #FFFFFF;
+                }
+        </style>
+        <template>
+                <div class="login-background">
+                <paper-material class="login-shadow" elevation="2">
+                        <label>Login or register</label>
+                        <paper-input
+                                mode="floatinglabel"
+                                label="Username"
+                                id="username_input">
+                        </paper-input>
+                        <paper-input
+                                mode="floatinglabel"
+                                label="Password"
+                                type="password"
+                                id="password_input">
+                        </paper-input>
+                        <paper-button
+                                dialog-confirm
+                                class="login_button"
+                                on-click="login"
+                                id="login_button">
+                                Login
+                        </paper-button>
+                        <paper-button
+                                dialog-confirm
+                                class="login_button"
+                                on-click="register"
+                                id="register_button">
+                                Register
+                        </paper-button>
+                        <paper-button
+                                dialog-dismiss
+                                class="login_button"
+                                on-click="cancel"
+                                id="cancel_button">
+                                Cancel
+                        </paper-button>
+                </paper-material>
+                </div>
+                <paper-toast id="login_notify"></paper-toast>
+        </template>
+</dom-module>
+<script>
+require(["jquery","dc/api"],function($,api){
+        function notify(text){
+                $.event.trigger({  
+                        type: "notify",  
+                        text: text,  
+                        time: new Date(),
+                });
+        }
+        Polymer({
+                is:"login-dialog",
+                clearText:function(){
+                        username:$("#username_input").val('');
+                        password:$("#password_input").val('');
+                },
+                login:function(){
+                        api.login({
+                                username:$("#username_input").val(),
+                                password:$("#password_input").val(),
+                        },function(data){
+                                if(data.login){
+                                        notify("Welcome back, "+data.name+".");
+                                }else{
+                                        notify("Failed: "+data.err);
+                                }
+                        });
+                        this.clearText();
+                },
+                register:function(){
+                        api.register({
+                                username:$("#username_input").val(),
+                                password:$("#password_input").val(),
+                        },function(data){
+                                if(data.login){
+                                        notify("Welcome to join us, "+data.name+".");
+                                }else{
+                                        notify("Failed: "+data.err);
+                                }
+                        });
+                        this.clearText();
+                },
+                behaviors: [ Polymer.PaperDialogBehavior ]
+        });
+});
+</script>

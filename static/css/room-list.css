@@ -4,36 +4,7 @@ html,body{
         background-color: #eeeeee;
         font-family: 'RobotoDraft', sans-serif;
 }
-#title{
-        top: 1.5em;
-        width: 100%;
-        text-align:center;
-        font-size: 3em;
-        marigin-left:auto;
-        marigin-right:auto;
-        position: absolute;
-}
-#back_fab{
-        top: 3em;
-        left: 5%;
-        background-color: white;
-        color: black;
-        position: absolute;
-}
-#find_button{
-        top: 11em;
-        position: absolute;
-        right: 10%;
-        z-index: 4;
-}
-#name_input{
-        top: 10.5em;
-        width: 80%;
-        left: 10%;
-        right: 10%;
-        position: absolute;
-        z-index: 7;
-}
+
 #rooms_background{
         width: 80%;
         left: 10%;
@@ -84,4 +55,11 @@ paper-material{
 }
 .fit{
         z-index: 6;
+}
+#login_dialog{
+        width: 70%;
+        left: 15%;
+        right: 15%;
+        position: absolute;
+        top: 2em;
 }

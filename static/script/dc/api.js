@@ -3,13 +3,15 @@ define("dc/api",["jquery"],function($){
         var names=[
                 "getRoomList",
                 "login",
+                "register",
                 "getUserData",
                 
         ];
         names.forEach(function(name){
-                apis[name]=function(callback){
-                        $.post("/api?action="+name,function(data){
-                                callback(data);
+                apis[name]=function(data,callback){
+                        $.post("/api?action="+name,data,function(bdata){
+                                if(typeof(callback)=="function")
+                                        callback(bdata);
                         });
                 };
         });

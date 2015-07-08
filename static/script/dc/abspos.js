@@ -37,5 +37,9 @@ return function(board){
         this.chunkRight=function(){return Math.floor(this.viewRight()/posfuncs.chunkWidth)};
         this.chunkTop=function(){return Math.floor(this.viewTop()/posfuncs.chunkHeight)};
         this.chunkBottom=function(){return Math.floor(this.viewBottom()/posfuncs.chunkHeight)};
+        this.__chunk={l:this.chunkLeft(),t:this.chunkTop(),
+                      r:this.chunkRight(),b:this.chunkBottom()};
+        this.chunkChanged=function(){
+        };
 };
 });

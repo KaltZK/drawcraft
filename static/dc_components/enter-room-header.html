@@ -1,0 +1,79 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+
+<dom-module id="enter-room-header">
+        <style is="custom-style">
+        :host{
+                padding: 0;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+        }
+        #title{
+                top: 1.5em;
+                width: 100%;
+                text-align:center;
+                font-size: 3em;
+                marigin-left:auto;
+                marigin-right:auto;
+                position: absolute;
+        }
+        #enter_button{
+                top: 11em;
+                position: absolute;
+                right: 10%;
+                z-index: 8;
+        }
+        paper-input#name_input{
+                top: 10.5em;
+                width: 80%;
+                left: 10%;
+                right: 10%;
+                position: absolute;
+                z-index: 7;
+                --paper-input-container-color: #FFFFFF;
+                --paper-input-container-focus-color: #E91E63;
+                --paper-input-container-invalid-color: #E91E63;
+                --paper-input-container-input-color: #FFFFFF;
+        }
+        </style>
+        <template>
+                <div id="title">Enter Room</div>
+                <paper-input
+                        id="name_input"
+                        mode="floatinglabel"
+                        on-keydown="onKeyDown"
+                        label="Your Room">
+                </paper-input>
+                <paper-icon-button
+                        id="enter_button"
+                        on-click="enterRoom"
+                        icon="arrow-forward">
+                </paper-icon-button>
+        </template>
+</dom-module>
+<script>
+Polymer({
+        is:"enter-room-header",
+        checkName:function(name){
+                console.log(2);
+                if(name.length>50)
+                        this.$.name_input.invalid=true;
+        },
+        onKeyDown:function(evt){
+                if(evt.keyCode==13)
+                        this.enterRoom();
+        },
+        enterRoom:function(){
+                var text=$("#name_input").val();
+                if(!text) return false;
+                setTimeout(function(){
+                        window.location.href="/app#"+text;
+                },500);
+                return true;
+        },
+});
+</script>

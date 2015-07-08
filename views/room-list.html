@@ -6,35 +6,29 @@
                 <script src="//cdn.bootcss.com/require.js/2.1.18/require.js" data-main="/script/room-list.js"></script>
                 
                 <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-                <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
-                <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
 
-                <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
-                <link rel="import" href="/bower_components/paper-input/paper-input.html">
                 <link rel="import" href="/bower_components/paper-toast/paper-toast.html">
                 <link rel="import" href="/bower_components/paper-header-panel/paper-header-panel.html">
+                <link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
 
                 <link rel="import" href="/dc_components/room-name.html">
                 <link rel="import" href="/dc_components/font-roboto.html">
+                <link rel="import" href="/dc_components/enter-room-header.html">
+                <link rel="import" href="/dc_components/login-dialog.html">
 
                 
-                <link rel="stylesheet" type="text/css" href="/css/room-list.css">
+                <link is="custom-style" rel="stylesheet" type="text/css" href="/css/room-list.css">
                 
                 <title>Enter Room</title>
         </head>
         <body unresolved class="fullbleed layout vertical">
 		<paper-header-panel mode="scroll" class="header">
                         <div class="paper-header">
-                                <div id="title">Enter Room</div>
-                                <paper-input
-                                        id="name_input"
-                                        mode="floatinglabel"
-                                        label="Your Room">
-                                </paper-input>
-                                <paper-icon-button
-                                        id="find_button"
-                                        icon="arrow-forward">
-                                </paper-icon-button>
+                                <div id="user_data_bar">
+                                        <a id="login_button" class="udb_btn" href="#">Register / Login</a>
+                                </div>
+                                <enter-room-header>
+                                </enter-room-header>
                         </div>
                         <div class="fit">
                                 <div id="rooms_background">
@@ -42,5 +36,8 @@
                                 </div>
                         </div>
                 </paper-header-panel>
+                <login-dialog id="login_dialog">
+                </login-dialog>
+                
                 <paper-toast id="notify"></paper-toast>
 	</body>

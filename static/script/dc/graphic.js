@@ -60,7 +60,10 @@ Graphic=function(polyline,manager){
                 
         this.toStruct=function(){
                 return{
-                        x:absx,y:absy,
+                        loc:{
+                                x:absx,
+                                y:absy,
+                        },
                         width:width,height:height,
                         points:this.absPoints,
                         style:style,
@@ -107,12 +110,6 @@ Graphic.Manager=function(board){
                 }
         }
         this.fromStruct=function(struct){
-                console.log("s:",
-                        struct.chunk.right,
-                        struct.chunk.left,
-                        struct.chunk.bottom,
-                        struct.chunk.top
-                );
                 var points=struct.points.map(function(pos){
                                 return [board.abspos.reMapXFromAbs(pos[0]),
                                 board.abspos.reMapYFromAbs(pos[1])];
