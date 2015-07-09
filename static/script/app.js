@@ -33,8 +33,7 @@ require(["jquery","dc/board",'dc/poslabel'],function($,Board,PosLabel){
         $(document).on("create_graphic",function(evt){
                 board.graphicsManager.updateNewGraphic(evt.msg);
         });
-
-        
+        var password_dialog=document.getElementById("password_dialog");
         board=new Board("board");
         
         var poslabel=new PosLabel("pos_label",board);

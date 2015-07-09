@@ -33,6 +33,10 @@ module.exports=function(io){
                                         typeof data.password=="string" &&
                                         model.hash(data.password) == room.password ) &&
                                         data.user
+                                        //~ || (
+                                        //~ room.members && room.members.indexOf()!=-1
+                                        //~ )
+                                        
                                 );
                                 if(authentication) data_=data;
                         });

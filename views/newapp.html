@@ -18,6 +18,7 @@
                 <!-- 由于GoogleAPI不能用改用360的roboto字体 -->
                 <link rel="import" href="/dc_components/font-roboto.html">
                 <link rel="import" href="/dc_components/context-menu.html">
+                <link rel="import" href="/dc_components/require-password-dialog.html">
         </head>
         <body>
                 <div id="board">
@@ -42,11 +43,12 @@
                                         Move
                                 </paper-radio-button>
                         </paper-radio-group>
-                        <paper-toast id="notify"></paper-toast>
                 </section>
 <!--
                 <context-menu id="contextmenu">
                 </context-menu>
 -->
+                <paper-toast id="notify"></paper-toast>
+                <require-password-dialog id="password_dialog"></require-password-dialog>
         </body>
 </html>

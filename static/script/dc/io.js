@@ -30,20 +30,22 @@ return function(room){
         var self=this;
         function conn(password){
                 var socket=io.connect();
-                initIO.call(self,socket);
+                initIO.call(self,socket,password);
         }
         this.connect=function(){
                 api.roomNeedPassword({room:room},function(np){
                         if(np){
-                                $.event.trigger({
-                                        type:"require_room_password",
-                                });
-                                $(document).bind("gain_room_password",function(pw){
-                                        conn(pw);
-                                        $(document).unbind("gain_room_password");
+                                $(document).on("password_dialog_ready",function(){
+                                        $.event.trigger({
+                                                type:"require_room_password",
+                                        });
+                                        $(document).bind("gain_room_password",function(evt){
+                                                conn(evt.password);
+                                                $(document).unbind("gain_room_password");
+                                        });
                                 });
                         }
-                        else conn();
+                        else conn("");
                 });
         }
 }});
