@@ -52,7 +52,6 @@
                                 mode="floatinglabel"
                                 label="Password"
                                 type="password"
-                                on-keydown="onKeyDown"
                                 id="dialog_room_password_input">
                         </paper-input>
                         <paper-input
@@ -98,6 +97,12 @@ require(["jquery","dc/api"],function($,api){
                         $(document).on("create_room",function(evt){
                                 $("#dialog_roomname_input").val(evt.room);
                                 self.toggle(true);
+                        });
+                        $(document).on("loggedin",function(evt){
+                                self.$.public_checkbox.disabled=false;
+                        });
+                        $(document).on("loggedout",function(evt){
+                                self.$.public_checkbox.disabled=true;
                         });
                         this.$.public_checkbox.checked=true;
                         this.$.dialog_room_password_input.disabled=true;

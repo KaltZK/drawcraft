@@ -102,6 +102,7 @@ require(["jquery","dc/api","jquery.cookie"],function($,api){
                         },function(data){
                                 if(data.login){
                                         notify("Welcome back, "+data.name+".",true,data.name);
+                                        $.event.trigger({type:"loggedin"});
                                         self.toggle(false);
                                         self.clearText();
                                 }else{
@@ -117,6 +118,7 @@ require(["jquery","dc/api","jquery.cookie"],function($,api){
                         },function(data){
                                 if(data.login){
                                         notify("Welcome, "+data.name+".",true,data.name);
+                                        $.event.trigger({type:"loggedin"});
                                         self.toggle(false);
                                         self.clearText();
                                 }else{
@@ -126,7 +128,6 @@ require(["jquery","dc/api","jquery.cookie"],function($,api){
                         this.clearText();
                 },
                 ready:function(){
-                        
                         if($.cookie("user"))
                                 this.$.dialog_username_input.value=$.cookie("user");
                 },

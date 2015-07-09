@@ -81,6 +81,7 @@ require(["jquery","dc/api"],function($,api){
         $("#logout_button").on("click",function(){
                 api.logout({});
                 displayLogout();
+                $.event.trigger({type:"loggedout"});
                 notifySend("Bye.");
         });
         
