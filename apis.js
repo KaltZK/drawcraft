@@ -62,6 +62,9 @@ addAPI("register",{
                 }
         });
 });
+addAPI("userExists",{username:"string"},function(body,session,callback){
+        model.userExists(body.username,callback);
+});
 addAPI("getUserData",{},function(body,session,callback){
         callback({
                 login:session.login,

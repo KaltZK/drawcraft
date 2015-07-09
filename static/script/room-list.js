@@ -10,11 +10,9 @@ require.config({
         },
 });
 require(["jquery","dc/api"],function($,api){
-        function enterRoom(){
-                var text=$("#name_input").val();
-                if(!text) return false;
+        function enterRoom(room){
                 setTimeout(function(){
-                        window.location.href="/app#"+text;
+                        window.location.href="/app#"+room;
                 },500);
                 return true;
         }

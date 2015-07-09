@@ -3,9 +3,8 @@ var express=require('express');
 var bodyParser=require("body-parser");
 var cookieParser=require("cookie-parser");
 var session=require("express-session");
-var MongoStore=require('connect-mongo')(session);
 var url=require('url');
-module.exports=function(app,PORT){
+module.exports=function(app,session,PORT){
         // express config
         (function(){
                 app.set('port',PORT);
@@ -15,17 +14,7 @@ module.exports=function(app,PORT){
                 app.use(express.static(__dirname + '/static'));//设置静态文件
                 app.use(bodyParser.json());
                 app.use(cookieParser());
-                app.use(session({
-                        secret: "secretkey",
-                        cookie:{maxAge: 2*7*24*3600},
-                        store: new MongoStore({
-                                db: 'drawcraft',
-                                host: 'localhost',
-                                port: 27017,
-                        }),
-                        resave: true,
-                        saveUninitialized: true,
-                }));
+                app.use(session);
                 app.use(bodyParser.urlencoded({extended:false}));
         }).call();
 

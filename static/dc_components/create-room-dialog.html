@@ -54,11 +54,13 @@
                                 type="password"
                                 id="dialog_room_password_input">
                         </paper-input>
+<!--
                         <paper-input
                                 mode="floatinglabel"
                                 label='Members(Splited with ",")'
                                 id="dialog_members_input">
                         </paper-input>
+-->
                         <paper-button
                                 dialog-confirm
                                 class="dialog_login_button"
@@ -86,7 +88,8 @@ require(["jquery","dc/api"],function($,api){
                                 room:$("#dialog_roomname_input").val(),
                                 public:this.$.public_checkbox.checked,
                                 password:$("#dialog_room_password_input").val(),
-                                members:$("#dialog_members_input").val(),
+                                //~ members:$("#dialog_members_input").val(),
+                                members:"",
                         });
                         $.event.trigger({type:"new_room_done",room:$("#dialog_roomname_input").val()});
                 },
@@ -105,7 +108,7 @@ require(["jquery","dc/api"],function($,api){
                         });
                         this.$.public_checkbox.checked=true;
                         this.$.dialog_room_password_input.disabled=true;
-                        this.$.dialog_members_input.disabled=true;
+                        //~ this.$.dialog_members_input.disabled=true;
                         api.getUserData({},function(data){
                                 if(!data.login)
                                         self.$.public_checkbox.disabled=true;
@@ -115,7 +118,7 @@ require(["jquery","dc/api"],function($,api){
                 },
                 onChange:function(){
                         this.$.dialog_room_password_input.disabled=
-                                this.$.dialog_members_input.disabled=
+                                //~ this.$.dialog_members_input.disabled=
                                 this.$.public_checkbox.checked;
                 },
                 behaviors: [ Polymer.PaperDialogBehavior ]

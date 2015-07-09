@@ -3,10 +3,10 @@ var mongodb=require('mongodb');
 var crypto=require("crypto");
 var server=new mongodb.Server('localhost', 27017, {auto_reconnect:true});
 var db=new mongodb.Db('drawcraft', server, {safe:true});
+var config=require('./config');
 
 function hash(src){
-        var app_secret="2333333";//这部分后面要改掉
-        return  crypto.createHmac('sha1',app_secret)
+        return  crypto.createHmac('sha1',config.secretKey)
                 .update(src).digest("hex");
 }
 exports.hash=hash;
@@ -101,6 +101,11 @@ db.open(function(err,db){
                         }else{
                                 callback(user.name);
                         }
+                });
+        };
+        exports.userExists=function(username,callback){
+                users.findOne({name:username.toLowerCase()},function(err,user){
+                        callback(user!=null);
                 });
         };
         exports.registerUser=function(username,password,callback){
