@@ -1,8 +1,8 @@
 var d=10,a=0.2;
 var z0=-Math.tan((1-a-d)*Math.PI/(2*d));
 define("dc/posfuncs",{
-chunkWidth:10000,
-chunkHeight:10000,
+chunkWidth:1000,
+chunkHeight:1000,
 zoomMapping:function(zIndex){
         //将高度映射为倍率的函数
         //对-inf<zIndex<inf有

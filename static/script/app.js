@@ -23,17 +23,9 @@ require.config({
         },
 });
 
-require(["jquery","dc/board",'dc/poslabel'],function($,Board,PosLabel){
-        $(document).on("pass_auth",function(){
-                notify("Connected.");
-        });
-        $(document).on("disconnect",function(msg){
-                notify("Disonnected. "+(msg.err||""));
-        });
-        $(document).on("create_graphic",function(evt){
-                board.graphicsManager.updateNewGraphic(evt.msg);
-        });
+require(["jquery","dc/board",'dc/poslabel','dc/board-init-event-solts'],function($,Board,PosLabel,initSolts){
         var password_dialog=document.getElementById("password_dialog");
+        initSolts();
         board=new Board("board");
         
         var poslabel=new PosLabel("pos_label",board);
@@ -55,10 +47,4 @@ require(["jquery","dc/board",'dc/poslabel'],function($,Board,PosLabel){
                 })
         }).call();
 
-        function notify(text){
-                var notify=document.getElementById("notify");
-                notify.duration=5000;
-                notify.text=text;
-                notify.toggle();
-        }
 });

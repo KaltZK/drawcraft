@@ -33,4 +33,7 @@ module.exports=function(app,session,PORT){
         app.get('/login',function(req,res){
                 res.render("login");
         });
+        app.get('/demos',function(req,res){
+                res.render("demos");
+        });
 }
