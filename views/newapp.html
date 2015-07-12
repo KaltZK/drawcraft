@@ -21,7 +21,11 @@
                 
                 <link rel="import" href="/bower_components/paper-input/paper-input.html">
                 <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
-               
+		<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+		<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+                <link rel="import" href="/bower_components/paper-menu/paper-menu.html">
+                <link rel="import" href="/bower_components/paper-slider/paper-slider.html">
+                
                 
                 <!-- 由于GoogleAPI不能用改用360的roboto字体 -->
                 <link rel="import" href="/dc_components/font-roboto.html">
@@ -43,7 +47,7 @@
                                         class="blue-radio"
                                         name="Draw">
                                         Draw
-                                </paper-radio-button><br>
+                                </paper-radio-button>
                                 <paper-radio-button
                                         id="move_radio_button"
                                         class="blue-radio"
@@ -56,7 +60,19 @@
                 </section>
                 
                 <paper-icon-button icon="settings" id="menubutton"></paper-icon-button>
-                <paper-icon-button icon="help-outline" id="help"></paper-icon-button>
+                <paper-icon-button icon="help-outline" id="help_button"></paper-icon-button>
+                
+                <paper-dialog id="help_dialog" heading="Help">
+                        <p>建议使用Chrome或Opera浏览本页面</p>
+                        <p>使用WASD或鼠标中键移动视野</p>
+                        <p>可以通过左下角的两个单选按钮切换左键操作模式</p>
+                        <p>右键可插入图片，图片太大可能会卡</p>
+                        <p>可通过右下角的设置按钮设置画笔</p>
+                        <p>在聊天框使用/tp x y命令可移动到指定位置</p>
+                        <p>按钮用英文是因为字体好看，求不吐槽</p>
+                        <p>移动设备暂时无法绘制</p>
+                        <paper-icon-button id="close_help_button" icon="close"></paper-icon-button>
+                </paper-dialog>
                 
                 
                 <paper-header-panel mode="waterfall" class="blue">
@@ -72,11 +88,59 @@
                  </paper-material>
 		</div> 
 		
+		<div id="choosing">
+		    <div id="Hchoosingcolor"><center><font color="black" size="4"><b>Choose Color</b></font></center></div>
+			<div id="choosingcolor">
+				
+			<paper-dialog-scrollable id="colorscroll">
+
+			<div class="horizontal center-justified layout">
+				<div class="horizontal-section" >
+					<paper-menu class="list" id="select_color_inner_menu">
+					<paper-item style="color:white;background-color:red">Red</paper-item>
+					<paper-item style="color:white;background-color:#fe5d05">Orange</paper-item>
+					<paper-item style="color:white;background-color:#fefd05">Yellow</paper-item>
+					<paper-item style="color:white;background-color:#11fe05">Green</paper-item>
+					<paper-item style="color:white;background-color:blue">Blue</paper-item>
+					<paper-item style="color:white;background-color:#fe05e4">Purple</paper-item>
+					<paper-item style="color:white;background-color:black">Black</paper-item>
+					</paper-menu>
+				</div>
+			</div>
+			
+	
+			</paper-dialog-scrollable>
+			</div>
+		    </div>
+			<div id="opawid">
+			<br/>	
+			<section>
+				<label><font size="4"><center><b>Opacity</b></center></font></label>
+                                <br>
+                                <paper-slider class="slider" id="opacity_slider" pin min="0" max="100"></paper-slider>
+                        </section><br/>
+                        <section>
+				<label><font size="4"><center><b>Width</b></center></font></label>
+                                <br>
+                                <paper-slider class="slider" id="width_slider" pin snap min="1" max="50"></paper-slider>
+                        </section>
+                        
+                        </div>
+		   
+		   <paper-icon-button id="ok_button" icon="check"></paper-icon-button>
+                   <paper-icon-button id="close_button" icon="close"></paper-icon-button>
+		</div>
+		
+		
 <!--
                 <context-menu id="contextmenu">
                 </context-menu>
 -->
                 <paper-toast id="notify"></paper-toast>
                 <require-password-dialog id="password_dialog"></require-password-dialog>
+        
+		<script>
+
+		</script>
         </body>
 </html>

@@ -1,7 +1,7 @@
 require.config({
         baseUrl:'/script',
         paths:{
-                'jquery':"//cdn.bootcss.com/jquery/2.1.4/jquery",
+                'jquery':"/jquery.min",
                 'jquery.cookie':"//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie",
                 'jquery.touch':"/jquery.touch",
                 'svg':"//cdn.bootcss.com/svg.js/2.0.0-rc.1/svg",
@@ -24,6 +24,7 @@ require.config({
 });
 
 require(["jquery","dc/board",'dc/poslabel'],function($,Board,PosLabel){
+$(document).on("WebComponentsReady",function(){
         $(document).on("pass_auth",function(){
                 notify("Connected.");
         });
@@ -43,17 +44,6 @@ require(["jquery","dc/board",'dc/poslabel'],function($,Board,PosLabel){
         $("#move_radio_button").on("change",function(evt){
                 board.touchMode=1;
         });
-        return;
-        (function(){
-                var contextmenu=document.getElementById("contextmenu");
-                contextmenu.setElement(
-                document.getElementById(
-                "board"));
-                contextmenu.addItem("show",function(){console.log()});
-                $("#board").bind("contextmenu",function(){
-                        return false;
-                })
-        }).call();
 
         function notify(text){
                 var notify=document.getElementById("notify");
@@ -61,4 +51,26 @@ require(["jquery","dc/board",'dc/poslabel'],function($,Board,PosLabel){
                 notify.text=text;
                 notify.toggle();
         }
-});
+        		
+	var colors_list=["red","green","blue","yellow"];
+	var select_color_inner_div=document.getElementById("select_color_inner_menu");
+	colors_list.forEach(function(color){
+		console.log(color)
+		var pi=document.createElement("paper-item");
+		pi.style.color="#FFFFFF";
+		pi.style.backgroundColor=color;
+		select_color_inner_div.appendChild(pi);
+	});
+			
+				var hdialog = document.getElementById('help_dialog');
+				document.getElementById("help_button").onclick=function(){
+					hdialog.toggle(true);
+					return false;
+				};
+				document.getElementById("close_help_button").onclick=function(){
+					hdialog.toggle(false);
+					return false;
+				};
+			
+		
+})});
