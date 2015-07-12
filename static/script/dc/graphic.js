@@ -69,12 +69,10 @@ Graphic=function(polyline,manager){
                         width:width,height:height,
                         points:this.absPoints,
                         style:style,
-                        chunk:{
-                                right:this.chunkRight(),
-                                left:this.chunkLeft(),
-                                top:this.chunkTop(),
-                                bottom:this.chunkBottom(),
-                        },
+                        cright:this.chunkRight(),
+                        cleft:this.chunkLeft(),
+                        ctop:this.chunkTop(),
+                        cbottom:this.chunkBottom(),
                 };
         };
 };
@@ -130,9 +128,20 @@ Graphic.Manager=function(board){
                         struct.chunk.top<=board.abspos.chunkBottom())
                         return this.fromStruct(struct);
         };
-        this.pullInnerGraphics=function(){
+        this.pullInnerGraphics=function(evt){
+                board.io.pullInnerGraphics({
+                        left:board.abspos.chunkLeft(),
+                        right:board.abspos.chunkRight(),
+                        top:board.abspos.chunkTop(),
+                        bottom:board.abspos.chunkBottom(),
+                });
         };
         this.cleanOuterGraphics=function(){
+                this.graphics.forEach(function(gr){
+                        gr.hide();
+                });
+                this.graphics=[];
+                return;//姑且用这种简单粗暴的方法
                 function filter(gr){
                         return gr.chunkLeft()>board.abspos.chunkRight()||
                         gr.chunkRight()<board.abspos.chunkLeft()||
@@ -140,7 +149,6 @@ Graphic.Manager=function(board){
                         gr.chunkTop()>board.abspos.chunkBottom();
                 }
                 this.graphics.filter(filter).forEach(function(gr){
-                        console.log("Hiiiiiiiide")
                         gr.hide();});
                 this.graphics=this.graphics.filter(function(gr){
                         return !filter(gr);});

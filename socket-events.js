@@ -1,18 +1,17 @@
 //在socket.io中的事件所在模块 被auth模块调用
 var decorators=require('./decorators');
-module.exports=function(socket){
-        socket.on('enter_room',function(data){
-                socket.join(data.room);
-                model.enterRoom(data.room);
-                socket.broadcast.to(data.room).emit("text_message",{
-                        author: "System",
-                        text: data.user + " joined "+data.room,
-                });
-        });
-        socket.on('leave_room',function(data){
-                socket.broadcast.to(data.room).emit("text_message",{
-                        author: "System",
-                        text: data.user + " left "+data.room,
+var model=require('./model');
+module.exports=function(socket,user_data){
+        with(decorators){
+                socket.on('create_graphic',withTimestamp(withUser(function(graphic){
+                        graphic.room=user_data.room;
+                        socket.broadcast.to(user_data.room).emit('create_graphic',graphic);
+                        model.storeNewGraphic(graphic);
+                })));
+        }
+        socket.on('pull_inner_graphics',function(msg){
+                model.loadGraphicsInRange(user_data.room,msg,function(struct){
+                        socket.emit("pull_inner_graphic",struct);
                 });
         });
         socket.on("text_message",function(message){

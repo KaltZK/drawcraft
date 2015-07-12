@@ -7,12 +7,16 @@ var decorators=require('./decorators');//装饰器
 function enterRoom(socket,data){
         model.enterRoom(data.room);
         socket.join(data.room);
-        with(decorators){
-                socket.on('create_graphic',withTimestamp(withUser(function(graphic){
-                        console.log(graphic);
-                        socket.broadcast.to(data.room).emit('create_graphic',graphic);
-                })));
-        }
+        socket.broadcast.to(data.room).emit("text_message",{
+                author: "System",
+                text: " joined "+data.room,
+        });
+        socket.on('disconnect',function(data){
+                socket.broadcast.to(data.room).emit("text_message",{
+                        author: "System",
+                        text: " left "+data.room,
+                });
+        });
         require("./socket-events")(socket,data);
 }
 

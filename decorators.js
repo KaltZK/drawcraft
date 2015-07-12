@@ -21,3 +21,7 @@ addDecorator("withUser",function(msg,session){
                 msg["user"]=session["user"];
         return msg;
 });
+addDecorator("withId",function(msg,user,room){
+        msg["id"]=user+"_"+room+"_"+new Date().getTime();
+        return msg;
+});

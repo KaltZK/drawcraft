@@ -25,6 +25,15 @@ function initIO(socket,password){
                 if(graphic)
                         socket.emit("create_graphic",graphic.toStruct(graphic));
         };
+        socket.on("pull_inner_graphic",function(struct){
+                $.event.trigger({
+                        type:"pull_inner_graphic",
+                        struct:struct,
+                });
+        });
+        this.pullInnerGraphics=function(range){
+                socket.emit("pull_inner_graphics",range);
+        };
 }
 return function(room){
         var self=this;

@@ -55,7 +55,7 @@ return function(board){
                         });
                 }
                 var dps=forEachName(function(on,nn){
-                        var np=self[nn](),op=self[on];
+                        var np=self[nn](),op=self.__chunk[on];
                         if(np!=op){
                                 $.event.trigger({
                                         type:"update_chunk_border",
@@ -69,7 +69,7 @@ return function(board){
                 if(dps.some(function(p){return p!=0;})){
                         
                         forEachName(function(on,nn){
-                        return self[on]=self[nn]();});
+                        return self.__chunk[on]=self[nn]();});
                 }
         };
 };

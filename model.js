@@ -18,29 +18,25 @@ db.open(function(err,db){
         }
 
         var bodies=db.collection("graphic_bodies");
+        var graphics=db.collection("graphics");
         var contents=db.collection("contents");
         var rooms=db.collection("rooms");
         var users=db.collection("users");
-        exports.storeGraphic=function(data){
-                bodies.insert(data);
+        exports.storeNewGraphic=function(data){
+                graphics.insert(data);
+        };
+        exports.loadGraphicsInRange=function(room,data,callback){
+                console.log(room,data);
+                graphics.find({
+                        room:room,
+                        cleft:{$lte:data.right},
+                        cright:{$gte:data.left},
+                        cbottom:{$gte:data.top},
+                        ctop:{$lte:data.bottom},
+                }).forEach(callback);
         };
         exports.removeGraphic=function(msg){
                 bodies.remove({id:msg.id,room:msg.room});
-        };
-        exports.storeContent=function(data){
-                contents.insert(data);
-        };
-        exports.removeContent=function(data){
-                contents.remove({id:msg.id,room:msg.room});
-        };
-        exports.loadChunk=function(load_chunk,graphic_callback,content_callback){
-                var gra={};
-                bodies.find({chunk_x:load_chunk.x,chunk_y:load_chunk.y,room:load_chunk.room})
-                        //~ .sort({create_time:1})
-                        .forEach(graphic_callback);
-                contents.find({chunk_x:load_chunk.x,chunk_y:load_chunk.y,room:load_chunk.room})
-                        //~ .sort({create_time:1})
-                        .forEach(content_callback);
         };
         exports.roomExists=function(room,callback){
                 rooms.findOne({room:room},function(err,room){
