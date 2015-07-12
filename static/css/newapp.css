@@ -29,3 +29,80 @@ paper-radio-button.blue-radio::shadow #ink[checked] {
 paper-radio-button.blue-radio::shadow #onRadio {
         background-color: #5677fc;
 }
+
+#menubutton{
+        position: absolute;
+        bottom: 0.5em;
+        right: 4.3em;
+        z-index: 30;
+}
+
+#help{
+        position: absolute;
+        bottom: 0.5em;
+        right: 1.5em;
+        z-index: 30;
+}
+
+.blue .paper-header {
+        background-color: rgb(0, 184, 255);
+}
+
+paper-header-panel {
+        position:absolute;
+        left: 0.3em;
+        bottom: 4em;
+        width: 240px;
+        height: 330px;
+        margin: 12px;
+        @apply(--shadow-elevation-2dp);
+}
+
+.paper-header {
+        height: 50px;
+        font-size: 16px;
+        line-height: 60px;
+        padding: 0 10px;
+        color: white;
+        transition: height 0.2s;
+}
+
+.content {
+        height: 2000px;
+        background-color: white;
+}
+
+/*.blue .content {
+        background: linear-gradient(white, #b3e5fc);
+}*/
+
+#inputblock{
+	bottom: 0.1em;
+	left: 1em;
+	width: 240px;
+	height: 4em;
+	background-color: white;
+	position: absolute;
+	z-index: 10;
+}
+
+#content_input{
+	width: 200px;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	background-color: white;
+
+}
+#send_button{
+        position: absolute;
+	z-index: 11;
+	bottom: 20%;
+	left: 200px;
+	background-color: white;
+}
+#block_shadow{
+	width: 100%;
+	height: 100%;
+}

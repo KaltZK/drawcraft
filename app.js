@@ -4,7 +4,7 @@ var sio = require('socket.io');
 var express = require('express');
 var http=require('http');
 var expressSession=require("express-session");
-var MongoStore=require('connect-mongo')(expressSession);
+//~ var MongoStore=require('connect-mongo')(expressSession);
 
 var app = express();
 var server=http.createServer(app);
@@ -14,15 +14,15 @@ var config=require('./config');
 
 server.listen(PORT);
 
-var memoryStore=new MongoStore({
-        db: 'drawcraft',
-        host: 'localhost',
-        port: 27017,
-});
+//~ var memoryStore=new MongoStore({
+        //~ db: 'drawcraft',
+        //~ host: 'localhost',
+        //~ port: 27017,
+//~ });
 var session=expressSession({
         secret: config.secretKey,
         cookie:{maxAge: 2*7*24*3600},
-        store: memoryStore,
+        //~ store: memoryStore,
         resave: true,
         saveUninitialized: true,
 });
