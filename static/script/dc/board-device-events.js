@@ -1,4 +1,4 @@
-define("dc/board-device-events",["jquery",'jquery.mousewheel',"jquery.touch"],function($){
+define("dc/board-device-events",["jquery","dc/infofuncs",'jquery.mousewheel',"jquery.touch"],function($,infofuncs){
 return  function(self,liteMode){
         $(self.element).bind("mousewheel",function(evt,delta){
                 self.dzoom(delta);
@@ -97,7 +97,7 @@ return  function(self,liteMode){
                                 line.plot(points);
                         }
                         if(points.length>1){
-                                var gr=new Graphic(line,self.graphicsManager);
+                                var gr=new Graphic(line,infofuncs.newId(),self.graphicsManager);
                                 self.io.createGraphic(gr);
                         }
                         $(config.element).unbind(config.onevt);

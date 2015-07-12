@@ -8,6 +8,10 @@ module.exports=function(socket,user_data){
                         socket.broadcast.to(user_data.room).emit('create_graphic',graphic);
                         model.storeNewGraphic(graphic);
                 })));
+                socket.on('remove_graphic',withUser(function(id){
+                        socket.broadcast.to(user_data.room).emit('remove_graphic',id);
+                        model.removeGraphic(id,user_data.room);
+                }));
         }
         socket.on('pull_inner_graphics',function(msg){
                 model.loadGraphicsInRange(user_data.room,msg,function(struct){
@@ -35,10 +39,7 @@ module.exports=function(socket,user_data){
                 model.storeContent(msg);
                 socket.broadcast.to(msg.room).emit("update_content",msg);
         });
-        socket.on("remove_graphic",function(msg){
-                model.removeGraphic(msg);
-                socket.broadcast.to(msg.room).emit("remove_graphic",msg);
-        });
+
         socket.on("remove_content",function(msg){
                 model.removeContent(msg);
                 socket.broadcast.to(msg.room).emit("remove_content",msg);

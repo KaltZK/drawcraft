@@ -1,13 +1,14 @@
-define("dc/graphic",['jquery','svg','dc/posfuncs','dc/color'],function($,svg,posfuncs,color){
+define("dc/graphic",['jquery','svg','dc/posfuncs','dc/color','dc/infofuncs'],function($,svg,posfuncs,color,infofuncs){
         //debug用
         centerdiv.style.left=posfuncs.centerX();
         centerdiv.style.top=posfuncs.centerY();
-Graphic=function(polyline,manager){
+Graphic=function(polyline,id,manager){
         var self=this;
         this.polyline=polyline;
         this.board=manager.board;
         var style=manager.style;
         var abspos=this.abspos=manager.board.abspos;
+        this.id=id;
 
         manager.graphics.push(this);
         
@@ -24,6 +25,13 @@ Graphic=function(polyline,manager){
         this.hide=function(){
                 this.polyline.remove();
         };
+        this.remove=function(){
+                this.hide();
+                $.event.trigger({
+                        type:"remove_graphic",
+                        id:self.id,
+                });
+        };
         polyline.on("mouseenter",function(evt){
                 self.polyline.stroke({
                         width:style.stroke.width+7,
@@ -31,7 +39,7 @@ Graphic=function(polyline,manager){
                 });
         });
         $(polyline.node).on("contextmenu",function(evt){
-                console.log("click!");
+                self.remove();
                 return false;//阻止父元素获取事件
         });
         polyline.on("mouseleave",function(evt){
@@ -73,6 +81,7 @@ Graphic=function(polyline,manager){
                         cleft:this.chunkLeft(),
                         ctop:this.chunkTop(),
                         cbottom:this.chunkBottom(),
+                        id:this.id,
                 };
         };
 };
@@ -81,7 +90,7 @@ Graphic.Manager=function(board){
         this.board=board;
         var abspos=board.abspos;
         var draw=board.draw;
-        this.graphics=[];
+        var graphics=this.graphics=[];
         var style=this.style={stroke:{color:"#5677fc",width:2,opacity:0.5},fill:"none"};
         var new_graphic_status=undefined;
         this.updateZoom=function(dz){
@@ -118,7 +127,7 @@ Graphic.Manager=function(board){
                 var line=board.draw.polyline(points);
                 line.fill(this.style.fill);
                 line.stroke(this.style.stroke);
-                var gr=new Graphic(line,this);
+                var gr=new Graphic(line,struct.id,this);
                 return gr;
         };
         this.updateNewGraphic=function(struct){
@@ -152,6 +161,13 @@ Graphic.Manager=function(board){
                         gr.hide();});
                 this.graphics=this.graphics.filter(function(gr){
                         return !filter(gr);});
+        };
+        this.hideGraphicById=function(id){
+                this.graphics.filter(function(g){
+                        return g.id==id;
+                }).forEach(function(g){
+                        g.hide();
+                });
         };
         (function(){
                 var lx,ly;
@@ -198,7 +214,7 @@ Graphic.Manager=function(board){
                                 new_graphic_status=undefined;
                                 return null;
                         }
-                        var ngr=new Graphic(new_graphic_status.polyline,this);
+                        var ngr=new Graphic(new_graphic_status.polyline,infofuncs.newId(),this);
                         new_graphic_status=undefined;
                         return ngr;
                 };

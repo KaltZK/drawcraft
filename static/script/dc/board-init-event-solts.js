@@ -1,10 +1,17 @@
 define("dc/board-init-event-solts",["jquery"],function($){
+        var board;
         function notify(text){
                 var notify=document.getElementById("notify");
                 notify.duration=5000;
                 notify.text=text;
                 notify.toggle();
         }
+        $(document).on("remove_graphic",function(evt){
+                board.io.removeGraphic(evt.id);
+        });
+        $(document).on("pass_auth",function(){
+                board.graphicsManager.pullInnerGraphics();
+        });
         $(document).on("pass_auth",function(){
                 notify("Connected.");
         });

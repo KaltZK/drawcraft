@@ -21,10 +21,6 @@ function enterRoom(socket,data){
 }
 
 module.exports=function(io,session){
-        //~ io.use(function(socket,next){
-                //~ socket.a666=true;
-                //~ next(socket,next);
-        //~ });
         //~ io.use(function(socket, next){
                 //~ console.log(6);
                 //~ var req = socket.handshake;
@@ -46,7 +42,7 @@ module.exports=function(io,session){
                         else
                                 socket.disconnect();
                 },timeout);
-                                console.log(socket);
+                                //~ console.log(socket);
                 socket.on("authentication",function(data){
                         //~ var connect_sid=cookie.parse(
                                 //~ (socket.handshake||socket).

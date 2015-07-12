@@ -26,7 +26,6 @@ db.open(function(err,db){
                 graphics.insert(data);
         };
         exports.loadGraphicsInRange=function(room,data,callback){
-                console.log(room,data);
                 graphics.find({
                         room:room,
                         cleft:{$lte:data.right},
@@ -35,8 +34,8 @@ db.open(function(err,db){
                         ctop:{$lte:data.bottom},
                 }).forEach(callback);
         };
-        exports.removeGraphic=function(msg){
-                bodies.remove({id:msg.id,room:msg.room});
+        exports.removeGraphic=function(id,room){
+                graphics.remove({id:id,room:room});
         };
         exports.roomExists=function(room,callback){
                 rooms.findOne({room:room},function(err,room){

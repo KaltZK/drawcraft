@@ -25,6 +25,12 @@ function initIO(socket,password){
                 if(graphic)
                         socket.emit("create_graphic",graphic.toStruct(graphic));
         };
+        socket.on("remove_graphic",function(id){
+                board.graphicsManager.hideGraphicById(id);
+        });
+        this.removeGraphic=function(id){
+                socket.emit("remove_graphic",id);
+        };
         socket.on("pull_inner_graphic",function(struct){
                 $.event.trigger({
                         type:"pull_inner_graphic",
