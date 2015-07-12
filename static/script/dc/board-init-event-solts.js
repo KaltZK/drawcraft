@@ -5,7 +5,6 @@ define("dc/board-init-event-solts",["jquery"],function($){
                 notify.text=text;
                 notify.toggle();
         }
-        var board;
         $(document).on("pass_auth",function(){
                 notify("Connected.");
         });
@@ -15,9 +14,11 @@ define("dc/board-init-event-solts",["jquery"],function($){
         $(document).on("create_graphic",function(evt){
                 board.graphicsManager.updateNewGraphic(evt.msg);
         });
+
         $(document).on("update_chunk_border",function(evt){
-                console.log(evt);
-        });
+                board.graphicsManager.cleanOuterGraphics();
+});
+        
 return function(bd){
         board=bd;
 }});

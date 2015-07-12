@@ -59,7 +59,10 @@ return function(board){
                         if(np!=op){
                                 $.event.trigger({
                                         type:"update_chunk_border",
-                                        dl:dps[0],
+                                        which:on,
+                                        begin:op,
+                                        end:np,
+                                        dire:np-op,
                                 });
                         }
                 });

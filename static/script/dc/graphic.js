@@ -17,11 +17,13 @@ Graphic=function(polyline,manager){
                 height=polyline.height()/posfuncs.zoomMapping(abspos.z());
         var absx=this.absx=abspos.mapXToAbs(px);//图形相对绝对坐标位置
         var absy=this.absy=abspos.mapYToAbs(py);
-        this.absPoints=polyline._array.value.map(function(pos){
+        this.absPoints=polyline.array.value.map(function(pos){
                 return [abspos.mapXToAbs(pos[0]),
                 abspos.mapYToAbs(pos[1])];
         });
-
+        this.hide=function(){
+                this.polyline.remove();
+        };
         polyline.on("mouseenter",function(evt){
                 self.polyline.stroke({
                         width:style.stroke.width+7,
@@ -88,7 +90,8 @@ Graphic.Manager=function(board){
                 this.graphics.forEach(function(gr){gr.updateZoom()});
                 absdiv.style.left=board.abspos.x();
                 absdiv.style.top=board.abspos.y();
-                if(new_graphic_status)with(new_graphic_status){
+                if(new_graphic_status &&
+                   new_graphic_status.points.length)with(new_graphic_status){
                         var     centerX=posfuncs.centerX(),
                                 centerY=posfuncs.centerY();
                         var multiple=posfuncs.zoomMapping(abspos.z());
@@ -127,13 +130,30 @@ Graphic.Manager=function(board){
                         struct.chunk.top<=board.abspos.chunkBottom())
                         return this.fromStruct(struct);
         };
-
+        this.pullInnerGraphics=function(){
+        };
+        this.cleanOuterGraphics=function(){
+                function filter(gr){
+                        return gr.chunkLeft()>board.abspos.chunkRight()||
+                        gr.chunkRight()<board.abspos.chunkLeft()||
+                        gr.chunkBottom()<board.abspos.chunkTop()||
+                        gr.chunkTop()>board.abspos.chunkBottom();
+                }
+                this.graphics.filter(filter).forEach(function(gr){
+                        console.log("Hiiiiiiiide")
+                        gr.hide();});
+                this.graphics=this.graphics.filter(function(gr){
+                        return !filter(gr);});
+        };
         (function(){
-                this.newGraphic=function(px,py){
-                        new_graphic_status={
-                                polyline:draw.polyline([]),
-                                points:[],
-                        };
+                var lx,ly;
+                this.newGraphic=function(px,py){//如果焦点暂时离开就会产生两个一样的graphic，目前没想出解决方法
+                        if(new_graphic_status==undefined){
+                                new_graphic_status={
+                                        polyline:draw.polyline([]),
+                                        points:[],
+                                };
+                        }
                         with(new_graphic_status){
                                 polyline.stroke(style.stroke);
                                 polyline.fill(style.fill);
@@ -141,6 +161,7 @@ Graphic.Manager=function(board){
                         this.addGraphicPoint(px,py)
                 };
                 this.addGraphicPoint=function(px,py){
+                        if(new_graphic_status==undefined || (px==lx&&py==ly)) return;
                         new_graphic_status.points.push([
                                 abspos.mapXToAbs(px),
                                 abspos.mapYToAbs(py)]);
@@ -160,10 +181,15 @@ Graphic.Manager=function(board){
                         new_graphic_status.absy=
                                 abspos.mapYToAbs(
                                 new_graphic_status.polyline.y());
+                        lx=px;ly=py;
                 };
                 this.finishGraphic=function(px,py){
+                        if(new_graphic_status==undefined) return;
                         if(px!=undefined&&py!=undefined) this.addGraphicPoint(px,py);
-                        if(new_graphic_status.points.length<1) return null;
+                        if(new_graphic_status.points.length<=1){
+                                new_graphic_status=undefined;
+                                return null;
+                        }
                         var ngr=new Graphic(new_graphic_status.polyline,this);
                         new_graphic_status=undefined;
                         return ngr;

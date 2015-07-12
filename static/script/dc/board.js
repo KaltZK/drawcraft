@@ -1,5 +1,5 @@
 define( 'dc/board',['jquery','svg','dc/graphic','dc/abspos','dc/io',
-        'dc/infofuncs','dc/boardevents','dc/board-device-events',],
+        'dc/infofuncs','dc/boardevents','dc/board-device-events'],
 function($,svg,Graphic,AbsPos,IO,infofuncs,BoardEvents,initDeviceEvents){return function(id,liteMode){
         var self=this;
         this.room=infofuncs.getRoom();
