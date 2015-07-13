@@ -61,6 +61,18 @@ $(document).on("WebComponentsReady",function(){
         $("#setting_button").on("click",function(){
                 document.getElementById("style_setting_dialog").toggle(true);
         });
+
+        var chat_content=document.getElementById("chat_content");
+        function displayMessage(username,text){
+                var d=document.createElement("p"),
+                    p=document.createElement("span"),
+                    s=document.createElement("strong");
+                s.textContent=username+": ";
+                p.textContent=text;
+                d.appendChild(s);
+                d.appendChild(p);
+                chat_content.appendChild(d);
+        }
+        displayMessage("12","45045045045045045045045045045045045045045045045045\n0450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450");
         $("#chat_block_header").text(infofuncs.getRoom());
-		
 })});
