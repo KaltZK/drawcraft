@@ -3,6 +3,7 @@ require.config({
         paths:{
                 'jquery':"/jquery.min",
                 'jquery.cookie':"/jquery.cookie",
+                'jquery.cookie':"/jquery.cookie",
                 'jquery.touch':"/jquery.touch",
                 'svg':"/svg",
                 'jquery.mousewheel':"/jquery.mousewheel",
@@ -33,16 +34,33 @@ $(document).on("WebComponentsReady",function(){
         $("#move_radio_button").on("change",function(evt){
                 board.touchMode=1;
         });
-        return;
-        (function(){
-                var contextmenu=document.getElementById("contextmenu");
-                contextmenu.setElement(
-                document.getElementById(
-                "board"));
-                contextmenu.addItem("show",function(){console.log()});
-                $("#board").bind("contextmenu",function(){
-                        return false;
-                })
-        }).call();
 
-});});
+        function notify(text){
+                var notify=document.getElementById("notify");
+                notify.duration=5000;
+                notify.text=text;
+                notify.toggle();
+        }
+        		
+	var colors_list=["red","green","blue","yellow"];
+	var select_color_inner_div=document.getElementById("select_color_inner_menu");
+	colors_list.forEach(function(color){
+		console.log(color)
+		var pi=document.createElement("paper-item");
+		pi.style.color="#FFFFFF";
+		pi.style.backgroundColor=color;
+		select_color_inner_div.appendChild(pi);
+	});
+			
+				var hdialog = document.getElementById('help_dialog');
+				document.getElementById("help_button").onclick=function(){
+					hdialog.toggle(true);
+					return false;
+				};
+				document.getElementById("close_help_button").onclick=function(){
+					hdialog.toggle(false);
+					return false;
+				};
+			
+		
+})});
