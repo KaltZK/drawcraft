@@ -6,6 +6,7 @@ define("dc/api",["jquery"],function($){
                 "logout",
                 "register",
                 "getUserData",
+                "userExists",
                 "roomNeedPassword",
                 "createRoom",
                 "roomExists",

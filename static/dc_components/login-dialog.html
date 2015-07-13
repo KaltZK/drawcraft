@@ -44,6 +44,7 @@
                                 mode="floatinglabel"
                                 label="Username"
                                 on-keydown="onKeyDown"
+                                bind-value="{{username}}"
                                 id="dialog_username_input">
                         </paper-input>
                         <paper-input
@@ -91,6 +92,12 @@ require(["jquery","dc/api","jquery.cookie"],function($,api){
                 clearText:function(){
                         username:$("#dialog_username_input").val('');
                         password:$("#dialog_password_input").val('');
+                },
+                properties: {
+                        username: {
+                                type: String,
+                                value: "",
+                        },
                 },
                 login:function(){
                         var self=this;

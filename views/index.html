@@ -1,20 +1,21 @@
 <!DOCTYPE HTML5>
 <html>
 	<head>
+		<meta http_equiv=Content-Type content="text/html; charset=utf_8">
                 <meta name="viewport" 
                 content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=0">
-                <script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
+                <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+                <script src="//cdn.bootcss.com/require.js/2.1.18/require.js" data-main="/script/index.js"></script>
+                
                 <link rel="import" href="/bower_components/paper-button/paper-button.html">
                 <link rel="import" href="/bower_components/paper-input/paper-input.html">
                 <link rel="import" href="/bower_components/paper-material/paper-material.html">
+                <link rel="import" href="/bower_components/paper-toast/paper-toast.html">
 
                 <!-- 由于GoogleAPI不能用改用360的roboto字体 -->
                 <link rel="import" href="/dc_components/font-roboto.html">
+                <link rel="import" href="/dc_components/login-dialog.html">
 
-                <script src="/jquery.min.js"></script>
-		<script src="/jquery.cookie.js"></script>
-
-                <script src="/script/index.js"></script>
                 <link rel="stylesheet" type="text/css" href="/css/index.css">
 
 		<title>DrawCraft</title>
@@ -31,5 +32,8 @@
                         </paper-button>
                 </paper-material>
                 </div>
+                <login-dialog id="login_dialog"></login-dialog>
+                <paper-toast id="notify">
+                </paper-toast>
 	</body>
 </html>

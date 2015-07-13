@@ -136,7 +136,7 @@ return  function(self,liteMode){
                         if(tx!=undefined&&ty!=undefined)
                                 line.plot([[self.abspos.reMapXFromAbs(afx),
                                         self.abspos.reMapYFromAbs(afy)],[tx,ty]]);
-                        self.io.createGraphic(new Graphic(line,self.graphicsManager));
+                        self.io.createGraphic(new Graphic(line,infofuncs.newId(),self.graphicsManager));
                         $(config.element).unbind(config.onevt);
                         $(config.element).unbind(config.doneevt);
                 });

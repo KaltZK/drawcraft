@@ -1,11 +1,48 @@
-$(document).on("WebComponentsReady",function(){
-        function enter(){
-                var name=$("#username_input").val();
-                if(!name) return;
+require.config({
+        baseUrl:'/script',
+        paths:{
+                'jquery':"/jquery.min",
+                'jquery.cookie':"/jquery.cookie",
+        },
+        shim:{
+                'jquery': {exports: '$',},
+                'jquery.cookie':{deps:["jquery"],},
+        },
+});
+require(["jquery","dc/api","jquery.cookie"],function($,api){
+        function notifySend(text){
+                var notify=document.getElementById("notify");
+                notify.duration=10000;
+                notify.text=text;
+                notify.toggle();
+        }
+        function jump(name){
                 $.cookie("user",name);
                 setTimeout(function(){
                         window.location.href="/room-list";
                 },500);
+        }
+        $(document).on("notify",function(evt){
+                if(evt.login){
+                        jump(evt.name);
+                }else{
+                        notifySend(evt.text);
+                }
+        });
+        function enter(){
+                var name=$("#username_input").val();
+                if(!name) return;
+                api.getUserData({},function(ud){
+                        api.userExists({username:name},function(ue){
+                                if(ue){
+                                        var login_dialog=document.getElementById("login_dialog");
+                                        $("#dialog_username_input").val(name);
+                                        login_dialog.toggle(true);
+                                }else{
+                                        jump(name);
+                                }
+                        });
+                });
         };
         $("#enter_button").on("click",enter);
         $(document).keydown(function(event){
