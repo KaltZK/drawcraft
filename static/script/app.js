@@ -21,7 +21,7 @@ require.config({
         },
 });
 
-require(["jquery","dc/board",'dc/poslabel','dc/board-init-event-solts'],function($,Board,PosLabel,initSolts){
+require(["jquery","dc/board",'dc/infofuncs','dc/poslabel','dc/board-init-event-solts'],function($,Board,infofuncs,PosLabel,initSolts){
 $(document).on("WebComponentsReady",function(){
         board=new Board("board");
         initSolts(board);
@@ -61,6 +61,6 @@ $(document).on("WebComponentsReady",function(){
         $("#setting_button").on("click",function(){
                 document.getElementById("style_setting_dialog").toggle(true);
         });
-			
+        $("#chat_block_header").text(infofuncs.getRoom());
 		
 })});

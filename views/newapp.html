@@ -77,18 +77,21 @@
                         <paper-icon-button id="close_help_button" icon="close"></paper-icon-button>
                 </paper-dialog>
                 
-                
+
+                <div id="chat_header">
+                <paper-material elevation="2">
                 <paper-header-panel mode="waterfall" class="blue">
-			<div class="paper-header">Chatting</div>
-			<div class="content"></div>
+			<div class="paper-header" id="chat_block_header">Chat</div>
+			<div class="content chat_content"></div>
 		</paper-header-panel>
-		
+                </paper-material>
+                </div>
+                
 		<div id="inputblock">
-		 <paper-material id="block_shadow">
-				 <paper-input id="content_input" label="Your Words"></paper-input>
-				 <paper-icon-button id="send_button" icon="check"></paper-icon-button>
-		 
-                 </paper-material>
+                        <paper-material id="block_shadow" elevation="2">
+                                <paper-input id="content_input" label="Your Words"></paper-input>
+                                <paper-icon-button id="send_button" icon="check"></paper-icon-button>
+                        </paper-material>
 		</div> 
 		
                 
