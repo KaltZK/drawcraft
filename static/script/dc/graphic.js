@@ -106,8 +106,8 @@ Graphic.Manager=function(board){
         var new_graphic_status=undefined;
         this.updateZoom=function(dz){
                 this.graphics.forEach(function(gr){gr.updateZoom()});
-                absdiv.style.left=board.abspos.x();
-                absdiv.style.top=board.abspos.y();
+                //~ absdiv.style.left=board.abspos.x();
+                //~ absdiv.style.top=board.abspos.y();
                 if(new_graphic_status &&
                    new_graphic_status.points.length)with(new_graphic_status){
                         var     centerX=posfuncs.centerX(),
