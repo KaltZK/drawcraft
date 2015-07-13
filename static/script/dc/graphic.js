@@ -1,12 +1,23 @@
 define("dc/graphic",['jquery','svg','dc/posfuncs','dc/color','dc/infofuncs'],function($,svg,posfuncs,color,infofuncs){
         //debug用
-        centerdiv.style.left=posfuncs.centerX();
-        centerdiv.style.top=posfuncs.centerY();
-Graphic=function(polyline,id,manager){
+        //~ centerdiv.style.left=posfuncs.centerX();
+        //~ centerdiv.style.top=posfuncs.centerY();
+Graphic=function(polyline,id,manager,style_){
         var self=this;
         this.polyline=polyline;
         this.board=manager.board;
-        var style=manager.style;
+        var style;
+        if(style_)style=style_;
+        else{
+                style={
+                        fill:"none",
+                        stroke:{
+                                color:manager.style.stroke.color,
+                                width:manager.style.stroke.width,
+                                opacity:manager.style.stroke.opacity,
+                        },
+                };
+        }
         var abspos=this.abspos=manager.board.abspos;
         this.id=id;
 
@@ -85,13 +96,13 @@ Graphic=function(polyline,id,manager){
                 };
         };
 };
-
+Graphic.style={stroke:{color:"#5677fc",width:20,opacity:0.6},fill:"none"};
 Graphic.Manager=function(board){
         this.board=board;
         var abspos=board.abspos;
         var draw=board.draw;
         var graphics=this.graphics=[];
-        var style=this.style={stroke:{color:"#5677fc",width:2,opacity:0.5},fill:"none"};
+        var style=this.style=Graphic.style;
         var new_graphic_status=undefined;
         this.updateZoom=function(dz){
                 this.graphics.forEach(function(gr){gr.updateZoom()});
@@ -125,9 +136,9 @@ Graphic.Manager=function(board){
                                 board.abspos.reMapYFromAbs(pos[1])];
                 });
                 var line=board.draw.polyline(points);
-                line.fill(this.style.fill);
-                line.stroke(this.style.stroke);
-                var gr=new Graphic(line,struct.id,this);
+                line.fill(struct.style.fill);
+                line.stroke(struct.style.stroke);
+                var gr=new Graphic(line,struct.id,this,struct.style);
                 return gr;
         };
         this.updateNewGraphic=function(struct){

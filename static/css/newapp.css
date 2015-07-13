@@ -30,7 +30,7 @@ paper-radio-button.blue-radio::shadow #onRadio {
         background-color: #5677fc;
 }
 
-#menubutton{
+#setting_button{
         position: absolute;
         bottom: 0.5em;
         right: 4.3em;
@@ -67,10 +67,12 @@ paper-header-panel {
         transition: height 0.2s;
 }
 
+/*
 .content {
         height: 2000px;
         background-color: white;
 }
+*/
 
 /*.blue .content {
         background: linear-gradient(white, #b3e5fc);
@@ -119,6 +121,7 @@ paper-header-panel {
 
 #colorchoosing{
 	white-space: nowrap;
+	width: 100%;
 }
 
 #colorscroll{
@@ -173,5 +176,8 @@ paper-header-panel {
 }
 
 #width_slider{
-      width: 100%;
+        width: 100%;
+}
+#notify{
+        z-index: 100;
 }

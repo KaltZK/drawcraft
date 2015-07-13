@@ -1,69 +1,108 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
-<link rel="import" href="/bower_components/core-field/core-field.html">
-<polymer-element name="selecting-color-dialog">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<dom-module id="selecting-color-dialog">
+        <link rel="stylesheet" href="/bower_components/paper-dialog-behavior/paper-dialog-common.css">
+        <style>
+        :host{
+                display:block;
+                top: 25%;
+                z-index:100;
+        }
+        .color-dialog-shadow{
+                margin: 0;
+                padding: 2em;
+                width: 100%
+                height: 100%
+        }
+        .selecting_color_background{
+                display: block;
+                width: 100%;
+                height: 100%;
+                background-color: #FFFFFF;
+                padding: 0.1em;
+        }
+        .dialog-center-section{
+                height: 100%;
+        }
+        #color-cancel-button{
+                width: 60%;
+                margin-left: auto;
+                margin-right: auto;
+        }
+        #title-label{
+                text-align:center;
+                width: 100%;
+                font-size: 2em;
+        }
+        .dialog-button{
+                color:white;
+                background: #F50057;
+                width:8em;
+        }
+        </style>
         <template>
-                <style>
-                </style>
-                <paper-dialog id="color_dialog" heading="Select Color">
-                        <div id="color_list">
-                        </div>
-                </paper-dialog>
+                <div class="selecting_color_background">
+                        <paper-material class="color-dialog-shadow" elevation="2">
+                                <section class="layout vertical dialog-center-section">
+                                <label id="title-label">Select Color</label>
+                                <paper-dialog-scrollable id="color_scroll">
+                                        <paper-icon-button on-click="select" style="background-color:#e51c23"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#e91e63"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#9c27b0"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#673ab7"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#3f51b5"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#5677fc"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#03a9f4"></paper-icon-button><br>
+                                        <paper-icon-button on-click="select" style="background-color:#00bcd4"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#009688"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#259b24"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#8bc34a"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#cddc39"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#ffeb3b"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#ffc107"></paper-icon-button><br>
+                                        <paper-icon-button on-click="select" style="background-color:#ff9800"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#ff5722"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#795548"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#607d8b"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:#9e9e9e"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:white"></paper-icon-button>
+                                        <paper-icon-button on-click="select" style="background-color:black"></paper-icon-button>
+                                </paper-dialog-scrollable><br>
+                                <paper-button
+                                        on-click="cancel"
+                                        id="color-cancel-button"
+                                        class="dialog-button">
+                                        Cancel
+                                </paper-button>
+                                </section>
+                        </paper-material>
+                </div>
         </template>
-        <script>
-                var color_list=[
-                                "#e51c23",
-                                "#e91e63",
-                                "#9c27b0",
-                                "#673ab7",
-                                "#3f51b5",
-                                "#5677fc",
-                                "#03a9f4",
-                                "#00bcd4",
-                                "#009688",
-                                "#259b24",
-                                "#8bc34a",
-                                "#cddc39",
-                                "#ffeb3b",
-                                "#ffc107",
-                                "#ff9800",
-                                "#ff5722",
-                                "#795548",
-                                "#607d8b",
-                                "#9e9e9e",
-                                "white",
-                                "black",];
-                Polymer({
-                        __initialized:false,
-                        initialize:function(){
-                                var self=this;
-                                var field;
-                                for(var i=0;i<color_list.length;i++){
-                                        if(i%3==0){
-                                                field=document.createElement("core-field");
-                                                this.$.color_list.appendChild(field);
-                                        }
-                                        var color_button=document.createElement("paper-button");
-                                        color_button.style.color="#eeeeee";
-                                        color_button.textContent=
-                                        color_button.style.backgroundColor=color_list[i];
-                                        field.appendChild(color_button);
-                                }
-                                this.$.color_list.addEventListener("click",function(evt){
-                                        self.selected(evt.target.textContent);
-                                });
-                                this.__initialized=true;
-                        },
-                        select:function(callback){
-                                this.__callback=callback;
-                                this.$.color_dialog.toggle(true);
-                                if(!this.__initialized)
-                                        this.initialize();
-                        },
-                        selected:function(color){
-                                this.$.color_dialog.toggle(false);
-                                this.__callback(color);
-                        },
-                });
-        </script>
-</polymer-element>
+</dom-module>
+<script>
+require(["jquery"],function($){
+        Polymer({
+                is:"selecting-color-dialog",
+                ready:function(){
+                        var self=this;
+                        var field=this.$.color_scroll;
+                },
+                select:function(evt){
+                        var color=evt.path[1].style.backgroundColor;
+                        this.toggle(false);
+                        $.event.trigger({
+                                type:"color_selected",
+                                color:color,
+                        });
+                },
+                cancel:function(){
+                        this.toggle(false);
+                },
+                behaviors: [ Polymer.PaperDialogBehavior ]
+        });
+});
+</script>

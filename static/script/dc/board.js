@@ -17,7 +17,7 @@ function($,svg,Graphic,AbsPos,IO,infofuncs,BoardEvents,initDeviceEvents){return 
         1: Move
         */
         
-        //~ $(element).bind("contextmenu",function(evt){console.log(evt);return false;});
+        $(element).bind("contextmenu",function(evt){return false;});
         //屏蔽右键菜单&使用自制右键菜单
 
         this.dmove=function(dx,dy){
@@ -26,8 +26,8 @@ function($,svg,Graphic,AbsPos,IO,infofuncs,BoardEvents,initDeviceEvents){return 
                 eventsManager.send("move",
                         abspos.viewX(),abspos.viewY(),abspos.height());
                 
-                absdiv.style.left=abspos.x();
-                absdiv.style.top=abspos.y();
+                //~ absdiv.style.left=abspos.x();
+                //~ absdiv.style.top=abspos.y();
         };
         this.dzoom=function(delta){
                 self.abspos.dzoom(delta);

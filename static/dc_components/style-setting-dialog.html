@@ -1,67 +1,124 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/bower_components/paper-material/paper-material.html">
 <link rel="import" href="/bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
-<link rel="import" href="/html/selecting-color-dialog.html">
-<polymer-element name="style-setting-dialog">
+<link rel="import" href="/dc_components/selecting-color-dialog.html">
+<dom-module id="style-setting-dialog">
+        <link rel="stylesheet" href="/bower_components/paper-dialog-behavior/paper-dialog-common.css">
+        <style>
+        :host{
+                display:block;
+                top: 25%;
+                z-index:100;
+        }
+        .selecting_color_background{
+                display: block;
+                width: 100%;
+                height: 100%;
+                background-color: #FFFFFF;
+                padding: 0.1em;
+        }
+        .style-dialog-shadow{
+                margin: 0;
+                padding: 2em;
+                width: 100%
+                height: 100%
+        }
+        .dialog-button{
+                color:white;
+                background: #F50057;
+                width:8em;
+        }
+        #select_color_button{
+                color: white;
+        }
+        </style>
         <template>
-                <style>
-                </style>
-                <selecting-color-dialog id="color_dialog">
-                </selecting-color-dialog>
-		<paper-dialog id="main_dialog" heading="Style Setting">
-                        <br>
+                <div class="selecting_color_background">
+                        <paper-material class="style-dialog-shadow" elevation="2">
                         <section>
 				<label>Opacity</label>
                                 <br>
-                                <paper-slider class="slider" id="opacity_slider" pin min="0" max="100"></paper-slider>
+                                <paper-slider
+                                        class="slider"
+                                        id="opacity_slider"
+                                        on-change="opacity_change"
+                                        pin
+                                        min="0"
+                                        max="100"
+                                        value="{{opacity_value}}">
+                                </paper-slider>
                         </section>
                         <section>
 				<label>Width</label>
                                 <br>
-                                <paper-slider class="slider" id="width_slider" pin snap min="1" max="50"></paper-slider>
+                                <paper-slider
+                                        class="slider"
+                                        id="width_slider"
+                                        on-change="width_change"
+                                        pin
+                                        snap
+                                        min="1"
+                                        max="50"
+                                        value="{{width_value}}">
+                                </paper-slider>
                         </section>
-                        <br/><br/>
-                        <paper-button id="color_button" on-click="{{select_color}}">Select Color</paper-button>
-                        <paper-button id="ok_button" on-click="{{save}}">OK</paper-button>
-                </paper-dialog>
+                        <br/>
+                        <paper-button
+                                id="select_color_button"
+                                on-click="toggle_color_dialog">
+                                Select Color
+                        </paper-button>
+                        <paper-button
+                                on-click="save"
+                                class="dialog-button">
+                                OK
+                        </paper-button>
+                        <selecting-color-dialog id="select_color_dialog"></selecting-color-dialog>
+                        </paper-material>
+                </div>
         </template>
-        <script>
-                Polymer({
-                        setStyleObject:function(style_object){
-                                this.__style_object=style_object;
+</dom-module>
+<script>
+require(["jquery","dc/graphic"],function($,Graphic){
+        Polymer({
+                is:"style-setting-dialog",
+                properties:{
+                        opacity_value:{
+                                type: Number,
+                                value:Graphic.style.stroke.opacity*100,
                         },
-                        show:function(){
-                                if(this.__style_object){
-                                        this.setColor(this.__style_object.color);
-                                        this.$.opacity_slider.immediateValue=this.__style_object.opacity*100;
-                                        this.$.width_slider.immediateValue=this.__style_object.width;
-                                }
-                                this.$.main_dialog.toggle(true);
+                        width_value:{
+                                type: Number,
+                                value:Graphic.style.stroke.width,
                         },
-                        hide:function(){
-                                this.$.main_dialog.toggle(false);
-                        },
-                        setColor:function(color){
-                                this.__color=color;
-                                this.$.color_button.style.backgroundColor=color;
-                                this.$.color_button.style.color="#eeeeee";
-                        },
-                        select_color:function(){
-                                var self=this;
-                                self.$.color_dialog.select(function(color){
-                                        self.setColor(color);
-                                });
-                        },
-                        save:function(){
-                                var self=this;
-                                if(this.__style_object){
-                                        this.__style_object.color=this.__color;
-                                        this.__style_object.width=this.$.width_slider.immediateValue;
-                                        this.__style_object.opacity=this.$.opacity_slider.immediateValue/100;
-                                }
-                                this.hide();
-                        },
-                });
-        </script>
-</polymer-element>
+                },
+                ready:function(){
+                        var self=this;
+                        self.$.select_color_button.style.backgroundColor=
+                                Graphic.style.stroke.color;
+                        //~ self.$.opacity_slider.secondaryProgress=Graphic.style.stroke.opacity*100;
+                        //~ self.$.width_slider.secondaryProgress=Graphic.style.stroke.width;
+                        $(document).on("color_selected",function(evt){
+                                Graphic.style.stroke.color=evt.color;
+                                self.$.select_color_button.style.backgroundColor=evt.color;
+                        });
+                },
+                toggle_color_dialog:function(){
+                        this.$.select_color_dialog.toggle(true);
+                },
+                save:function(){
+                        this.toggle(false);
+                        this.style_object;
+                },
+                opacity_change:function(evt,b,c){
+                        Graphic.style.stroke.opacity=this.$.opacity_slider.immediateValue/100;
+                },
+                width_change:function(evt){
+                        Graphic.style.stroke.width=this.$.width_slider.immediateValue;
+                },
+                behaviors: [ Polymer.PaperDialogBehavior ]
+        });
+});
+</script>

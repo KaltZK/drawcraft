@@ -42,25 +42,25 @@ $(document).on("WebComponentsReady",function(){
                 notify.toggle();
         }
         		
-	var colors_list=["red","green","blue","yellow"];
-	var select_color_inner_div=document.getElementById("select_color_inner_menu");
-	colors_list.forEach(function(color){
-		console.log(color)
-		var pi=document.createElement("paper-item");
-		pi.style.color="#FFFFFF";
-		pi.style.backgroundColor=color;
-		select_color_inner_div.appendChild(pi);
-	});
-			
-				var hdialog = document.getElementById('help_dialog');
-				document.getElementById("help_button").onclick=function(){
-					hdialog.toggle(true);
-					return false;
-				};
-				document.getElementById("close_help_button").onclick=function(){
-					hdialog.toggle(false);
-					return false;
-				};
+	//~ var colors_list=["red","green","blue","yellow"];
+	//~ var select_color_inner_div=document.getElementById("select_color_inner_menu");
+	//~ colors_list.forEach(function(color){
+		//~ var pi=document.createElement("paper-item");
+		//~ pi.style.color="#FFFFFF";
+		//~ pi.style.backgroundColor=color;
+		//~ select_color_inner_div.appendChild(pi);
+	//~ });
+        var hdialog = document.getElementById('help_dialog');
+        $("#help_button").on("click",function(){
+                hdialog.toggle(true);
+        });
+        $("#close_help_button").on("click",function(){
+                hdialog.toggle(false);
+        });
+        var setting_dialog=document.getElementById('setting_dialog');
+        $("#setting_button").on("click",function(){
+                document.getElementById("style_setting_dialog").toggle(true);
+        });
 			
 		
 })});

@@ -50,14 +50,12 @@ return function(room){
         this.connect=function(){
                 api.roomNeedPassword({room:room},function(np){
                         if(np){
-                                $(document).on("password_dialog_ready",function(){
-                                        $.event.trigger({
-                                                type:"require_room_password",
-                                        });
-                                        $(document).bind("gain_room_password",function(evt){
-                                                conn(evt.password);
-                                                $(document).unbind("gain_room_password");
-                                        });
+                                $.event.trigger({
+                                        type:"require_room_password",
+                                });
+                                $(document).bind("gain_room_password",function(evt){
+                                        conn(evt.password);
+                                        $(document).unbind("gain_room_password");
                                 });
                         }
                         else conn("");
