@@ -29,19 +29,26 @@ require(["jquery","dc/api","jquery.cookie"],function($,api){
                         notifySend(evt.text);
                 }
         });
+        var login_status;
+        api.getUserData({},function(ud){
+                login_status=ud;
+                console.log(ud);
+                if(ud.login){
+                        notifySend("Welcome, "+ud.username+".");
+                        jump(ud.username);
+                }
+        });
         function enter(){
                 var name=$("#username_input").val();
                 if(!name) return;
-                api.getUserData({},function(ud){
-                        api.userExists({username:name},function(ue){
-                                if(ue){
-                                        var login_dialog=document.getElementById("login_dialog");
-                                        $("#dialog_username_input").val(name);
-                                        login_dialog.toggle(true);
-                                }else{
-                                        jump(name);
-                                }
-                        });
+                api.userExists({username:name},function(ue){
+                        if(ue){
+                                var login_dialog=document.getElementById("login_dialog");
+                                $("#dialog_username_input").val(name);
+                                login_dialog.toggle(true);
+                        }else{
+                                jump(name);
+                        }
                 });
         };
         $("#enter_button").on("click",enter);
