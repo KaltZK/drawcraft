@@ -25,6 +25,7 @@
 		<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
                 <link rel="import" href="/bower_components/paper-menu/paper-menu.html">
                 <link rel="import" href="/bower_components/paper-slider/paper-slider.html">
+                <link rel="import" href="/bower_components/paper-ripple/paper-ripple.html">
                 
                 
                 <!-- 由于GoogleAPI不能用改用360的roboto字体 -->
@@ -81,7 +82,11 @@
                 <div id="chat_header">
                 <paper-material elevation="2">
                 <paper-header-panel mode="waterfall" class="blue" id="chat_paper_header_panel">
-			<div class="paper-header" id="chat_block_header">Chat</div>
+			<div class="paper-header" id="chat_block_header">
+                                <label id="room_name_label"></label>
+                                <paper-ripple>
+                                </paper-ripple>
+                        </div>
 			<div class="content chat_content" id="chat_content"></div>
 		</paper-header-panel>
                 </paper-material>

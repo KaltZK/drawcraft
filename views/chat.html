@@ -1,50 +1,25 @@
 <!DOCTYPE html5>
 <html>
 	<head>
-		<meta http-equiv=Content-Type content="text/html; charset=utf-8">
-		<title>Chatting Room</title>
-		<style type="text/css">
+		<meta http_equiv=Content-Type content="text/html; charset=utf_8">
+                <meta name="viewport" content="width=device-width,height=width=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+                <link rel="stylesheet" href="/css/chat.css">
+                <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+                <link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+                <link rel="import" href="/bower_components/paper-text-area/paper-text-area.html">
 
-		</style>
-		<title>title</title>
+                <link rel="import" href="/dc_components/font-roboto.html">                
+		<title>Chat</title>
 	</head>
 	<body>
-	
-	</body>
-	
-</html>
-
-
-
-
-<!--
-	<body>
-                <video id="video"></video>
-                <script>
-                var video=document.getElementById("video");
-                navigator.getMedia = ( navigator.getUserMedia ||
-                        navigator.webkitGetUserMedia ||
-                        navigator.mozGetUserMedia ||
-                        navigator.msGetUserMedia);
-                navigator.getMedia(
-                {
-                        video: true,
-                        audio: true,
-                },
-                function(stream) {
-                        if (navigator.mozGetUserMedia) {
-                                video.mozSrcObject = stream;
-                        } else {
-                                var vendorURL = window.URL || window.webkitURL;
-                                video.src = vendorURL.createObjectURL(stream);
-                        }
-                        video.play();
-                },
-                function(err){
-                        console.log("An error occured! " + err);
-                }
-                );
-                </script>
+                <div id="chat_content_field">
+                <paper-dialog-scrollable id="chat_content_scroll">
+                        <div id="chat_content"></div>
+                </paper-dialog-scrollable>
+                </div>
+                <section id="input_block">
+                                <paper-text-area id="input">
+                                </paper-text-area>
+                </section>
 	</body>
 </html>
--->

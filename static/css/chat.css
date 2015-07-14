@@ -1,0 +1,39 @@
+html,body{
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        background-color: #212121;
+        font-family: 'RobotoDraft', sans-serif;
+        overflow: hidden;
+}
+#chat_content_field{
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 10em;
+        position: absolute;
+}
+#chat_content_scroll{
+        width: 100%;
+        height: 100%;
+}
+#chat_content{
+        height: 2000px;
+}
+#input_block{
+        position: absolute;
+        background-color: white;
+        bottom: 2em;
+        height: 6em;
+        left: 2em;
+        right: 2em;
+}
+#input_block > paper-dialog-scrollabel{
+        width: 100%;
+        height: 100%;
+}
+paper-text-area#input{
+        left: 0;
+        right: 5em;
+        bottom: 2em;
+}

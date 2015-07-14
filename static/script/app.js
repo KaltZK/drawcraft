@@ -76,7 +76,7 @@ $(document).on("WebComponentsReady",function(){
         }
 
         
-        $("#chat_block_header").text(infofuncs.getRoom());
+        $("#room_name_label").text(infofuncs.getRoom());
         function sendMessage(){
                 var text=$("#content_input").val(),
                     user=infofuncs.getUsername();

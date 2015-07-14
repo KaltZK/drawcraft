@@ -142,10 +142,10 @@ Graphic.Manager=function(board){
                 return gr;
         };
         this.updateNewGraphic=function(struct){
-                if(     struct.chunk.left<=board.abspos.chunkRight()&&
-                        struct.chunk.right>=board.abspos.chunkLeft()&&
-                        struct.chunk.bottom>=board.abspos.chunkTop()&&
-                        struct.chunk.top<=board.abspos.chunkBottom())
+                if(     struct.cleft<=board.abspos.chunkRight()&&
+                        struct.cright>=board.abspos.chunkLeft()&&
+                        struct.cbottom>=board.abspos.chunkTop()&&
+                        struct.ctop<=board.abspos.chunkBottom())
                         return this.fromStruct(struct);
         };
         this.pullInnerGraphics=function(evt){
