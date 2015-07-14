@@ -4,22 +4,25 @@
 		<meta http_equiv=Content-Type content="text/html; charset=utf_8">
                 <meta name="viewport" content="width=device-width,height=width=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
                 <link rel="stylesheet" href="/css/chat.css">
+                <script src="//cdn.bootcss.com/require.js/2.1.18/require.js" data-main="/script/chat.js"></script>
                 <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
                 <link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-                <link rel="import" href="/bower_components/paper-text-area/paper-text-area.html">
 
                 <link rel="import" href="/dc_components/font-roboto.html">                
+                <link rel="import" href="/dc_components/chat-header.html">                
 		<title>Chat</title>
 	</head>
-	<body>
-                <div id="chat_content_field">
-                <paper-dialog-scrollable id="chat_content_scroll">
-                        <div id="chat_content"></div>
-                </paper-dialog-scrollable>
-                </div>
-                <section id="input_block">
-                                <paper-text-area id="input">
-                                </paper-text-area>
-                </section>
+	<body unresolved class="fullbleed layout vertical">
+                <paper-header-panel mode="scroll" class="header">
+                        <div class="paper-header">
+                                <chat-header>
+                                </chat-header>
+                        </div>
+                        <div class="fit">
+                                <div id="rooms_background">
+                                        <!--"background"这个id会和各种button冲突……-->
+                                </div>
+                        </div>
+                </paper-header-panel>
 	</body>
 </html>
