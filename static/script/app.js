@@ -49,6 +49,14 @@ $(document).on("WebComponentsReady",function(){
                 hdialog.toggle(false);
         });
         var setting_dialog=document.getElementById('setting_dialog');
+        var commands={
+                tp:function(_x,_y){
+                        var x=parseInt(_x),y=parseInt(_y);
+                        if(isNaN(x) || isNaN(y))throw Error("Invalid argument.");
+                        board.move(-x,-y);
+                },
+        };
+        
         $("#setting_button").on("click",function(){
                 document.getElementById("style_setting_dialog").toggle(true);
         });
@@ -66,6 +74,7 @@ $(document).on("WebComponentsReady",function(){
                 chat_content.appendChild(d);
                 header_panel.scroller.scrollTop=header_panel.scroller.scrollHeight;
         }
+
         
         $("#chat_block_header").text(infofuncs.getRoom());
         function sendMessage(){
@@ -73,8 +82,21 @@ $(document).on("WebComponentsReady",function(){
                     user=infofuncs.getUsername();
                 if(!text) return;
                 $("#content_input").val('');
-                displayMessage(user,text);
-                board.io.sendMessage(user,text);
+                var res,func;
+                if(res=text.match(/^\/(\w*)(.*)$/)){
+                        if(func=commands[res[1]]){
+                                try{
+                                        func.apply(null,res[2].split(" ").filter(function(t){return t!=""}));
+                                }catch(e){
+                                        displayMessage("System",e.message);
+                                }
+                        }else{
+                                displayMessage("System","Unknown command: "+res[1]);
+                        }
+                }else{
+                        displayMessage(user,text);
+                        board.io.sendMessage(user,text);
+                }
         }
         $("#send_button").on("click",sendMessage);
         $("#content_input").on("keydown",function(evt){

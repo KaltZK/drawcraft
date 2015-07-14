@@ -11,6 +11,11 @@ return function(board){
         this.viewX=function(){return -(this.x()-posfuncs.centerX())/this.zoomMapping()};
         this.viewY=function(){return -(this.y()-posfuncs.centerY())/this.zoomMapping()};
         this.height=function(){return 1/this.zoomMapping()};
+        this.move=function(x,y){
+                this.__screen.x=x;
+                this.__screen.y=y;
+                this.chunkChange();
+        };
         this.dmove=function(dx,dy){
                 this.__screen.x+=dx;
                 this.__screen.y+=dy;

@@ -1,6 +1,6 @@
 define( 'dc/board',['jquery','svg','dc/graphic','dc/abspos','dc/io',
-        'dc/infofuncs','dc/boardevents','dc/board-device-events'],
-function($,svg,Graphic,AbsPos,IO,infofuncs,BoardEvents,initDeviceEvents){return function(id,liteMode){
+        'dc/infofuncs','dc/boardevents','dc/board-device-events','dc/posfuncs'],
+function($,svg,Graphic,AbsPos,IO,infofuncs,BoardEvents,initDeviceEvents,posfuncs){return function(id,liteMode){
         var self=this;
         this.room=infofuncs.getRoom();
         var element=this.element=document.getElementById(id);
@@ -20,6 +20,9 @@ function($,svg,Graphic,AbsPos,IO,infofuncs,BoardEvents,initDeviceEvents){return 
         $(element).bind("contextmenu",function(evt){return false;});
         //屏蔽右键菜单&使用自制右键菜单
 
+        this.move=function(x,y){
+                abspos.move(-x+posfuncs.centerX(),-y+posfuncs.centerY());
+        };
         this.dmove=function(dx,dy){
                 abspos.dmove(dx,dy);
                 graphicsManager.updatePos();

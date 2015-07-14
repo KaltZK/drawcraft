@@ -1,5 +1,14 @@
 define("dc/board-device-events",["jquery","dc/infofuncs",'jquery.mousewheel',"jquery.touch"],function($,infofuncs){
 return  function(self,liteMode){
+        var focusOnFlag=false;
+
+        $(self.element).on("mouseenter",function(){
+                focusOnFlag=true;
+        });
+        $(self.element).on("mouseleave",function(){
+                focusOnFlag=false;
+        });
+
         $(self.element).bind("mousewheel",function(evt,delta){
                 self.dzoom(delta);
                 return false;
@@ -166,6 +175,7 @@ return  function(self,liteMode){
         }
         
         $(document).on("keydown",function(evt){
+                if(!focusOnFlag)return;
                 var speed=25,dx=0,dy=0;
                 switch(evt.keyCode){
                 case 37://LEFT
