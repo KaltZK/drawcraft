@@ -105,6 +105,7 @@ require(["jquery","dc/api","jquery.cookie"],function($,api){
                         },function(data){
                                 if(data.login){
                                         notify("Welcome back, "+data.name+".",true,data.name);
+                                        $.cookie("user",data.name);
                                         $.event.trigger({type:"loggedin"});
                                         self.toggle(false);
                                         self.clearText();
