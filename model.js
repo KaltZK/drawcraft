@@ -17,9 +17,9 @@ db.open(function(err,db){
                 return;
         }
 
-        var bodies=db.collection("graphic_bodies");
+        //~ var bodies=db.collection("graphic_bodies");
         var graphics=db.collection("graphics");
-        var contents=db.collection("contents");
+        //~ var contents=db.collection("contents");
         var rooms=db.collection("rooms");
         var users=db.collection("users");
         var text_messages=db.collection("text_messages");

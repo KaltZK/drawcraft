@@ -10,6 +10,7 @@ require.config({
         },
 });
 require(["jquery","dc/api","jquery.cookie"],function($,api){
+$(document).on("WebComponentsReady",function(){
         function notifySend(text){
                 var notify=document.getElementById("notify");
                 notify.duration=10000;
@@ -32,10 +33,9 @@ require(["jquery","dc/api","jquery.cookie"],function($,api){
         var login_status;
         api.getUserData({},function(ud){
                 login_status=ud;
-                console.log(ud);
                 if(ud.login){
-                        notifySend("Welcome, "+ud.username+".");
-                        jump(ud.username);
+                        notifySend("Welcome, "+ud.name+".");
+                        jump(ud.name);
                 }
         });
         function enter(){
@@ -59,4 +59,5 @@ require(["jquery","dc/api","jquery.cookie"],function($,api){
         if($.cookie("user")){
                 $("#username_input").val($.cookie("user"));
         }
+});
 });
