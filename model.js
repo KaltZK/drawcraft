@@ -22,6 +22,7 @@ db.open(function(err,db){
         var contents=db.collection("contents");
         var rooms=db.collection("rooms");
         var users=db.collection("users");
+        var text_messages=db.collection("text_messages");
         exports.storeNewGraphic=function(data){
                 graphics.insert(data);
         };
@@ -115,6 +116,18 @@ db.open(function(err,db){
                         }else{
                                 callback(null);
                         }
+                });
+        };
+        exports.addTextMessage=function(message){
+                text_messages.insert(message);
+        };
+        exports.loadRecentTextMessage=function(room,each_callback){
+                var now=new Date().getTime();
+                text_messages.find({
+                        room:room,
+                        timestamp:{$gte:now-3600*2*1000},
+                }).forEach(function(msg){
+                        each_callback(msg);
                 });
         };
 });

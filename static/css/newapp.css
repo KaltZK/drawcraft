@@ -88,8 +88,11 @@ paper-header-panel {
 	background-color: white;
         font-size: 1.3em;
         word-break: break-all;
+        padding-bottom: 0.1em;
 }
-
+.chat_content > p{
+        margin: 0.3em;
+}
 .chat_content > p > strong{
         color: #F50057;
 }

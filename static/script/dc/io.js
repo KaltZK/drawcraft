@@ -40,6 +40,19 @@ function initIO(socket,password){
         this.pullInnerGraphics=function(range){
                 socket.emit("pull_inner_graphics",range);
         };
+        socket.on("text_message",function(msg){
+                $.event.trigger({
+                        type:"text_message",
+                        user:msg.user,
+                        text:msg.text,
+                });
+        });
+        this.sendMessage=function(username,text){
+                socket.emit("text_message",{
+                        user:username,
+                        text:text,
+                });
+        };
 }
 return function(room){
         var self=this;

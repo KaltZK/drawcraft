@@ -8,13 +8,13 @@ function enterRoom(socket,data){
         model.enterRoom(data.room);
         socket.join(data.room);
         socket.broadcast.to(data.room).emit("text_message",{
-                author: "System",
-                text: " joined "+data.room,
+                user: "System",
+                text: "+1",
         });
         socket.on('disconnect',function(data){
                 socket.broadcast.to(data.room).emit("text_message",{
-                        author: "System",
-                        text: " left "+data.room,
+                        user: "System",
+                        text: "-1",
                 });
         });
         require("./socket-events")(socket,data);

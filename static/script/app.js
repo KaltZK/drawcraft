@@ -41,15 +41,6 @@ $(document).on("WebComponentsReady",function(){
                 notify.text=text;
                 notify.toggle();
         }
-        		
-	//~ var colors_list=["red","green","blue","yellow"];
-	//~ var select_color_inner_div=document.getElementById("select_color_inner_menu");
-	//~ colors_list.forEach(function(color){
-		//~ var pi=document.createElement("paper-item");
-		//~ pi.style.color="#FFFFFF";
-		//~ pi.style.backgroundColor=color;
-		//~ select_color_inner_div.appendChild(pi);
-	//~ });
         var hdialog = document.getElementById('help_dialog');
         $("#help_button").on("click",function(){
                 hdialog.toggle(true);
@@ -62,6 +53,7 @@ $(document).on("WebComponentsReady",function(){
                 document.getElementById("style_setting_dialog").toggle(true);
         });
 
+        var header_panel=document.getElementById("chat_paper_header_panel");
         var chat_content=document.getElementById("chat_content");
         function displayMessage(username,text){
                 var d=document.createElement("p"),
@@ -72,7 +64,24 @@ $(document).on("WebComponentsReady",function(){
                 d.appendChild(s);
                 d.appendChild(p);
                 chat_content.appendChild(d);
+                header_panel.scroller.scrollTop=header_panel.scroller.scrollHeight;
         }
-        displayMessage("12","45045045045045045045045045045045045045045045045045\n0450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450450");
+        
         $("#chat_block_header").text(infofuncs.getRoom());
+        function sendMessage(){
+                var text=$("#content_input").val(),
+                    user=infofuncs.getUsername();
+                if(!text) return;
+                $("#content_input").val('');
+                displayMessage(user,text);
+                board.io.sendMessage(user,text);
+        }
+        $("#send_button").on("click",sendMessage);
+        $("#content_input").on("keydown",function(evt){
+                if(evt.keyCode==13)
+                        sendMessage();
+        });
+        $(document).on("text_message",function(evt){
+                displayMessage(evt.user,evt.text);
+        });
 })});
